@@ -97,7 +97,7 @@ trigger:
 
 ---
 ###################################################################################################################
-# This pipeline runs a TezEdge node and compares the rewards distribution calculated by tezedge to the tzkt indexer
+# This pipeline runs a TezEdge node and compares the rewards distribution calculated by tezedge to the mvkt indexer
 # to ensure the calculated values are correct
 ###################################################################################################################
 kind: pipeline

@@ -16,11 +16,11 @@ use crate::hash::{
 };
 use nom::Err;
 use serde::{Deserialize, Serialize};
-use tezos_data_encoding::enc::{BinResult, BinWriter};
-use tezos_data_encoding::encoding::{Encoding, HasEncoding};
-use tezos_data_encoding::nom::error::BoundedEncodingKind;
-use tezos_data_encoding::nom::error::DecodeError;
-use tezos_data_encoding::nom::{NomReader, NomResult};
+use mavryk_data_encoding::enc::{BinResult, BinWriter};
+use mavryk_data_encoding::encoding::{Encoding, HasEncoding};
+use mavryk_data_encoding::nom::error::BoundedEncodingKind;
+use mavryk_data_encoding::nom::error::DecodeError;
+use mavryk_data_encoding::nom::{NomReader, NomResult};
 use thiserror::Error;
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]
@@ -209,7 +209,7 @@ impl TryFrom<Signature> for UnknownSignature {
 
 impl BinWriter for Signature {
     fn bin_write(&self, out: &mut Vec<u8>) -> BinResult {
-        use tezos_data_encoding::enc::*;
+        use mavryk_data_encoding::enc::*;
 
         dynamic(bytes)(self, out)
     }
@@ -222,7 +222,7 @@ impl HasEncoding for Signature {
 
 impl<'a> NomReader<'a> for Signature {
     fn nom_read(input: &'a [u8]) -> NomResult<'a, Self> {
-        use tezos_data_encoding::nom::*;
+        use mavryk_data_encoding::nom::*;
 
         let (rest, v) = dynamic(bytes)(input)?;
         if let Ok(v) = Self::try_from(v) {

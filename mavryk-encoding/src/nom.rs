@@ -16,9 +16,9 @@ use nom::{
     Err, InputLength, Parser, Slice,
 };
 use num_bigint::{BigInt, BigUint, Sign};
-pub use tezos_data_encoding_derive::NomReader;
+pub use mavryk_data_encoding_derive::NomReader;
 
-use crate::types::{Mutez, Zarith};
+use crate::types::{Mumav, Zarith};
 
 use self::error::{BoundedEncodingKind, DecodeError, DecodeErrorKind};
 
@@ -225,7 +225,7 @@ impl<'a> NomReader<'a> for Zarith {
     }
 }
 
-impl<'a> NomReader<'a> for Mutez {
+impl<'a> NomReader<'a> for Mumav {
     fn nom_read(bytes: &[u8]) -> NomResult<Self> {
         map(n_bignum, |big_uint| {
             BigInt::from_biguint(Sign::Plus, big_uint).into()

@@ -22,7 +22,7 @@ mod nom;
 mod symbol;
 
 #[proc_macro_derive(HasEncoding, attributes(encoding))]
-pub fn derive_tezos_data_encoding(input: TokenStream) -> TokenStream {
+pub fn derive_mavryk_data_encoding(input: TokenStream) -> TokenStream {
     let input = parse_macro_input!(input as DeriveInput);
     let encoding = match crate::make::make_encoding(&input) {
         Ok(encoding) => encoding,

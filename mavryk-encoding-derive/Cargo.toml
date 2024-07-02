@@ -1,14 +1,17 @@
 [package]
-name = "tezos_data_encoding_derive"
+name = "mavryk_data_encoding_derive"
 version = "0.6.0"
-authors = ["TriliTech <contact@trili.tech>"]
+authors = [
+    "TriliTech <contact@trili.tech>",
+    "Mavryk Dynamics <info@mavryk.io>"
+]
 edition = "2021"
 rust-version = "1.64"
 license = "MIT"
-keywords = ["tezos"]
+keywords = ["mavryk"]
 categories = ["encoding"]
-description = "Procedural macros for tezos_encoding."
-repository = "https://github.com/trilitech/tezedge.git"
+description = "Procedural macros for mavryk_encoding."
+repository = "https://github.com/mavryk-network/mavryk-rust.git"
 
 [lib]
 proc-macro = true

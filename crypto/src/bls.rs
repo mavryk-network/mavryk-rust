@@ -8,7 +8,7 @@
 #![cfg(feature = "bls")]
 
 use crate::hash::BlsSignature;
-use crate::hash::ContractTz4Hash;
+use crate::hash::ContractMv4Hash;
 use crate::hash::PublicKeyBls;
 use crate::hash::SecretKeyBls;
 use crate::CryptoError;
@@ -56,7 +56,7 @@ impl BlsSignature {
     /// Verify a signature for one or more messages. The signature must have been
     /// constructed by *only* the given messages.
     ///
-    /// When verifying, we also check the public keys and group check. Like Tezos_crypto,
+    /// When verifying, we also check the public keys and group check. Like Mavryk_crypto,
     /// this verification function uses the Aug suite.
     pub fn aggregate_verify<'a>(
         &self,
@@ -86,7 +86,7 @@ impl BlsSignature {
             .map(|(_, pk)| pk)
             .collect::<Vec<_>>();
 
-        // Tezos_crypto uses the Aug suite
+        // Mavryk_crypto uses the Aug suite
         let dst = AUG_CIPHER_SUITE.as_bytes();
 
         match signature.aggregate_verify(true, &messages, dst, &public_keys, true) {
@@ -171,10 +171,10 @@ pub fn keypair_from_ikm(ikm: [u8; 32]) -> Result<(SecretKeyBls, PublicKeyBls), C
     Ok((sk, pk))
 }
 
-/// Generate a keypair, with tz4 hash, from initial key material.
+/// Generate a keypair, with mv4 hash, from initial key material.
 pub fn keypair_with_hash_from_ikm(
     ikm: [u8; 32],
-) -> Result<(SecretKeyBls, PublicKeyBls, ContractTz4Hash), CryptoError> {
+) -> Result<(SecretKeyBls, PublicKeyBls, ContractMv4Hash), CryptoError> {
     let (sk, pk) = keypair_from_ikm(ikm)?;
 
     let hash = pk.pk_hash();
@@ -200,7 +200,7 @@ pub fn bls_arb_keypair() -> proptest::prelude::BoxedStrategy<(SecretKeyBls, Publ
 /// [proptest]: <https://crates.io/crates/proptest>.
 #[cfg(any(test, feature = "std"))]
 pub fn bls_arb_keypair_with_hash(
-) -> proptest::prelude::BoxedStrategy<(SecretKeyBls, PublicKeyBls, ContractTz4Hash)> {
+) -> proptest::prelude::BoxedStrategy<(SecretKeyBls, PublicKeyBls, ContractMv4Hash)> {
     use proptest::prelude::*;
 
     any::<[u8; 32]>()
@@ -218,10 +218,10 @@ pub fn bls_generate_keypair() -> Result<(SecretKeyBls, PublicKeyBls), crate::Cry
     keypair_from_ikm(ikm)
 }
 
-/// Generate random bls keypair, with tz4 hash.
+/// Generate random bls keypair, with mv4 hash.
 #[cfg(any(test, feature = "std"))]
 pub fn bls_generate_keypair_with_hash(
-) -> Result<(SecretKeyBls, PublicKeyBls, ContractTz4Hash), crate::CryptoError> {
+) -> Result<(SecretKeyBls, PublicKeyBls, ContractMv4Hash), crate::CryptoError> {
     use rand::Rng;
 
     let ikm = rand::thread_rng().gen::<[u8; 32]>();
@@ -233,7 +233,7 @@ mod tests {
     use super::*;
     use crate::{
         base58::FromBase58Check,
-        hash::{ContractTz4Hash, HashTrait},
+        hash::{ContractMv4Hash, HashTrait},
         PublicKeyWithHash,
     };
     use proptest::prelude::*;
@@ -340,7 +340,7 @@ mod tests {
         let (sk, pk, pk_hash) = keypair_with_hash_from_ikm(ikm).expect("Valid ikm");
 
         assert_eq!(
-            "tz4TpX5Qb3w7xnnnwSpjFs7Kq35GC4qr3uMg",
+            "mv4fXbN7ChwezwPTDrQzq1HUFqZk1Q54nvHm",
             &pk_hash.to_base58_check(),
             "expected addresses to match"
         );
@@ -414,7 +414,7 @@ mod tests {
     }
 
     // Test to ensure that we use the correct hashing scheme to convert between
-    // bls::PublicKey and ContractTz4Hash.
+    // bls::PublicKey and ContractMv4Hash.
     //
     // Test cases generated using protocol unit tests for tx_rollup.
     #[test]
@@ -422,34 +422,34 @@ mod tests {
         let test_cases = [
             (
                 "BLpk1mJXuRWVxRJRkUES7E16u4KeKMGibFtR995FxSFzeyMm8ckngdo4Cx4P3KWeRQ1NeY3iEWwq",
-                "tz4NPp9xHJMgoRQwE2iL66NnfeBcnEoskeuj",
+                "mv4a6tSetxNDqa1bWSJbfEYw6Sg6ba3UCPY4",
             ),
             (
                 "BLpk1wEURk8sJBP2QvjNnjFiFbqJJfRYSKAjHJXbAD9rU1h4wpn8Q1wUAsVXGK3bRrLvhT8f5o3z",
-                "tz492MCfwp9V961DhNGmKzD642uhU8j6H5nB",
+                "mv4LjRVNZUA2BEbsyms2u8PEUqQBHTvqo3RD",
             ),
             (
                 "BLpk1pJuYBQjSb1JhnfNTkAr2AJ4BhcMdTfyQBK97EHLMukaCWkqpGNxP6fkpZcmLbux7UPNqJhP",
-                "tz4Vc8F1uDc5vxppuWhAvu2HpjsFYS5x5qat",
+                "mv4hKCXiWsccy7RVBvHSW3CSFYMjMmGwQRHR",
             ),
             (
                 "BLpk1rk1RFdkPgdv5V2PDmxnL3gDeUcQCmH241rGb8YeRqtpAHPnWeUGkvBmzurXCKJJZEsHrjL8",
-                "tz4FJr811sHV649iKrFFgrFM7mvSYBQSKHsP",
+                "mv4T1vQhdXJ28CkNcFqXFzRVYaQvMWfecq15",
             ),
         ];
 
-        let run_test = |(pk_b58, tz4_b58): (&str, &str)| {
+        let run_test = |(pk_b58, mv4_b58): (&str, &str)| {
             let pk_bytes = pk_b58.from_base58check().expect("Valid pk b58");
             let pk_bytes: [u8; 48] = pk_bytes[4..] // remove prefix of `BLpk`
                 .try_into()
                 .expect("pk_bytes should be 48 bytes long");
             let pk = PublicKeyBls(pk_bytes.to_vec());
 
-            let tz4 = pk.pk_hash();
+            let mv4 = pk.pk_hash();
 
-            let expected_tz4 = ContractTz4Hash::from_b58check(tz4_b58).expect("Valid tz4 b58");
+            let expected_mv4 = ContractMv4Hash::from_b58check(mv4_b58).expect("Valid mv4 b58");
 
-            assert_eq!(expected_tz4, tz4);
+            assert_eq!(expected_mv4, mv4);
         };
 
         test_cases.into_iter().for_each(run_test);

@@ -31,18 +31,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Add `FromBase58CheckError::IncorrectBase58Prefix` variant.
 - Add `NomReader`, `BinWriter` support for `Ed25519Signature`.
-- Add `signature::Signature` enum representing possible types of signature used in Tezos.
-- Add `From<PublicKeyEd25519>` impl for `ContractTz1Hash`.
-- Add `From<PublicKeySecp256k1>` impl for `ContractTz2Hash`.
-- Add `From<PublicKeyP256>` impl for `ContractTz3Hash`.
-- Add `From<PublicKeyBls>` impl for `ContractTz4Hash`.
+- Add `signature::Signature` enum representing possible types of signature used in Mavryk.
+- Add `From<PublicKeyEd25519>` impl for `ContractMv1Hash`.
+- Add `From<PublicKeySecp256k1>` impl for `ContractMv2Hash`.
+- Add `From<PublicKeyP256>` impl for `ContractMv3Hash`.
+- Add `From<PublicKeyBls>` impl for `ContractMv4Hash`.
 - Add `TryFrom<Signature>` impl for various signature types.
 - Add `PublicKeySignatureVerifier` impl for `PublicKeyBls`.
 - Add `PublicKey`, `PublicKeyHash` aggregate types.
 
 ### Changed
 
-- `tezos_data_encoding`: The `NomReader` trait is now explicitly
+- `mavryk_data_encoding`: The `NomReader` trait is now explicitly
 parameterized by the lifetime of the input byte slice.
 - Altered hashes to implement `AsRef<[u8]>` instead of `AsRef<Vec<u8>>`.
 - Renamed `hash::Signature` to `hash::UnknownSignature`.
@@ -53,12 +53,12 @@ parameterized by the lifetime of the input byte slice.
   never possible.
 - `blake2b::merkle_tree` returns plain `Vec<u8>` instead of `Result<Vec<u8>,
   Blake2bError>`, the error was never possible.
-- `tezos_crypto_rs`: `PublicKeyWithHash::pk_hash` now returns `Self::Hash`
+- `mavryk_crypto_rs`: `PublicKeyWithHash::pk_hash` now returns `Self::Hash`
   instead of `Result`.
 - `PublicKeySignatureVerifier` now requires the explicitly correct signature kind for the given public key.
 - Update `num-bigint` dependency to `0.4` to improve WASM compatibility.
 - Minimum supported rust version bumped to `1.64`.
-- `tezos_crypto_rs` now depends on `tezos_data_encoding`, rather than vice-versa.
+- `mavryk_crypto_rs` now depends on `mavryk_data_encoding`, rather than vice-versa.
 
 ### Deprecated
 
@@ -70,9 +70,9 @@ parameterized by the lifetime of the input byte slice.
 - Removed `ToBase58CheckError`.
 - Removed unused `Blake2bError::Other`.
 - Removed impossible `TryFromPKError`.
-- `tezos_data_encoding`: Removed unused `DecodeErrorKind::Hash` and
+- `mavryk_data_encoding`: Removed unused `DecodeErrorKind::Hash` and
   `DecodeError::hash_error`
-- `tezos_crypto_rs`: Removed unused `Error` type from `PublicKeyWithHash`
+- `mavryk_crypto_rs`: Removed unused `Error` type from `PublicKeyWithHash`
 - Removed support for `hash` field attribute when deriving encodings.
 
 ### Fixed
@@ -83,9 +83,9 @@ parameterized by the lifetime of the input byte slice.
 - Fix `BlsSignature` base58 check encoding/decoding.
 - Fix `SecretKeyEd25519` base58 check encoding/decoding.
 - Fix all zeros signature encoding: should be `Unknown` rather than defaulting to `Ed25519`.
-- Fix `tz1` signature verification: input should be hashed.
-- Fix `tz2` signature verification: input should be hashed.
-- Fix `tz3` signature verification: input should be hashed.
+- Fix `mv1` signature verification: input should be hashed.
+- Fix `mv2` signature verification: input should be hashed.
+- Fix `mv3` signature verification: input should be hashed.
 
 ### Security
 
@@ -99,7 +99,7 @@ parameterized by the lifetime of the input byte slice.
 
 ### Added
 
-- Added `bls` feature flag to `tezos_crypto_rs`, to allow disabling dependency on `blst`.
+- Added `bls` feature flag to `mavryk_crypto_rs`, to allow disabling dependency on `blst`.
 
 ## [0.5.1] - 2023-09-01
 
@@ -130,8 +130,8 @@ parameterized by the lifetime of the input byte slice.
 
 ### Removed
 
-- `tezos_crypto_rs`: errors no longer implement `PartialEq`, `Clone`.
-- `tezos_crypto_rs`: errors no longer are (de)serializable with serde.
+- `mavryk_crypto_rs`: errors no longer implement `PartialEq`, `Clone`.
+- `mavryk_crypto_rs`: errors no longer are (de)serializable with serde.
 
 ### Fixed
 
@@ -143,13 +143,13 @@ parameterized by the lifetime of the input byte slice.
 
 ### Performance
 
-- Improvements in verification of `tz1` signatures, due to change in Ed25519 backend.
+- Improvements in verification of `mv1` signatures, due to change in Ed25519 backend.
 
 ## [0.4.4] - 2023-03-16
 
 ### Fixed
 
-- `tezos_data_encoding_derive` was outputting code that referenced the old `tezos_encoding` crate. It now references `tezos_data_encoding`.
+- `mavryk_data_encoding_derive` was outputting code that referenced the old `mavryk_encoding` crate. It now references `mavryk_data_encoding`.
 
 ## [0.4.3] - 2023-03-14
 
@@ -157,34 +157,34 @@ parameterized by the lifetime of the input byte slice.
 
 ### Changed
 
-- `tezos_crypto` rename to `tezos_crypto_rs`, due to conflict on crates.io
+- `mavryk_crypto` rename to `mavryk_crypto_rs`, due to conflict on crates.io
 
 ## [0.4.1] - 2023-03-14
 
 ### Changed
 
-- `tezos_encoding` renamed to `tezos_data_encoding`
-- `tezos_encoding_derive` renamed to `tezos_data_encoding_derive`
+- `mavryk_encoding` renamed to `mavryk_data_encoding`
+- `mavryk_encoding_derive` renamed to `mavryk_data_encoding_derive`
 
 ## [0.4.0] - 2023-03-13
 
 ### Added
 
-- support `tz4`, `sr1` hashes.
+- support `mv4`, `sr1` hashes.
 - `SecretKeyBls`, `PublicKeyBls` support.
 
 ### Changed
 
 - minimum supported rust version bumped to `1.60`.
 - `SecretKeyEd25519` now implements `Debug`, and can be encoded/decoded.
-- `crypto` renamed to `tezos_crypto`.
-- `tezos_encoding_derive` now supports deriving over generic structs.
-- `tezos_encoding` `nom::list`, `nom::dynamic` no longer require `Clone`.
+- `crypto` renamed to `mavryk_crypto`.
+- `mavryk_encoding_derive` now supports deriving over generic structs.
+- `mavryk_encoding` `nom::list`, `nom::dynamic` no longer require `Clone`.
 - `lib_sodium` dependency replaced with `cryptoxide` for improved Wasm support.
 
 ### Removed
 
-- All crates, except for `crypto`, `tezos_encoding` & `tezos_encoding_derive`.
+- All crates, except for `crypto`, `mavryk_encoding` & `mavryk_encoding_derive`.
 - `crypto::seeded_step`, `crypto::cryptobox` modules removed.
 
 ## [3.1.1] - 2022-06-28
@@ -202,7 +202,7 @@ parameterized by the lifetime of the input byte slice.
 
 - Fixed rewards RPC edge cases when the interrogated cycle was lower than preserved_cycles.
 - Fixed embedded baker for blocks with predecessor containing a protocol activation.
-- Minor fixes in Tezos encoding library.
+- Minor fixes in Mavryk encoding library.
 
 ### Security
 
@@ -670,7 +670,7 @@ parameterized by the lifetime of the input byte slice.
 
 ### Added
 
-- A reworked in-memory backend for the TezEdge context that conforms to the Tezos context API and is now directly accessed from the Tezos protocol code.
+- A reworked in-memory backend for the TezEdge context that conforms to the Mavryk context API and is now directly accessed from the Mavryk protocol code.
 - Flag `--tezos-context-storage` to choose the context backend. Default is `irmin`, supported values are:
   - `tezedge` - Use the TezEdge context backend.
   - `irmin` - Use the Irmin context backend.
@@ -679,7 +679,7 @@ parameterized by the lifetime of the input byte slice.
 - Flag `--context-stats-db-path=<PATH>` that enables the context storage stats. When this option is enabled, the node will measure the time it takes to complete each context query. When available, these will be rendered in the TezEdge explorer UI.
 - A new `replay` subcommand to the `light-node` program. This subcommand will take as input a range of blocks, a blocks store and re-apply all those blocks to the context store and validate the results.
 - A new CI runner running on linux with real-time patch kernel to increase determinism of performance tests
-- Add conseil and tzkt tests for florencenet
+- Add conseil and mvkt tests for florencenet
 - Add caching to functions used by RPC handlers
 
 ### Changed
@@ -713,7 +713,7 @@ parameterized by the lifetime of the input byte slice.
 ### Changed
 
 - Encodings - implemented NOM decoding
-- (FFI) Compatibility with Tezos v9-release
+- (FFI) Compatibility with Mavryk v9-release
 - Store apply block results (header/operations) metadata as plain bytes and added rpc decoding to speedup block application
 - TezEdge node now works just with one Irmin context (temporary solution, custom context is coming soon...)
 
@@ -792,7 +792,7 @@ parameterized by the lifetime of the input byte slice.
 ### Added
 
 - New 008 edo2 support + possibility to connect to edo2net
-- New algorithm for calculation of context_hash according to Tezos
+- New algorithm for calculation of context_hash according to Mavryk
 
 ## [1.1.1] - 2021-03-05
 
@@ -823,7 +823,7 @@ parameterized by the lifetime of the input byte slice.
 
 ### Security
 
-- Added limits for p2p messages according to the Tezos updates
+- Added limits for p2p messages according to the Mavryk updates
 
 ## [1.0.0] - 2021-02-10
 
@@ -871,7 +871,7 @@ parameterized by the lifetime of the input byte slice.
 
 ### Added
 
-- Modification of node to be able to launch Tezos python tests in Drone CI
+- Modification of node to be able to launch Mavryk python tests in Drone CI
 - Benchmarks for message encoding, ffi conversion, storage predecessor search to Drone CI
 - Block applied approx. stats to log for chain_manager
 - Extended statistics in merkle storage
@@ -893,7 +893,7 @@ parameterized by the lifetime of the input byte slice.
 
 - Multipass validation support for CurrentHead processing + blacklisting peers
 - Support for connection to Delphinet.
-- Dynamic RPC router can call Tezos's RPCs inside all protocol versions.
+- Dynamic RPC router can call Mavryk's RPCs inside all protocol versions.
 - Added rustfmt and clippy pipelines
 
 ### Changed
@@ -994,14 +994,14 @@ parameterized by the lifetime of the input byte slice.
 
 ### Added
 
-- RPCs for every protocol now support the Tezos indexer 'blockwatch/tzindex'.
+- RPCs for every protocol now support the Mavryk indexer 'blockwatch/tzindex'.
 - Support for connecting to Mainnet.
 - Support for sandboxing, which means an empty TezEdge can be initialized with `tezos-client` for "activate protocol" and do "transfer" operation.
 
 ### Changed
 
-- FFI upgrade based on Tezos gitlab latest-release (v7.2), now supports OCaml 4.09.1
-- Support for parallel access (readonly context) to Tezos FFI OCaml runtime through r2d2 connection pooling.
+- FFI upgrade based on Mavryk gitlab latest-release (v7.2), now supports OCaml 4.09.1
+- Support for parallel access (readonly context) to Mavryk FFI OCaml runtime through r2d2 connection pooling.
 
 
 ## [0.1.0] - 2020-06-25
@@ -1046,8 +1046,8 @@ parameterized by the lifetime of the input byte slice.
 ### Added
 
 - P2P Explorer support with dedicated RPC exposed.
-- Exposed RPC for Tezos indexers.
-- Ability to connect and bootstrap data from Tezos Babylonnet.
+- Exposed RPC for Mavryk indexers.
+- Ability to connect and bootstrap data from Mavryk Babylonnet.
 - Protocol FFI integration.
 
 [Unreleased]: https://github.com/tezedge/tezedge/compare/v3.1.1...develop

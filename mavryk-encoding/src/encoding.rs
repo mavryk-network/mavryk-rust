@@ -6,7 +6,7 @@
 
 use std::collections::HashMap;
 
-pub use tezos_data_encoding_derive::HasEncoding;
+pub use mavryk_data_encoding_derive::HasEncoding;
 
 #[derive(Debug, Clone)]
 pub struct Field {
@@ -142,7 +142,7 @@ pub enum Encoding {
     /// Big number
     /// Almost identical to [Encoding::Z], but does not contain the sign bit in the second most
     /// significant bit of the first byte
-    Mutez,
+    Mumav,
     /// Encoding of floating point number (encoded as a floating point number in JSON and a double in binary).
     Float,
     /// Float with bounds in a given range. Both bounds are inclusive.
