@@ -28,10 +28,10 @@ mod prefix_bytes {
     pub const PROTOCOL_HASH: [u8; 2] = [2, 170];
     pub const CRYPTOBOX_PUBLIC_KEY_HASH: [u8; 2] = [153, 103];
     pub const CONTRACT_KT1_HASH: [u8; 3] = [2, 90, 121];
-    pub const CONTRACT_TZ1_HASH: [u8; 3] = [6, 161, 159];
-    pub const CONTRACT_TZ2_HASH: [u8; 3] = [6, 161, 161];
-    pub const CONTRACT_TZ3_HASH: [u8; 3] = [6, 161, 164];
-    pub const CONTRACT_TZ4_HASH: [u8; 3] = [6, 161, 166];
+    pub const CONTRACT_MV1_HASH: [u8; 3] = [5, 186, 196];
+    pub const CONTRACT_MV2_HASH: [u8; 3] = [5, 186, 199];
+    pub const CONTRACT_MV3_HASH: [u8; 3] = [5, 186, 201];
+    pub const CONTRACT_MV4_HASH: [u8; 3] = [5, 186, 204];
     pub const PUBLIC_KEY_ED25519: [u8; 4] = [13, 15, 37, 217];
     pub const PUBLIC_KEY_SECP256K1: [u8; 4] = [3, 254, 226, 86];
     pub const PUBLIC_KEY_P256: [u8; 4] = [3, 178, 139, 127];
@@ -294,10 +294,10 @@ define_hash!(OperationMetadataListListHash);
 define_hash!(ContextHash);
 define_hash!(ProtocolHash);
 define_hash!(ContractKt1Hash);
-define_hash!(ContractTz1Hash);
-define_hash!(ContractTz2Hash);
-define_hash!(ContractTz3Hash);
-define_hash!(ContractTz4Hash);
+define_hash!(ContractMv1Hash);
+define_hash!(ContractMv2Hash);
+define_hash!(ContractMv3Hash);
+define_hash!(ContractMv4Hash);
 define_hash!(CryptoboxPublicKeyHash);
 define_hash!(PublicKeyEd25519);
 define_hash!(PublicKeySecp256k1);
@@ -313,7 +313,7 @@ define_hash!(NonceHash);
 define_hash!(OperationListHash);
 define_hash!(SmartRollupHash);
 
-/// Note: see Tezos ocaml lib_crypto/base58.ml
+/// Note: see Mavryk ocaml lib_crypto/base58.ml
 #[derive(Debug, Copy, Clone, PartialEq, strum_macros::AsRefStr)]
 pub enum HashType {
     // "\087\082\000" (* Net(15) *)
@@ -340,14 +340,14 @@ pub enum HashType {
     CryptoboxPublicKeyHash,
     // "\002\090\121" (* KT1(36) *)
     ContractKt1Hash,
-    // "\006\161\159" (* tz1(36) *)
-    ContractTz1Hash,
-    // "\006\161\161" (* tz2(36) *)
-    ContractTz2Hash,
-    // "\006\161\164" (* tz3(36) *)
-    ContractTz3Hash,
-    // "\006\161\166" (* tz4(36) *)
-    ContractTz4Hash,
+    // "\005\186\196" (* mv1(36) *)
+    ContractMv1Hash,
+    // "\005\186\199" (* mv2(36) *)
+    ContractMv2Hash,
+    // "\005\186\201" (* mv3(36) *)
+    ContractMv3Hash,
+    // "\005\186\204" (* mv4(36) *)
+    ContractMv4Hash,
     // "\013\015\037\217" (* edpk(54) *)
     PublicKeyEd25519,
     // "\003\254\226\086" (* sppk(55) *)
@@ -393,10 +393,10 @@ impl HashType {
             HashType::OperationMetadataListListHash => &OPERATION_METADATA_LIST_LIST_HASH,
             HashType::CryptoboxPublicKeyHash => &CRYPTOBOX_PUBLIC_KEY_HASH,
             HashType::ContractKt1Hash => &CONTRACT_KT1_HASH,
-            HashType::ContractTz1Hash => &CONTRACT_TZ1_HASH,
-            HashType::ContractTz2Hash => &CONTRACT_TZ2_HASH,
-            HashType::ContractTz3Hash => &CONTRACT_TZ3_HASH,
-            HashType::ContractTz4Hash => &CONTRACT_TZ4_HASH,
+            HashType::ContractMv1Hash => &CONTRACT_MV1_HASH,
+            HashType::ContractMv2Hash => &CONTRACT_MV2_HASH,
+            HashType::ContractMv3Hash => &CONTRACT_MV3_HASH,
+            HashType::ContractMv4Hash => &CONTRACT_MV4_HASH,
             HashType::PublicKeyEd25519 => &PUBLIC_KEY_ED25519,
             HashType::PublicKeySecp256k1 => &PUBLIC_KEY_SECP256K1,
             HashType::PublicKeyP256 => &PUBLIC_KEY_P256,
@@ -431,10 +431,10 @@ impl HashType {
             | HashType::OperationListHash => 32,
             HashType::CryptoboxPublicKeyHash => 16,
             HashType::ContractKt1Hash
-            | HashType::ContractTz1Hash
-            | HashType::ContractTz2Hash
-            | HashType::ContractTz3Hash
-            | HashType::ContractTz4Hash
+            | HashType::ContractMv1Hash
+            | HashType::ContractMv2Hash
+            | HashType::ContractMv3Hash
+            | HashType::ContractMv4Hash
             | HashType::SmartRollupHash => 20,
             HashType::PublicKeySecp256k1 | HashType::PublicKeyP256 => 33,
             HashType::SeedEd25519 | HashType::SecretKeyBls => 32,
@@ -528,12 +528,12 @@ macro_rules! pk_with_hash {
     };
 }
 
-pk_with_hash!(PublicKeyEd25519, ContractTz1Hash);
-pk_with_hash!(PublicKeySecp256k1, ContractTz2Hash);
-pk_with_hash!(PublicKeyP256, ContractTz3Hash);
-pk_with_hash!(PublicKeyBls, ContractTz4Hash);
+pk_with_hash!(PublicKeyEd25519, ContractMv1Hash);
+pk_with_hash!(PublicKeySecp256k1, ContractMv2Hash);
+pk_with_hash!(PublicKeyP256, ContractMv3Hash);
+pk_with_hash!(PublicKeyBls, ContractMv4Hash);
 
-impl TryFrom<PublicKeyEd25519> for ContractTz1Hash {
+impl TryFrom<PublicKeyEd25519> for ContractMv1Hash {
     type Error = TryFromPKError;
 
     fn try_from(source: PublicKeyEd25519) -> Result<Self, Self::Error> {
@@ -543,7 +543,7 @@ impl TryFrom<PublicKeyEd25519> for ContractTz1Hash {
     }
 }
 
-impl TryFrom<PublicKeySecp256k1> for ContractTz2Hash {
+impl TryFrom<PublicKeySecp256k1> for ContractMv2Hash {
     type Error = TryFromPKError;
 
     fn try_from(source: PublicKeySecp256k1) -> Result<Self, Self::Error> {
@@ -553,7 +553,7 @@ impl TryFrom<PublicKeySecp256k1> for ContractTz2Hash {
     }
 }
 
-impl TryFrom<PublicKeyP256> for ContractTz3Hash {
+impl TryFrom<PublicKeyP256> for ContractMv3Hash {
     type Error = TryFromPKError;
 
     fn try_from(source: PublicKeyP256) -> Result<Self, Self::Error> {
@@ -563,7 +563,7 @@ impl TryFrom<PublicKeyP256> for ContractTz3Hash {
     }
 }
 
-impl TryFrom<PublicKeyBls> for ContractTz4Hash {
+impl TryFrom<PublicKeyBls> for ContractMv4Hash {
     type Error = TryFromPKError;
 
     fn try_from(source: PublicKeyBls) -> Result<Self, Self::Error> {
@@ -706,7 +706,7 @@ impl PublicKeySignatureVerifier for PublicKeyP256 {
         };
 
         // By default p256 crate uses sha256 to get a 32-bit hash from input message.
-        // Here though, the input data is already a Tezos hash of proper size.
+        // Here though, the input data is already a Mavryk hash of proper size.
         // So we need to use identity digest.
         #[derive(Default, Clone)]
         struct NoHash([u8; CRYPTO_KEY_SIZE]);
@@ -923,41 +923,41 @@ mod tests {
     }
 
     #[test]
-    fn test_encode_contract_tz1() -> Result<(), anyhow::Error> {
-        let decoded = HashType::ContractTz1Hash
+    fn test_encode_contract_mv1() -> Result<(), anyhow::Error> {
+        let decoded = HashType::ContractMv1Hash
             .hash_to_b58check(&hex::decode("83846eddd5d3c5ed96e962506253958649c84a74")?)?;
-        let expected = "tz1XdRrrqrMfsFKA8iuw53xHzug9ipr6MuHq";
+        let expected = "mv1KzuATADf2SX6PH3UnJseK9vY8HDHPJsK6";
         assert_eq!(expected, decoded);
 
         Ok(())
     }
 
     #[test]
-    fn test_encode_contract_tz1_new() -> Result<(), anyhow::Error> {
+    fn test_encode_contract_mv1_new() -> Result<(), anyhow::Error> {
         let decoded =
-            ContractTz1Hash::from_bytes(&hex::decode("83846eddd5d3c5ed96e962506253958649c84a74")?)?
+            ContractMv1Hash::from_bytes(&hex::decode("83846eddd5d3c5ed96e962506253958649c84a74")?)?
                 .to_base58_check();
-        let expected = "tz1XdRrrqrMfsFKA8iuw53xHzug9ipr6MuHq";
+        let expected = "mv1KzuATADf2SX6PH3UnJseK9vY8HDHPJsK6";
         assert_eq!(expected, decoded);
 
         Ok(())
     }
 
     #[test]
-    fn test_encode_contract_tz2() -> Result<(), anyhow::Error> {
-        let decoded = HashType::ContractTz2Hash
+    fn test_encode_contract_mv2() -> Result<(), anyhow::Error> {
+        let decoded = HashType::ContractMv2Hash
             .hash_to_b58check(&hex::decode("2fcb1d9307f0b1f94c048ff586c09f46614c7e90")?)?;
-        let expected = "tz2Cfwk4ortcaqAGcVJKSxLiAdcFxXBLBoyY";
+        let expected = "mv2QP22mRWu9cykvtttb26WrbS6jmrT2Rmbi";
         assert_eq!(expected, decoded);
 
         Ok(())
     }
 
     #[test]
-    fn test_encode_contract_tz3() -> Result<(), anyhow::Error> {
-        let decoded = HashType::ContractTz3Hash
+    fn test_encode_contract_mv3() -> Result<(), anyhow::Error> {
+        let decoded = HashType::ContractMv3Hash
             .hash_to_b58check(&hex::decode("193b2b3f6b8f8e1e6b39b4d442fc2b432f6427a8")?)?;
-        let expected = "tz3NdTPb3Ax2rVW2Kq9QEdzfYFkRwhrQRPhX";
+        let expected = "mv3AzvhBMYFPRmHFU9iFUTgghGcQW6LcFp8G";
         assert_eq!(expected, decoded);
 
         Ok(())
@@ -1216,16 +1216,16 @@ mod tests {
 
         test!(kt1_hash, ContractKt1Hash, []);
 
-        test!(tz1_hash, ContractTz1Hash, []);
+        test!(mv1_hash, ContractMv1Hash, []);
 
-        test!(tz2_hash, ContractTz2Hash, []);
+        test!(mv2_hash, ContractMv2Hash, []);
 
-        test!(tz3_hash, ContractTz3Hash, []);
+        test!(mv3_hash, ContractMv3Hash, []);
 
         test!(
-            tz4_hash,
-            ContractTz4Hash,
-            ["tz4FENGt5zkiGaHPm1ya4MgLomgkL1k7Dy7q"]
+            mv4_hash,
+            ContractMv4Hash,
+            ["mv4U5hxq28ggBrdXbc67ouK7AuBDfxHQjyhx"]
         );
 
         test!(

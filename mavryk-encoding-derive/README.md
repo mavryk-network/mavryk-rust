@@ -1,4 +1,4 @@
-Tezos data encoding derive
+Mavryk data encoding derive
 =====================
 
 Procedural macro to allow automatic derivation of `HasEncoding`, `BinWriter` & `NomReader` traits - enabling

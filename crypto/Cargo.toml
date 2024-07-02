@@ -1,14 +1,17 @@
 [package]
-name = "tezos_crypto_rs"
+name = "mavryk_crypto_rs"
 version = "0.5.2"
-authors = ["TriliTech <contact@trili.tech>"]
+authors = [
+    "TriliTech <contact@trili.tech>",
+    "Mavryk Dynamics <info@mavryk.io>"
+]
 edition = "2021"
 rust-version = "1.60"
 license = "MIT"
-keywords = ["tezos"]
+keywords = ["mavryk"]
 categories = ["cryptography::cryptocurrencies"]
-description = "Utilities for tezos-related cryptographic operations."
-repository = "https://github.com/trilitech/tezedge.git"
+description = "Utilities for mavryk-related cryptographic operations."
+repository = "https://github.com/mavryk-network/mavryk-rust.git"
 
 [dependencies]
 anyhow = "1.0"

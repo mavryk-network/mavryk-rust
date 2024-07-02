@@ -188,8 +188,8 @@ fn get_basic_encoding_from_meta<'a>(
         Encoding::String(string.param, string.span)
     } else if let Some(zarith) = get_attribute_no_param(meta, &symbol::Z_ARITH)? {
         Encoding::Zarith(zarith.span)
-    } else if let Some(mutez) = get_attribute_no_param(meta, &symbol::MU_TEZ)? {
-        Encoding::MuTez(mutez.span)
+    } else if let Some(mumav) = get_attribute_no_param(meta, &symbol::MU_TEZ)? {
+        Encoding::MuMav(mumav.span)
     } else if let Some(builtin) =
         get_attribute_with_param(meta, &symbol::BUILTIN, Some(&symbol::KIND), true)?
     {

@@ -1,5 +1,5 @@
 [package]
-name = "tezos_data_encoding"
+name = "mavryk_data_encoding"
 version = "0.5.2"
 authors = ["TriliTech <contact@trili.tech>"]
 edition = "2021"
@@ -21,13 +21,13 @@ nom = "7.1"
 bitvec = "1.0"
 lazy_static = "1.4"
 
-[dependencies.tezos_crypto_rs]
+[dependencies.mavryk_crypto_rs]
 path = "../crypto"
 version = "0.5.2"
 default-features = false
 
-[dependencies.tezos_data_encoding_derive]
-path = "../tezos-encoding-derive"
+[dependencies.mavryk_data_encoding_derive]
+path = "../mavryk-encoding-derive"
 version = "0.5.2"
 
 [dev-dependencies]

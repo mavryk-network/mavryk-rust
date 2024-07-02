@@ -6,10 +6,10 @@ use std::convert::TryFrom;
 use std::fmt;
 
 use crate::bit_utils::BitReverse;
-use crate::types::{Mutez, Zarith};
+use crate::types::{Mumav, Zarith};
 
+pub use mavryk_data_encoding_derive::BinWriter;
 use num_bigint::BigUint;
-pub use tezos_data_encoding_derive::BinWriter;
 
 use thiserror::Error;
 
@@ -340,10 +340,10 @@ encode_hash!(crypto::hash::OperationMetadataListListHash);
 encode_hash!(crypto::hash::ContextHash);
 encode_hash!(crypto::hash::ProtocolHash);
 encode_hash!(crypto::hash::ContractKt1Hash);
-encode_hash!(crypto::hash::ContractTz1Hash);
-encode_hash!(crypto::hash::ContractTz2Hash);
-encode_hash!(crypto::hash::ContractTz3Hash);
-encode_hash!(crypto::hash::ContractTz4Hash);
+encode_hash!(crypto::hash::ContractMv1Hash);
+encode_hash!(crypto::hash::ContractMv2Hash);
+encode_hash!(crypto::hash::ContractMv3Hash);
+encode_hash!(crypto::hash::ContractMv4Hash);
 encode_hash!(crypto::hash::CryptoboxPublicKeyHash);
 encode_hash!(crypto::hash::PublicKeyEd25519);
 encode_hash!(crypto::hash::PublicKeySecp256k1);
@@ -356,7 +356,7 @@ encode_hash!(crypto::hash::BlsSignature);
 encode_hash!(crypto::hash::NonceHash);
 encode_hash!(crypto::hash::SmartRollupHash);
 
-impl BinWriter for Mutez {
+impl BinWriter for Mumav {
     fn bin_write(&self, out: &mut Vec<u8>) -> BinResult {
         n_bignum(self.0.magnitude(), out)
     }
@@ -581,7 +581,7 @@ mod test {
     }
 
     #[test]
-    fn mutez() {
+    fn mumav() {
         let data = [
             ("0", "00"),
             ("1", "01"),
@@ -599,12 +599,12 @@ mod test {
             ("10001", "818004"),
         ];
 
-        use super::{BinWriter, Mutez};
+        use super::{BinWriter, Mumav};
         use num_traits::FromPrimitive;
 
         for (hex, enc) in data {
             let num = num_bigint::BigInt::from_u64(u64::from_str_radix(hex, 16).unwrap()).unwrap();
-            let num = Mutez(num);
+            let num = Mumav(num);
             let mut bytes = vec![];
             num.bin_write(&mut bytes).unwrap();
             assert_eq!(enc, hex::encode(bytes));

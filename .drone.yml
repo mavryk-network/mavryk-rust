@@ -2916,10 +2916,10 @@ depends_on:
 #  OCTEZ_NODE_RPC_CONTEXT_ROOT: http://octez-node-sandbox-ithaca-run:8732
 #  TEZEDGE_NODE_RPC_CONTEXT_ROOT: http://tezedge-node-sandbox-ithaca-run:18732
 #  ACTIVATOR_SECRET: unencrypted:edsk31vznjHSSpGExDMHYASz45VZqXN4DPxvsa4hAyY8dHM28cZzp6
-#  BOOTSTRAP1_IDENTITY: tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx
+#  BOOTSTRAP1_IDENTITY: mv18Cw7psUrAAPBpXYd9CtCpHg9EgjHP9KTe
 #  BOOTSTRAP1_PUBLIC: edpkuBknW28nW72KG6RoHtYW7p12T6GKc7nAbwYX5m8Wd9sDVC9yav
 #  BOOTSTRAP1_SECRET: unencrypted:edsk3gUfUPyBSfrS9CCgmCiQsTCHGkviBDusMxDJstFtojtc1zcpsh
-#  BOOTSTRAP2_IDENTITY: tz1gjaF81ZRRvdzjobyfVNsAeSC6PScjfQwN
+#  BOOTSTRAP2_IDENTITY: mv1V73YiKvinVumxwvYWjCZBoT44wqBNhta7
 #  BOOTSTRAP2_PUBLIC: edpktzNbDAUjUk697W7gYg2CRuBQjyPxbEg8dLccYYwKSKvkPvjtV9
 #  BOOTSTRAP2_SECRET: unencrypted:edsk39qAm1fiMjgmPkw1EgQYkMzkJezLNewd7PLNHTkr6w9XA2zdfo
 #  TEZOS_LOG: debug
@@ -3055,7 +3055,7 @@ depends_on:
 #    - TEZEDGE_URL=$${TEZEDGE_NODE_RPC_CONTEXT_ROOT}
 #    - octez_mempool=$(curl "$OCTEZ_URL/chains/main/mempool/pending_operations" | jq -S .)
 #    - tezedge_mempool=$(curl "$TEZEDGE_URL/chains/main/mempool/pending_operations" | jq -S .)
-#    - echo "Octez mempool - $octez_mempool"
+#    - echo "Mavkit mempool - $octez_mempool"
 #    - echo "Tezedge mempool - $tezedge_mempool"
 #    # check if both are equals
 #    - drone-cache/build_files/assert_equals.sh "$octez_mempool" "$tezedge_mempool"
@@ -3085,7 +3085,7 @@ depends_on:
 #    - TEZEDGE_URL=$${TEZEDGE_NODE_RPC_CONTEXT_ROOT}
 #    - octez_mempool=$(curl "$OCTEZ_URL/chains/main/mempool/pending_operations" | jq -S .)
 #    - tezedge_mempool=$(curl "$TEZEDGE_URL/chains/main/mempool/pending_operations" | jq -S .)
-#    - echo "Octez mempool - $octez_mempool"
+#    - echo "Mavkit mempool - $octez_mempool"
 #    - echo "Tezedge mempool - $tezedge_mempool"
 #    # check if both are equals
 #    - drone-cache/build_files/assert_equals.sh "$octez_mempool" "$tezedge_mempool"
@@ -3116,7 +3116,7 @@ depends_on:
 #    - TEZEDGE_URL=$${TEZEDGE_NODE_RPC_CONTEXT_ROOT}
 #    - octez_mempool=$(curl "$OCTEZ_URL/chains/main/mempool/pending_operations" | jq -S .)
 #    - tezedge_mempool=$(curl "$TEZEDGE_URL/chains/main/mempool/pending_operations" | jq -S .)
-#    - echo "Octez mempool - $octez_mempool"
+#    - echo "Mavkit mempool - $octez_mempool"
 #    - echo "Tezedge mempool - $tezedge_mempool"
 #    # check if both are equals
 #    - drone-cache/build_files/assert_equals.sh "$octez_mempool" "$tezedge_mempool"
@@ -4685,7 +4685,7 @@ depends_on:
 
 ---
 #########################################################
-# This pipeline runs TZ indexer against Tezos node
+# This pipeline runs TZ indexer against Mavkit node
 #########################################################
 kind: pipeline
 name: corr/indexer-tz-tezos-009-florence
@@ -4879,7 +4879,7 @@ steps:
 
 ---
 #########################################################
-# This pipeline runs Conseil indexer against Octez node
+# This pipeline runs Conseil indexer against Mavkit node
 #########################################################
 kind: pipeline
 name: corr/indexer-conseil-octez-009-florence
@@ -5136,10 +5136,10 @@ steps:
 
 ---
 #########################################################
-# This pipeline runs tzkt indexer against Octez node
+# This pipeline runs mvkt indexer against Mavkit node
 #########################################################
 kind: pipeline
-name: corr/indexer-tzkt-octez-012-ithaca
+name: corr/indexer-mvkt-octez-012-ithaca
 
 trigger:
   branch:
@@ -5181,19 +5181,19 @@ steps:
     commands:
       - tezos-node run --data-dir /home/tezos/data --history-mode archive --rpc-addr 0.0.0.0:8732 --allow-all-rpc 0.0.0.0:8732 --net-addr 0.0.0.0:9734 --network $${NETWORK} --no-bootstrap-peers
 
-  - name: tzkt-postgres
+  - name: mvkt-postgres
     image: postgres:13
     detach: true
     environment:
-      POSTGRES_USER: tzkt
+      POSTGRES_USER: mvkt
       POSTGRES_PASSWORD: qwerty
-      POSTGRES_DB: tzkt_db
+      POSTGRES_DB: mvkt_db
     volumes:
       - name: postgres
         path: /var/lib/postgresql/data
 
-  - name: tzkt-sync
-    image: bakingbad/tzkt-sync:latest
+  - name: mvkt-sync
+    image: bakingbad/mvkt-sync:latest
     user: root
     volumes:
       - name: tools
@@ -5201,22 +5201,22 @@ steps:
       - name: cache
         path: /cache
     environment:
-      TZKT_TezosNode__ChainId: NetXxkAx4woPLyu
-      TZKT_TezosNode__Endpoint: http://tezos-node:8732/
-      TZKT_TezosNode_Timeout: 60
+      MVKT_TezosNode__ChainId: NetXxkAx4woPLyu
+      MVKT_TezosNode__Endpoint: http://tezos-node:8732/
+      MVKT_TezosNode_Timeout: 60
     commands:
       - apt-get update && apt-get install -y time jq
       - sleep 5
       - cd /app
       - jq '.' appsettings.json
-        | jq -r '.ConnectionStrings.DefaultConnection |= "server=tzkt-postgres;port=5432;database=tzkt_db;username=tzkt;password=qwerty;"'
+        | jq -r '.ConnectionStrings.DefaultConnection |= "server=mvkt-postgres;port=5432;database=mvkt_db;username=mvkt;password=qwerty;"'
         | jq -r '.TezosNode.Endpoint |= "http://tezos-node:8732/"'
         | jq -r '.Logging.LogLevel.Default |= "Debug"'
         > new_settings
         && mv new_settings appsettings.json
       - cat appsettings.json
-      - mkfifo /tmp/tzkt
-      - time -f "%e" -o /cache/time /tools/output-filter --kill="Applied 20000 of" -- dotnet Tzkt.Sync.dll
+      - mkfifo /tmp/mvkt
+      - time -f "%e" -o /cache/time /tools/output-filter --kill="Applied 20000 of" -- dotnet Mvkt.Sync.dll
       - echo "Done in $(cat /cache/time) seconds"
 
   - name: report-time
@@ -5231,10 +5231,10 @@ steps:
 
 ---
 #########################################################
-# This pipeline runs tzkt indexer against Tezedge node
+# This pipeline runs mvkt indexer against Tezedge node
 #########################################################
 kind: pipeline
-name: corr/indexer-tzkt-tezedge-012-ithaca
+name: corr/indexer-mvkt-tezedge-012-ithaca
 
 trigger:
   branch:
@@ -5338,19 +5338,19 @@ steps:
       - tezos-node-bootstrap bootstrap --level=$${BLOCK_HEAD} --nodes http://tezedge-node:18732
 
 
-  - name: tzkt-postgres
+  - name: mvkt-postgres
     image: postgres:13
     detach: true
     environment:
-      POSTGRES_USER: tzkt
+      POSTGRES_USER: mvkt
       POSTGRES_PASSWORD: qwerty
-      POSTGRES_DB: tzkt_db
+      POSTGRES_DB: mvkt_db
     volumes:
       - name: postgres
         path: /var/lib/postgresql/data
 
-  - name: tzkt-sync
-    image: bakingbad/tzkt-sync:latest
+  - name: mvkt-sync
+    image: bakingbad/mvkt-sync:latest
     user: root
     volumes:
       - name: tools
@@ -5358,22 +5358,22 @@ steps:
       - name: cache
         path: /cache
     environment:
-      TZKT_TezosNode__ChainId: NetXxkAx4woPLyu
-      TZKT_TezosNode__Endpoint: http://tezedge-node:18732/
-      TZKT_TezosNode_Timeout: 60
+      MVKT_TezosNode__ChainId: NetXxkAx4woPLyu
+      MVKT_TezosNode__Endpoint: http://tezedge-node:18732/
+      MVKT_TezosNode_Timeout: 60
     commands:
       - apt-get update && apt-get install -y time jq
       - sleep 5
       - cd /app
       - jq '.' appsettings.json
-        | jq -r '.ConnectionStrings.DefaultConnection |= "server=tzkt-postgres;port=5432;database=tzkt_db;username=tzkt;password=qwerty;"'
+        | jq -r '.ConnectionStrings.DefaultConnection |= "server=mvkt-postgres;port=5432;database=mvkt_db;username=mvkt;password=qwerty;"'
         | jq -r '.TezosNode.Endpoint |= "http://tezedge-node:18732/"'
         | jq -r '.Logging.LogLevel.Default |= "Debug"'
         > new_settings
         && mv new_settings appsettings.json
       - cat appsettings.json
-      - mkfifo /tmp/tzkt
-      - time -f "%e" -o /cache/time /tools/output-filter --kill="Applied 20000 of" -- dotnet Tzkt.Sync.dll
+      - mkfifo /tmp/mvkt
+      - time -f "%e" -o /cache/time /tools/output-filter --kill="Applied 20000 of" -- dotnet Mvkt.Sync.dll
       - echo "Done in $(cat /cache/time) seconds"
 
   - name: report-time
@@ -6265,7 +6265,7 @@ steps:
       - diff=$(echo "scale=2; diff = ($new - $old) / $old * 100; scale=0; diff / 1" | bc)
       - |
         echo "Nodes bootstrap time from 1 to block $${BLOCK_LEVEL} (time to first block)"
-        echo "Octez node: $oct seconds ($oct1 seconds)"
+        echo "Mavkit node: $oct seconds ($oct1 seconds)"
         echo "New node:   $new seconds ($new1 seconds)"
         echo "Old node:   $old seconds ($old1 seconds)"
         echo "Difference: $diff%"
@@ -6286,7 +6286,7 @@ steps:
       - new1=$(cat tezedge-new-1.time)
       - |
         echo "Nodes bootstrap time from 1 to block $${BLOCK_LEVEL} (time to first block)"
-        echo "Octez node: $oct seconds ($oct1 seconds)"
+        echo "Mavkit node: $oct seconds ($oct1 seconds)"
         echo "New node:   $new seconds ($new1 seconds)"
     when:
       ref:
@@ -6827,8 +6827,8 @@ depends_on:
   - corr/tezedge-octez-rpcs-and-indexers-compatibility-mainnet
   - corr/indexer-conseil-octez-009-florence
   - corr/indexer-conseil-tezedge-009-florence
-  - corr/indexer-tzkt-octez-012-ithaca
-  - corr/indexer-tzkt-tezedge-012-ithaca
+  - corr/indexer-mvkt-octez-012-ithaca
+  - corr/indexer-mvkt-tezedge-012-ithaca
   - perf/memory-allocation-bootstrap-012-ithaca
   - perf/bootstrap-time-012-ithaca
 
@@ -6919,7 +6919,7 @@ steps:
   commands:
     - BINS_DIR=tezos-mitten/bins
     - mkdir $BINS_DIR
-    # copy Octez binaries
+    # copy Mavkit binaries
     - TEZOS_DIR=/home/appuser/tezos-src/tezos/
     - |
       for f in tezos-node tezos-client tezos-accuser-012-Psithaca tezos-baker-012-Psithaca; do
@@ -7136,7 +7136,7 @@ steps:
   commands:
     - BINS_DIR=tezos-mitten/bins
     - mkdir $BINS_DIR
-    # copy Octez binaries
+    # copy Mavkit binaries
     - TEZOS_DIR=/home/appuser/tezos-src/tezos/
     - |
       for f in tezos-node tezos-client tezos-accuser-012-Psithaca tezos-baker-012-Psithaca; do
@@ -7269,7 +7269,7 @@ steps:
 
 ---
 ##############################################################################################################
-# This pipeline runs Mitten scenarios against Octez nodes and Tezedge bakers
+# This pipeline runs Mitten scenarios against Mavkit nodes and Tezedge bakers
 ##############################################################################################################
 
 kind: pipeline
@@ -7354,7 +7354,7 @@ steps:
   commands:
     - BINS_DIR=tezos-mitten/bins
     - mkdir $BINS_DIR
-    # copy Octez binaries
+    # copy Mavkit binaries
     - TEZOS_DIR=/home/appuser/tezos-src/tezos/
     - |
       for f in tezos-node tezos-client tezos-accuser-012-Psithaca tezos-baker-012-Psithaca; do
@@ -7572,7 +7572,7 @@ steps:
   commands:
     - BINS_DIR=tezos-mitten/bins
     - mkdir $BINS_DIR
-    # copy Octez binaries
+    # copy Mavkit binaries
     - TEZOS_DIR=/home/appuser/tezos-src/tezos/
     - |
       for f in tezos-node tezos-client tezos-accuser-012-Psithaca tezos-baker-012-Psithaca; do

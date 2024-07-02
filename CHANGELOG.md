@@ -37,7 +37,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-- Added `bls` feature flag to `tezos_crypto_rs`, to allow disabling dependency on `blst`.
+- Added `bls` feature flag to `mavryk_crypto_rs`, to allow disabling dependency on `blst`.
 
 ## [0.5.1] - 2023-09-01
 
@@ -68,8 +68,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Removed
 
-- `tezos_crypto_rs`: errors no longer implement `PartialEq`, `Clone`.
-- `tezos_crypto_rs`: errors no longer are (de)serializable with serde.
+- `mavryk_crypto_rs`: errors no longer implement `PartialEq`, `Clone`.
+- `mavryk_crypto_rs`: errors no longer are (de)serializable with serde.
 
 ### Fixed
 
@@ -81,13 +81,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Performance
 
-- Improvements in verification of `tz1` signatures, due to change in Ed25519 backend.
+- Improvements in verification of `mv1` signatures, due to change in Ed25519 backend.
 
 ## [0.4.4] - 2023-03-16
 
 ### Fixed
 
-- `tezos_data_encoding_derive` was outputting code that referenced the old `tezos_encoding` crate. It now references `tezos_data_encoding`.
+- `mavryk_data_encoding_derive` was outputting code that referenced the old `mavryk_encoding` crate. It now references `mavryk_data_encoding`.
 
 ## [0.4.3] - 2023-03-14
 
@@ -95,34 +95,34 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
-- `tezos_crypto` rename to `tezos_crypto_rs`, due to conflict on crates.io
+- `mavryk_crypto` rename to `mavryk_crypto_rs`, due to conflict on crates.io
 
 ## [0.4.1] - 2023-03-14
 
 ### Changed
 
-- `tezos_encoding` renamed to `tezos_data_encoding`
-- `tezos_encoding_derive` renamed to `tezos_data_encoding_derive`
+- `mavryk_encoding` renamed to `mavryk_data_encoding`
+- `mavryk_encoding_derive` renamed to `mavryk_data_encoding_derive`
 
 ## [0.4.0] - 2023-03-13
 
 ### Added
 
-- support `tz4`, `sr1` hashes.
+- support `mv4`, `sr1` hashes.
 - `SecretKeyBls`, `PublicKeyBls` support.
 
 ### Changed
 
 - minimum supported rust version bumped to `1.60`.
 - `SecretKeyEd25519` now implements `Debug`, and can be encoded/decoded.
-- `crypto` renamed to `tezos_crypto`.
-- `tezos_encoding_derive` now supports deriving over generic structs.
-- `tezos_encoding` `nom::list`, `nom::dynamic` no longer require `Clone`.
+- `crypto` renamed to `mavryk_crypto`.
+- `mavryk_encoding_derive` now supports deriving over generic structs.
+- `mavryk_encoding` `nom::list`, `nom::dynamic` no longer require `Clone`.
 - `lib_sodium` dependency replaced with `cryptoxide` for improved Wasm support.
 
 ### Removed
 
-- All crates, except for `crypto`, `tezos_encoding` & `tezos_encoding_derive`.
+- All crates, except for `crypto`, `mavryk_encoding` & `mavryk_encoding_derive`.
 - `crypto::seeded_step`, `crypto::cryptobox` modules removed.
 
 ## [3.1.1] - 2022-06-28
@@ -307,17 +307,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Re-implemented bootstrapping logic in the state machine.
 - In-memory context context now supports loading it's state from disk.
 - Disk usage measurements for the context stats db.
-- Implemented Octez `tezos-accuser` support.
+- Implemented Mavkit `tezos-accuser` support.
 
 ### Changed
 
 - In-memory context storage now has a new garbage collector that collects everything that doesn't belong to the last few levels.
-- Block application retry logic is now more alike Octez, and can handle protocol runner failures.
+- Block application retry logic is now more alike Mavkit, and can handle protocol runner failures.
 
 ### Fixed
 
 - Fixed `/monitoring/valid_blocks` RPC.
-- Cache-related block application retry logic now in synch with the one in Octez.
+- Cache-related block application retry logic now in synch with the one in Mavkit.
 
 ## [1.16.1] - 2022-03-04
 
@@ -411,7 +411,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
-- Increase Irmin's index log size limit to `2_500_000` to match Octez v11. This should help with freezes during merges by making them happen less often, but increases memory usage a little.
+- Increase Irmin's index log size limit to `2_500_000` to match Mavkit v11. This should help with freezes during merges by making them happen less often, but increases memory usage a little.
 - Tweak the call to apply a block in chain feeder so that it is less prone to block Tokio's worker threads.
 - MessagePack encoding is now used for action and state snapshot storage instead of JSON.
 
@@ -617,7 +617,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Flag `--context-stats-db-path=<PATH>` that enables the context storage stats. When this option is enabled, the node will measure the time it takes to complete each context query. When available, these will be rendered in the TezEdge explorer UI.
 - A new `replay` subcommand to the `light-node` program. This subcommand will take as input a range of blocks, a blocks store and re-apply all those blocks to the context store and validate the results.
 - A new CI runner running on linux with real-time patch kernel to increase determinism of performance tests
-- Add conseil and tzkt tests for florencenet
+- Add conseil and mvkt tests for florencenet
 - Add caching to functions used by RPC handlers
 
 ### Changed

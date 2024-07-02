@@ -14,9 +14,9 @@
 //! Derivation is supported across generic structs.
 //!
 //! ```rust
-//! use tezos_data_encoding::nom::NomReader;
-//! use tezos_data_encoding::enc::BinWriter;
-//! use tezos_data_encoding::encoding::HasEncoding;
+//! use mavryk_data_encoding::nom::NomReader;
+//! use mavryk_data_encoding::enc::BinWriter;
+//! use mavryk_data_encoding::encoding::HasEncoding;
 //! # use core::fmt::Debug;
 //!
 //! const INNER_SIZE: usize = 10;
@@ -49,7 +49,7 @@
 //! # assert_eq!(outer, result);
 //! ```
 
-extern crate tezos_crypto_rs as crypto;
+extern crate mavryk_crypto_rs as crypto;
 
 mod bit_utils;
 pub mod types;

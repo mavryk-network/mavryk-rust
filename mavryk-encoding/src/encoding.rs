@@ -7,7 +7,7 @@
 use crypto::hash::{HashTrait, HashType};
 use std::collections::HashMap;
 
-pub use tezos_data_encoding_derive::HasEncoding;
+pub use mavryk_data_encoding_derive::HasEncoding;
 
 #[derive(Debug, Clone)]
 pub struct Field {
@@ -143,7 +143,7 @@ pub enum Encoding {
     /// Big number
     /// Almost identical to [Encoding::Z], but does not contain the sign bit in the second most
     /// significant bit of the first byte
-    Mutez,
+    Mumav,
     /// Encoding of floating point number (encoded as a floating point number in JSON and a double in binary).
     Float,
     /// Float with bounds in a given range. Both bounds are inclusive.
@@ -327,10 +327,10 @@ hash_has_encoding!(
 hash_has_encoding!(ContextHash, CONTEXT_HASH);
 hash_has_encoding!(ProtocolHash, PROTOCOL_HASH);
 hash_has_encoding!(ContractKt1Hash, CONTRACT_KT1HASH);
-hash_has_encoding!(ContractTz1Hash, CONTRACT_TZ1HASH);
-hash_has_encoding!(ContractTz2Hash, CONTRACT_TZ2HASH);
-hash_has_encoding!(ContractTz3Hash, CONTRACT_TZ3HASH);
-hash_has_encoding!(ContractTz4Hash, CONTRACT_TZ4HASH);
+hash_has_encoding!(ContractMv1Hash, CONTRACT_MV1HASH);
+hash_has_encoding!(ContractMv2Hash, CONTRACT_MV2HASH);
+hash_has_encoding!(ContractMv3Hash, CONTRACT_MV3HASH);
+hash_has_encoding!(ContractMv4Hash, CONTRACT_MV4HASH);
 hash_has_encoding!(CryptoboxPublicKeyHash, CRYPTOBOX_PUBLIC_KEY_HASH);
 hash_has_encoding!(PublicKeyEd25519, PUBLIC_KEY_ED25519);
 hash_has_encoding!(PublicKeySecp256k1, PUBLIC_KEY_SECP256K1);
