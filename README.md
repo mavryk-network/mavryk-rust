@@ -1,13 +1,13 @@
-# TezEdge
+# Mavryk-Rust
 
 ---
 
-Utility crates, forked from [tezedge](github.com/tezedge/tezedge), used as part of the `Kernel SDK` for tezos smart rollups.
+Utility crates, forked from [tezedge](github.com/trilitech/tezedge), used as part of the `Kernel SDK` for mavryk smart rollups.
 
 Namely:
-- [tezos_crypto](./crypto/README.md) 
-- [tezos_encoding](./tezos-encoding/README.md) 
-- [tezos_encoding_derive](./tezos-encoding-derive/README.md)
+- [mavryk_crypto](./crypto/README.md) 
+- [mavryk_encoding](./mavryk-encoding/README.md) 
+- [mavryk_encoding_derive](./mavryk-encoding-derive/README.md)
 
 ## Setup
 

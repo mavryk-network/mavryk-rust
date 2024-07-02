@@ -4,21 +4,21 @@ cargo-features = ["named-profiles"]
 resolver = "2"
 members = [
     "crypto",
-    "tezos-encoding",
-    "tezos-encoding-derive",
+    "mavryk-encoding",
+    "mavryk-encoding-derive",
 ]
 
-[workspace.dependencies.tezos_data_encoding]
+[workspace.dependencies.mavryk_data_encoding]
 version = "0.6.0"
-path = "./tezos-encoding"
+path = "./mavryk-encoding"
 default-features = false
 
-[workspace.dependencies.tezos_data_encoding_derive]
+[workspace.dependencies.mavryk_data_encoding_derive]
 version = "0.6.0"
-path = "./tezos-encoding-derive"
+path = "./mavryk-encoding-derive"
 default-features = false
 
-[workspace.dependencies.tezos_crypto_rs]
+[workspace.dependencies.mavryk_crypto_rs]
 version = "0.6.0"
 path = "./crypto"
 default-features = false

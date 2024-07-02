@@ -3,7 +3,7 @@
 #![forbid(unsafe_code)]
 #![cfg_attr(feature = "fuzzing", feature(no_coverage))]
 
-//! This crate provides serialization and deserialization functionality for the data types used by the Tezos shell.
+//! This crate provides serialization and deserialization functionality for the data types used by the Mavryk shell.
 //!
 //! You can either implement [`NomReader`] and [`BinWriter`] manually, or derive them.
 //!
@@ -14,9 +14,9 @@
 //! Derivation is supported across generic structs.
 //!
 //! ```rust
-//! use tezos_data_encoding::nom::NomReader;
-//! use tezos_data_encoding::enc::BinWriter;
-//! use tezos_data_encoding::encoding::HasEncoding;
+//! use mavryk_data_encoding::nom::NomReader;
+//! use mavryk_data_encoding::enc::BinWriter;
+//! use mavryk_data_encoding::encoding::HasEncoding;
 //! # use core::fmt::Debug;
 //!
 //! const INNER_SIZE: usize = 10;

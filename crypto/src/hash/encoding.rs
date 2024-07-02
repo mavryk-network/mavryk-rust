@@ -4,15 +4,15 @@
 // SPDX-License-Identifier: MIT
 
 use super::*;
-use tezos_data_encoding::enc::{BinResult, BinWriter};
-use tezos_data_encoding::encoding::{Encoding, HasEncoding};
-use tezos_data_encoding::nom::{NomReader, NomResult};
+use mavryk_data_encoding::enc::{BinResult, BinWriter};
+use mavryk_data_encoding::encoding::{Encoding, HasEncoding};
+use mavryk_data_encoding::nom::{NomReader, NomResult};
 
 macro_rules! encode_hash {
     ($hash_name:ty) => {
         impl BinWriter for $hash_name {
             fn bin_write(&self, out: &mut Vec<u8>) -> BinResult {
-                use tezos_data_encoding::enc::*;
+                use mavryk_data_encoding::enc::*;
 
                 put_bytes(self.as_ref(), out);
                 Ok(())
@@ -32,10 +32,10 @@ encode_hash!(OperationMetadataListListHash);
 encode_hash!(ContextHash);
 encode_hash!(ProtocolHash);
 encode_hash!(ContractKt1Hash);
-encode_hash!(ContractTz1Hash);
-encode_hash!(ContractTz2Hash);
-encode_hash!(ContractTz3Hash);
-encode_hash!(ContractTz4Hash);
+encode_hash!(ContractMv1Hash);
+encode_hash!(ContractMv2Hash);
+encode_hash!(ContractMv3Hash);
+encode_hash!(ContractMv4Hash);
 encode_hash!(CryptoboxPublicKeyHash);
 encode_hash!(PublicKeyEd25519);
 encode_hash!(PublicKeySecp256k1);
@@ -77,10 +77,10 @@ hash_nom_reader!(OperationMetadataListListHash);
 hash_nom_reader!(ContextHash);
 hash_nom_reader!(ProtocolHash);
 hash_nom_reader!(ContractKt1Hash);
-hash_nom_reader!(ContractTz1Hash);
-hash_nom_reader!(ContractTz2Hash);
-hash_nom_reader!(ContractTz3Hash);
-hash_nom_reader!(ContractTz4Hash);
+hash_nom_reader!(ContractMv1Hash);
+hash_nom_reader!(ContractMv2Hash);
+hash_nom_reader!(ContractMv3Hash);
+hash_nom_reader!(ContractMv4Hash);
 hash_nom_reader!(CryptoboxPublicKeyHash);
 hash_nom_reader!(PublicKeyEd25519);
 hash_nom_reader!(PublicKeySecp256k1);
@@ -120,10 +120,10 @@ hash_has_encoding!(
 hash_has_encoding!(ContextHash, CONTEXT_HASH);
 hash_has_encoding!(ProtocolHash, PROTOCOL_HASH);
 hash_has_encoding!(ContractKt1Hash, CONTRACT_KT1HASH);
-hash_has_encoding!(ContractTz1Hash, CONTRACT_TZ1HASH);
-hash_has_encoding!(ContractTz2Hash, CONTRACT_TZ2HASH);
-hash_has_encoding!(ContractTz3Hash, CONTRACT_TZ3HASH);
-hash_has_encoding!(ContractTz4Hash, CONTRACT_TZ4HASH);
+hash_has_encoding!(ContractMv1Hash, CONTRACT_MV1HASH);
+hash_has_encoding!(ContractMv2Hash, CONTRACT_MV2HASH);
+hash_has_encoding!(ContractMv3Hash, CONTRACT_MV3HASH);
+hash_has_encoding!(ContractMv4Hash, CONTRACT_MV4HASH);
 hash_has_encoding!(CryptoboxPublicKeyHash, CRYPTOBOX_PUBLIC_KEY_HASH);
 hash_has_encoding!(PublicKeyEd25519, PUBLIC_KEY_ED25519);
 hash_has_encoding!(PublicKeySecp256k1, PUBLIC_KEY_SECP256K1);

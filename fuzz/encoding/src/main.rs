@@ -4,8 +4,8 @@
 
 use rand::{distributions::Alphanumeric, prelude::*, seq::SliceRandom};
 use std::iter;
-use tezos_encoding::binary_reader::BinaryReader;
-use tezos_encoding::encoding::{Encoding, Field};
+use mavryk_encoding::binary_reader::BinaryReader;
+use mavryk_encoding::encoding::{Encoding, Field};
 
 use honggfuzz::fuzz;
 use log::debug;
@@ -61,7 +61,7 @@ fn gen_random_member() -> Encoding {
         Int64,
         RangedInt,
         Z,
-        Mutez,
+        Mumav,
         Float,
         RangedFloat,
         Bool,

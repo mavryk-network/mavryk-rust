@@ -1,7 +1,7 @@
 // Copyright (c) SimpleStaking, Viable Systems and Tezedge Contributors
 // SPDX-License-Identifier: MIT
 
-//! Tezos binary data reader.
+//! Mavryk binary data reader.
 
 use std::fmt;
 

@@ -68,7 +68,7 @@ pub const IGNORE_UNKNOWN: Symbol = Symbol("ignore_unknown");
 pub const TAG: Symbol = Symbol("tag");
 
 pub const Z_ARITH: Symbol = Symbol("zarith");
-pub const MU_TEZ: Symbol = Symbol("mutez");
+pub const MU_TEZ: Symbol = Symbol("mumav");
 
 pub const RESERVE: Symbol = Symbol("reserve");
 
