@@ -8,8 +8,8 @@ use std::fmt;
 use crate::bit_utils::BitReverse;
 use crate::types::{Mumav, Zarith};
 
-use num_bigint::BigUint;
 pub use mavryk_data_encoding_derive::BinWriter;
+use num_bigint::BigUint;
 
 use thiserror::Error;
 

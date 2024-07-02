@@ -4,10 +4,10 @@
 
 //! Hash of Layer1 contract ids.
 
-use std::fmt::Display;
 use mavryk_data_encoding::enc::BinWriter;
 use mavryk_data_encoding::encoding::HasEncoding;
 use mavryk_data_encoding::nom::NomReader;
+use std::fmt::Display;
 
 use crate::base58::{FromBase58Check, FromBase58CheckError};
 use crate::hash::{

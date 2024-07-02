@@ -10,10 +10,10 @@ use crate::hash::{Hash, HashTrait, HashType};
 use crate::hash::{PublicKeyBls, PublicKeyEd25519, PublicKeyP256, PublicKeySecp256k1};
 use crate::signature::Signature;
 use crate::{CryptoError, PublicKeySignatureVerifier};
-use std::fmt::Display;
 use mavryk_data_encoding::enc::BinWriter;
 use mavryk_data_encoding::encoding::HasEncoding;
 use mavryk_data_encoding::nom::NomReader;
+use std::fmt::Display;
 
 /// Public Key of Layer1.
 #[derive(Debug, Clone, PartialEq, Eq, HasEncoding, BinWriter, NomReader)]

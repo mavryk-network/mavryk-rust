@@ -14,13 +14,13 @@ use crate::hash::{
     BlsSignature, Ed25519Signature, FromBytesError, HashTrait, HashType, P256Signature,
     Secp256k1Signature, UnknownSignature,
 };
-use nom::Err;
-use serde::{Deserialize, Serialize};
 use mavryk_data_encoding::enc::{BinResult, BinWriter};
 use mavryk_data_encoding::encoding::{Encoding, HasEncoding};
 use mavryk_data_encoding::nom::error::BoundedEncodingKind;
 use mavryk_data_encoding::nom::error::DecodeError;
 use mavryk_data_encoding::nom::{NomReader, NomResult};
+use nom::Err;
+use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash, Serialize, Deserialize)]

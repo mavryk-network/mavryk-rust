@@ -5,6 +5,7 @@
 
 use bitvec::slice::BitSlice;
 use bitvec::{bitvec, order::Msb0, view::BitView};
+pub use mavryk_data_encoding_derive::NomReader;
 use nom::{
     branch::*,
     bytes::complete::*,
@@ -16,7 +17,6 @@ use nom::{
     Err, InputLength, Parser, Slice,
 };
 use num_bigint::{BigInt, BigUint, Sign};
-pub use mavryk_data_encoding_derive::NomReader;
 
 use crate::types::{Mumav, Zarith};
 
