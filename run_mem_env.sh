@@ -28,7 +28,7 @@ start_tezos_node_100() {
   nohup /home/dev/tezos/tezos-node run --data-dir /home/dev/memprof/tezos-delphi --history-mode archive --rpc-addr 0.0.0.0:18888 --net-addr 0.0.0.0:8888 --network delphinet --no-bootstrap-peers &> nohup-tezos.out &
   export TEZOS_PID=$!
   echo -n $TEZOS_PID > /home/dev/memprof/tezos-delphi/pidko
-  echo "Tezos node (100) is ready...$TEZOS_PID"
+  echo "Mavkit node (100) is ready...$TEZOS_PID"
 }
 
 start_tezos_node_6000() {
@@ -42,7 +42,7 @@ start_tezos_node_6000() {
   nohup /home/dev/tezos/tezos-node run --data-dir /home/dev/memprof/tezos-delphi-6000 --history-mode archive --rpc-addr 0.0.0.0:18888 --net-addr 0.0.0.0:8888 --network delphinet --no-bootstrap-peers &> nohup-tezos.out &
   export TEZOS_PID=$!
   echo -n $TEZOS_PID > /home/dev/memprof/tezos-delphi-6000/pidko
-  echo "Tezos node (6000) is ready...$TEZOS_PID"
+  echo "Mavkit node (6000) is ready...$TEZOS_PID"
 }
 
 start_tezedge_node() {

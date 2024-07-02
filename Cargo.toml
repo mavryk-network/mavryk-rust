@@ -3,8 +3,8 @@ cargo-features = ["named-profiles"]
 [workspace]
 members = [
     "crypto",
-    "tezos-encoding",
-    "tezos-encoding-derive",
+    "mavryk-encoding",
+    "mavryk-encoding-derive",
 ]
 
 [profile.fuzz]

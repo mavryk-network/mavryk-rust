@@ -5,6 +5,7 @@
 use bitvec::slice::BitSlice;
 use bitvec::{bitvec, order::Msb0, view::BitView};
 use crypto::hash::HashTrait;
+pub use mavryk_data_encoding_derive::NomReader;
 use nom::{
     branch::*,
     bytes::complete::*,
@@ -16,9 +17,8 @@ use nom::{
     Err, InputLength, Parser, Slice,
 };
 use num_bigint::{BigInt, BigUint, Sign};
-pub use tezos_data_encoding_derive::NomReader;
 
-use crate::types::{Mutez, Zarith};
+use crate::types::{Mumav, Zarith};
 
 use self::error::{BoundedEncodingKind, DecodeError, DecodeErrorKind};
 
@@ -254,10 +254,10 @@ hash_nom_reader!(OperationMetadataListListHash);
 hash_nom_reader!(ContextHash);
 hash_nom_reader!(ProtocolHash);
 hash_nom_reader!(ContractKt1Hash);
-hash_nom_reader!(ContractTz1Hash);
-hash_nom_reader!(ContractTz2Hash);
-hash_nom_reader!(ContractTz3Hash);
-hash_nom_reader!(ContractTz4Hash);
+hash_nom_reader!(ContractMv1Hash);
+hash_nom_reader!(ContractMv2Hash);
+hash_nom_reader!(ContractMv3Hash);
+hash_nom_reader!(ContractMv4Hash);
 hash_nom_reader!(CryptoboxPublicKeyHash);
 hash_nom_reader!(PublicKeyEd25519);
 hash_nom_reader!(PublicKeySecp256k1);
@@ -276,7 +276,7 @@ impl NomReader for Zarith {
     }
 }
 
-impl NomReader for Mutez {
+impl NomReader for Mumav {
     fn nom_read(bytes: &[u8]) -> NomResult<Self> {
         map(n_bignum, |big_uint| {
             BigInt::from_biguint(Sign::Plus, big_uint).into()

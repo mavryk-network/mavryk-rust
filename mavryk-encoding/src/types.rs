@@ -88,14 +88,14 @@ impl From<&Zarith> for BigInt {
 
 has_encoding!(Zarith, ZARITH_ENCODING, { Encoding::Z });
 
-/// Mutez number
+/// Mumav number
 #[cfg_attr(feature = "fuzzing", derive(fuzzcheck::DefaultMutator))]
 #[derive(Clone, Debug)]
-pub struct Mutez(
+pub struct Mumav(
     #[cfg_attr(feature = "fuzzing", field_mutator(BigIntMutator))] pub num_bigint::BigInt,
 );
 
-impl<'de> Deserialize<'de> for Mutez {
+impl<'de> Deserialize<'de> for Mumav {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
         D: serde::Deserializer<'de>,
@@ -115,7 +115,7 @@ impl<'de> Deserialize<'de> for Mutez {
     }
 }
 
-impl Serialize for Mutez {
+impl Serialize for Mumav {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: serde::Serializer,
@@ -129,43 +129,43 @@ impl Serialize for Mutez {
     }
 }
 
-impl From<num_bigint::BigInt> for Mutez {
+impl From<num_bigint::BigInt> for Mumav {
     fn from(from: num_bigint::BigInt) -> Self {
-        Mutez(from)
+        Mumav(from)
     }
 }
 
-impl From<Mutez> for num_bigint::BigInt {
-    fn from(from: Mutez) -> Self {
+impl From<Mumav> for num_bigint::BigInt {
+    fn from(from: Mumav) -> Self {
         from.0
     }
 }
 
-impl From<&num_bigint::BigInt> for Mutez {
+impl From<&num_bigint::BigInt> for Mumav {
     fn from(from: &num_bigint::BigInt) -> Self {
-        Mutez(from.clone())
+        Mumav(from.clone())
     }
 }
 
-impl From<&Mutez> for num_bigint::BigInt {
-    fn from(from: &Mutez) -> Self {
+impl From<&Mumav> for num_bigint::BigInt {
+    fn from(from: &Mumav) -> Self {
         from.0.clone()
     }
 }
 
-impl From<Mutez> for BigInt {
-    fn from(source: Mutez) -> Self {
+impl From<Mumav> for BigInt {
+    fn from(source: Mumav) -> Self {
         Self(source.0)
     }
 }
 
-impl From<&Mutez> for BigInt {
-    fn from(source: &Mutez) -> Self {
+impl From<&Mumav> for BigInt {
+    fn from(source: &Mumav) -> Self {
         Self(source.0.clone())
     }
 }
 
-has_encoding!(Mutez, MUTEZ_ENCODING, { Encoding::Mutez });
+has_encoding!(Mumav, MUMAV_ENCODING, { Encoding::Mumav });
 
 #[derive(Clone, PartialEq, Eq)]
 //#[cfg_attr(feature = "fuzzing", derive(fuzzcheck::DefaultMutator))]
@@ -466,7 +466,7 @@ pub const BYTE_FIELD_NONE: u8 = 0;
 /// First we need to convert it to intermediate form represented by the [Value] type.
 /// Structure will be converted to:
 /// ```rust
-/// use crate::tezos_data_encoding::types::Value;
+/// use crate::mavryk_data_encoding::types::Value;
 /// let intermediate = Value::Record(vec![
 ///     ("count".into(), Value::Int32(1)),
 ///     ("diameter".into(), Value::Float(102.95))
