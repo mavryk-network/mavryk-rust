@@ -16,9 +16,9 @@ use std::convert::TryInto;
 use anyhow::format_err;
 use itertools::Itertools;
 
-use tezos_messages::base::rpc_support::{RpcJsonMap, ToRpcJsonMap};
-use tezos_messages::base::signature_public_key::SignaturePublicKeyHash;
-use tezos_messages::protocol::proto_005_2::rights::{BakingRights, EndorsingRight};
+use mavryk_messages::base::rpc_support::{RpcJsonMap, ToRpcJsonMap};
+use mavryk_messages::base::signature_public_key::SignaturePublicKeyHash;
+use mavryk_messages::protocol::proto_005_2::rights::{BakingRights, EndorsingRight};
 
 use storage::cycle_storage::CycleData;
 use storage::CycleMetaStorage;
@@ -46,7 +46,7 @@ use super::helpers::RightsMetadata;
 /// * `persistent_storage` - Persistent storage handler.
 /// * `state` - Current RPC collected state (head).
 ///
-/// Prepare all data to generate baking rights and then use Tezos PRNG to generate them.
+/// Prepare all data to generate baking rights and then use Mavryk PRNG to generate them.
 #[allow(clippy::too_many_arguments)]
 pub(crate) async fn check_and_get_baking_rights(
     context_proto_params: ContextProtocolParam,
@@ -194,7 +194,7 @@ pub(crate) fn get_baking_rights(
 /// * `parameters` - Parameters created by [RightsParams](RightsParams::parse_rights_parameters).
 /// * `constants` - Context constants used in baking and endorsing rights [RightsConstants](RightsConstants::parse_rights_constants).
 /// * `context_data` - Data from context list used in baking and endorsing rights generation filled in [RightsContextData](RightsContextData::prepare_context_data_for_rights).
-/// * `level` - Level to feed Tezos PRNG.
+/// * `level` - Level to feed Mavryk PRNG.
 /// * `estimated_head_timestamp` - Estimated time of baking, is set to None if in past relative to block_id.
 ///
 /// Baking priorities are are assigned to Roles, the default behavior is to include only the top priority for the delegate
@@ -291,7 +291,7 @@ fn baking_rights_assign_rolls(
 /// * `persistent_storage` - Persistent storage handler.
 /// * `state` - Current RPC collected state (head).
 ///
-/// Prepare all data to generate endorsing rights and then use Tezos PRNG to generate them.
+/// Prepare all data to generate endorsing rights and then use Mavryk PRNG to generate them.
 #[allow(clippy::too_many_arguments)]
 pub(crate) async fn check_and_get_endorsing_rights(
     context_proto_params: ContextProtocolParam,
@@ -408,7 +408,7 @@ fn get_endorsing_rights(
 /// * `context_data` - Data from context list used in baking and endorsing rights generation filled in [RightsContextData](RightsContextData::prepare_context_data_for_rights).
 /// * `parameters` - Parameters created by [RightsParams](RightsParams::parse_rights_parameters).
 /// * `constants` - Context constants used in baking and endorsing rights [RightsConstants](RightsConstants::parse_rights_constants).
-/// * `level` - Level to feed Tezos PRNG.
+/// * `level` - Level to feed Mavryk PRNG.
 /// * `display_level` - Level to be displayed in output.
 /// * `estimated_time` - Estimated time of endorsement, is set to None if in past relative to block_id.
 #[inline]
@@ -465,13 +465,13 @@ fn complete_endorsing_rights_for_level(
     Ok(())
 }
 
-/// Use tezos PRNG to collect all slots for each endorser by public key hash (for later ordering of endorsers)
+/// Use mavryk PRNG to collect all slots for each endorser by public key hash (for later ordering of endorsers)
 ///
 /// # Arguments
 ///
 /// * `constants` - Context constants used in baking and endorsing rights [RightsConstants](RightsConstants::parse_rights_constants).
 /// * `context_data` - Data from context list used in baking and endorsing rights generation filled in [RightsContextData](RightsContextData::prepare_context_data_for_rights).
-/// * `level` - Level to feed Tezos PRNG.
+/// * `level` - Level to feed Mavryk PRNG.
 #[inline]
 fn get_endorsers_slots(
     constants: &RightsConstants,
@@ -479,7 +479,7 @@ fn get_endorsers_slots(
     rolls_map: &HashMap<i32, String>,
     cycle_position: i32,
 ) -> Result<HashMap<String, EndorserSlots>, anyhow::Error> {
-    // special byte string used in Tezos PRNG
+    // special byte string used in Mavryk PRNG
     const ENDORSEMENT_USE_STRING: &[u8] = b"level endorsement:";
     // prepare helper variable
     let mut endorsers_slots: HashMap<String, EndorserSlots> = HashMap::new();

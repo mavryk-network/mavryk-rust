@@ -1,0 +1,14 @@
+// Copyright (c) SimpleStaking, Viable Systems and Tezedge Contributors
+// SPDX-License-Identifier: MIT
+
+use anyhow::Error;
+use mavryk_messages::p2p::{binary_message::BinaryWrite, encoding::prelude::*};
+
+#[test]
+fn can_serialize_mempool() -> Result<(), Error> {
+    let message = Mempool::default();
+    let serialized = hex::encode(message.as_bytes()?);
+    let expected = "000000000000000400000000";
+    assert_eq!(expected, &serialized);
+    Ok(())
+}

@@ -7,7 +7,7 @@ use getset::Getters;
 use rocksdb::{Cache, ColumnFamilyDescriptor};
 use serde::{Deserialize, Serialize};
 
-use tezos_api::ffi::CycleRollsOwnerSnapshot;
+use mavryk_api::ffi::CycleRollsOwnerSnapshot;
 
 use crate::database::tezedge_database::{KVStoreKeyValueSchema, TezedgeDatabaseWithIterator};
 use crate::persistent::database::{default_table_options, RocksDbKeyValueSchema};

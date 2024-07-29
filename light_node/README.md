@@ -20,7 +20,7 @@ The context storage to use. Options are:
 - `both`: uses both Irmin and TezEdge contexts.
 
 ```
---tezos-context-storage <NAME>
+--mavryk-context-storage <NAME>
 ```
 
 
@@ -29,13 +29,13 @@ The path to directory which will be used to store Tezos-specific data. This is a
 create or access this directory, it will die gracefully.
 
 ```
---tezos-data-dir <PATH>
+--mavryk-data-dir <PATH>
 ```
 
 ### Identity file
 The path to the json identity file with peer-id, public-key, secret-key and pow-stamp.
 If an identity does not exist in the specified path, a new one will be automatically generated.
-In case it starts with "./" or "../", it is a relative path to the current dir, otherwise to the --tezos-data-dir
+In case it starts with "./" or "../", it is a relative path to the current dir, otherwise to the --mavryk-data-dir
 
 ```
 --identity-file <PATH>
@@ -44,7 +44,7 @@ In case it starts with "./" or "../", it is a relative path to the current dir, 
 ## Database configuration
 ### Bootstrap database path
 Path to the bootstrap database directory.
-In case it starts with "./" or "../", it is a relative path to the current dir, otherwise to the --tezos-data-dir.
+In case it starts with "./" or "../", it is a relative path to the current dir, otherwise to the --mavryk-data-dir.
 If the directory does not exist, it will be created. If directory already exists and
 it contains a valid database, the node will continue in the bootstrapping process on that database
 
@@ -70,7 +70,7 @@ For further information, see `--network` parameter of the OCaml node.
 
 ### Logging file
 Path to the logger file. If provided, logs are written to the log file, otherwise they will be displayed in the terminal.
-In case it starts with "./" or "../", it is a relative path to the current dir, otherwise to the --tezos-data-dir
+In case it starts with "./" or "../", it is a relative path to the current dir, otherwise to the --mavryk-data-dir
 ```
 --log-file <PATH>
 ```
@@ -113,7 +113,7 @@ When `--network custom` is used, an extra argument needs to be specified:
 --custom-network-file <PATH>
 ```
 
-The format of the file should match the format used by Octez to specify a custom network.
+The format of the file should match the format used by Mavkit to specify a custom network.
 
 Example:
 
@@ -126,7 +126,7 @@ Example:
       "protocol": "PtYuensgYBb3G3x....snip",
       "timestamp": "2018-06-30T16:07:32Z"
     },
-    "sandboxed_chain_name": "SANDBOXED_TEZOS",
+    "sandboxed_chain_name": "SANDBOXED_MAVRYK",
     "default_bootstrap_peers": [],
     "genesis_parameters": {
       "values": {
@@ -242,13 +242,13 @@ In addition to the command-line arguments described above, it also supports the 
 
 **Example:**
 
-The following command will create a snapshot for `HEAD~10` (the default) on `/tmp/tezedge-storage-snapshot`. The node can then be use this trimmed copy with `--tezos-data-dir=/tmp/tezedge-storage-snapshot`.
+The following command will create a snapshot for `HEAD~10` (the default) on `/tmp/tezedge-storage-snapshot`. The node can then be use this trimmed copy with `--mavryk-data-dir=/tmp/tezedge-storage-snapshot`.
 
 ```
 cargo run --bin \
     light-node snapshot \
         --config-file ./light_node/etc/tezedge/tezedge.config \
-        --tezos-data-dir=/tmp/original-data \
+        --mavryk-data-dir=/tmp/original-data \
         --target-path=/tmp/tezedge-storage-snapshot
 ```
 
@@ -273,7 +273,7 @@ for the `edo2net` network, and produce a new database in `/tmp/replay-result`. I
 cargo run --bin \
     light-node replay \
         --config-file ./light_node/etc/tezedge/tezedge.config \
-        --tezos-data-dir=/tmp/original-data
+        --mavryk-data-dir=/tmp/original-data
         --target-path=/tmp/replay \
         --network=edo2net \
         --to-block BMf2TQSuyJrsE7JQjEBj1ztfspoVaFChEmVg6DsUYHxinsEVEeW \

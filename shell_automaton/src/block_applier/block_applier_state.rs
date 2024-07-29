@@ -9,9 +9,9 @@ use serde::{Deserialize, Serialize};
 use crypto::hash::{BlockHash, BlockMetadataHash, BlockPayloadHash, OperationMetadataListListHash};
 use storage::block_meta_storage::Meta;
 use storage::{BlockAdditionalData, BlockHeaderWithHash};
-use tezos_api::ffi::{ApplyBlockRequest, ApplyBlockResponse};
-use tezos_messages::p2p::encoding::operation::Operation;
-use tezos_protocol_ipc_client::ProtocolServiceError;
+use mavryk_api::ffi::{ApplyBlockRequest, ApplyBlockResponse};
+use mavryk_messages::p2p::encoding::operation::Operation;
+use mavryk_protocol_ipc_client::ProtocolServiceError;
 
 use crate::request::RequestId;
 use crate::service::rpc_service::RpcId;

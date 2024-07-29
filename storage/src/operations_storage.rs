@@ -8,7 +8,7 @@ use rocksdb::{Cache, ColumnFamilyDescriptor, SliceTransform};
 use serde::{Deserialize, Serialize};
 
 use crypto::hash::{BlockHash, HashType};
-use tezos_messages::p2p::encoding::prelude::*;
+use mavryk_messages::p2p::encoding::prelude::*;
 
 use crate::database::tezedge_database::{KVStoreKeyValueSchema, TezedgeDatabaseWithIterator};
 use crate::persistent::database::{default_table_options, RocksDbKeyValueSchema};

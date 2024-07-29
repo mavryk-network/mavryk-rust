@@ -3,7 +3,7 @@
 
 use crypto::hash::ContextHash;
 use serde::{Deserialize, Serialize};
-use tezos_protocol_ipc_client::ProtocolServiceError;
+use mavryk_protocol_ipc_client::ProtocolServiceError;
 
 use crate::protocol_runner::ProtocolRunnerToken;
 

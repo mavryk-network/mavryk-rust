@@ -7,9 +7,9 @@ use crypto::hash::OperationHash;
 use storage::mempool_storage::MempoolOperationType;
 use storage::tests_common::TmpStorage;
 use storage::MempoolStorage;
-use tezos_messages::p2p::binary_message::BinaryRead;
-use tezos_messages::p2p::binary_message::MessageHash;
-use tezos_messages::p2p::encoding::prelude::*;
+use mavryk_messages::p2p::binary_message::BinaryRead;
+use mavryk_messages::p2p::binary_message::MessageHash;
+use mavryk_messages::p2p::encoding::prelude::*;
 
 #[test]
 fn mempool_storage_read_write() -> Result<(), Error> {

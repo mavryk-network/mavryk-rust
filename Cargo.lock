@@ -307,6 +307,9 @@ dependencies = [
  "hex",
  "lazy_static",
  "log",
+ "mavryk_encoding",
+ "mavryk_encoding_derive",
+ "mavryk_messages",
  "nom 6.1.2",
  "once_cell",
  "rand 0.8.5",
@@ -321,9 +324,6 @@ dependencies = [
  "slog-term",
  "structopt",
  "tenderbake",
- "tezos_encoding",
- "tezos_encoding_derive",
- "tezos_messages",
  "thiserror",
  "time",
  "url",
@@ -732,9 +732,9 @@ dependencies = [
  "byte-unit",
  "clap 3.2.6",
  "crypto",
+ "mavryk_context",
  "parking_lot 0.12.1",
  "termcolor",
- "tezos_context",
 ]
 
 [[package]]
@@ -1561,7 +1561,7 @@ version = "3.1.1"
 dependencies = [
  "honggfuzz",
  "log",
- "tezos_messages",
+ "mavryk_messages",
 ]
 
 [[package]]
@@ -1570,7 +1570,7 @@ version = "3.1.1"
 dependencies = [
  "honggfuzz",
  "log",
- "tezos_messages",
+ "mavryk_messages",
 ]
 
 [[package]]
@@ -1579,7 +1579,7 @@ version = "3.1.1"
 dependencies = [
  "honggfuzz",
  "log",
- "tezos_messages",
+ "mavryk_messages",
 ]
 
 [[package]]
@@ -1588,7 +1588,7 @@ version = "3.1.1"
 dependencies = [
  "honggfuzz",
  "log",
- "tezos_messages",
+ "mavryk_messages",
 ]
 
 [[package]]
@@ -1597,7 +1597,7 @@ version = "3.1.1"
 dependencies = [
  "honggfuzz",
  "log",
- "tezos_messages",
+ "mavryk_messages",
 ]
 
 [[package]]
@@ -1606,7 +1606,7 @@ version = "3.1.1"
 dependencies = [
  "honggfuzz",
  "log",
- "tezos_messages",
+ "mavryk_messages",
 ]
 
 [[package]]
@@ -1615,7 +1615,7 @@ version = "3.1.1"
 dependencies = [
  "honggfuzz",
  "log",
- "tezos_messages",
+ "mavryk_messages",
 ]
 
 [[package]]
@@ -1624,7 +1624,7 @@ version = "3.1.1"
 dependencies = [
  "honggfuzz",
  "log",
- "tezos_messages",
+ "mavryk_messages",
 ]
 
 [[package]]
@@ -1633,7 +1633,7 @@ version = "3.1.1"
 dependencies = [
  "honggfuzz",
  "log",
- "tezos_messages",
+ "mavryk_messages",
 ]
 
 [[package]]
@@ -1642,7 +1642,7 @@ version = "3.1.1"
 dependencies = [
  "honggfuzz",
  "log",
- "tezos_messages",
+ "mavryk_messages",
 ]
 
 [[package]]
@@ -1651,7 +1651,7 @@ version = "3.1.1"
 dependencies = [
  "honggfuzz",
  "log",
- "tezos_messages",
+ "mavryk_messages",
 ]
 
 [[package]]
@@ -2367,6 +2367,11 @@ dependencies = [
  "futures-util",
  "indicatif",
  "logging",
+ "mavryk_api",
+ "mavryk_context_api",
+ "mavryk_identity",
+ "mavryk_messages",
+ "mavryk_protocol_ipc_client",
  "monitoring",
  "networking",
  "nix 0.23.1",
@@ -2383,11 +2388,6 @@ dependencies = [
  "tar",
  "tempfile",
  "tezedge-actor-system",
- "tezos_api",
- "tezos_context_api",
- "tezos_identity",
- "tezos_messages",
- "tezos_protocol_ipc_client",
  "thiserror",
  "tikv-jemallocator",
  "tokio",
@@ -2470,6 +2470,292 @@ name = "matches"
 version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a3e378b66a060d48947b590737b30a1be76706c8dd7b8ba0f2fe3989c68a853f"
+
+[[package]]
+name = "mavryk-sys"
+version = "3.1.1"
+dependencies = [
+ "colored",
+ "fs_extra",
+ "hex",
+ "os_type",
+ "serde 1.0.137",
+ "serde_json",
+ "sha2 0.9.9",
+]
+
+[[package]]
+name = "mavryk_api"
+version = "3.1.1"
+dependencies = [
+ "anyhow",
+ "assert-json-diff 2.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "crypto",
+ "derive_builder",
+ "fuzzcheck",
+ "hex",
+ "mavryk_context_api",
+ "mavryk_encoding",
+ "mavryk_messages",
+ "nom 6.1.2",
+ "num-bigint 0.3.3",
+ "serde 1.0.137",
+ "serde_json",
+ "slog",
+ "strum",
+ "strum_macros",
+ "thiserror",
+ "time",
+ "url",
+]
+
+[[package]]
+name = "mavryk_context"
+version = "3.1.1"
+dependencies = [
+ "anyhow",
+ "bincode",
+ "blake2",
+ "crc32fast",
+ "crossbeam-channel",
+ "crypto",
+ "flate2",
+ "fs_extra",
+ "hex",
+ "ipc",
+ "lazy_static",
+ "leb128",
+ "libc",
+ "mavryk-sys",
+ "mavryk_api",
+ "mavryk_context_api",
+ "mavryk_conv",
+ "mavryk_messages",
+ "mavryk_spsc",
+ "mavryk_timing",
+ "modular-bitfield",
+ "ocaml-interop",
+ "parking_lot 0.12.1",
+ "rand 0.8.5",
+ "serde 1.0.137",
+ "serde_json",
+ "slog",
+ "static_assertions",
+ "storage",
+ "strum",
+ "strum_macros",
+ "thiserror",
+ "tikv-jemalloc-ctl",
+ "tikv-jemallocator",
+]
+
+[[package]]
+name = "mavryk_context_api"
+version = "3.1.1"
+dependencies = [
+ "crypto",
+ "derive_builder",
+ "fuzzcheck",
+ "mavryk_encoding",
+ "mavryk_messages",
+ "nom 6.1.2",
+ "serde 1.0.137",
+ "strum",
+ "strum_macros",
+ "time",
+]
+
+[[package]]
+name = "mavryk_context_ipc_client"
+version = "3.1.1"
+dependencies = [
+ "async_ipc",
+ "crypto",
+ "mavryk_context_api",
+ "mavryk_protocol_ipc_client",
+ "thiserror",
+]
+
+[[package]]
+name = "mavryk_conv"
+version = "3.1.1"
+dependencies = [
+ "crypto",
+ "mavryk-sys",
+ "mavryk_api",
+ "mavryk_context_api",
+ "mavryk_messages",
+ "mavryk_protocol_ipc_messages",
+ "num-bigint 0.3.3",
+ "ocaml-interop",
+]
+
+[[package]]
+name = "mavryk_encoding"
+version = "3.1.1"
+dependencies = [
+ "bit-vec",
+ "crypto",
+ "fuzzcheck",
+ "hex",
+ "lazy_static",
+ "mavryk_encoding_derive",
+ "nom 6.1.2",
+ "num-bigint 0.3.3",
+ "num-traits",
+ "serde 1.0.137",
+ "serde_json",
+ "thiserror",
+]
+
+[[package]]
+name = "mavryk_encoding_derive"
+version = "3.1.1"
+dependencies = [
+ "lazy_static",
+ "once_cell",
+ "parse-display",
+ "proc-macro2 1.0.40",
+ "quote 1.0.20",
+ "syn 1.0.98",
+]
+
+[[package]]
+name = "mavryk_identity"
+version = "3.1.1"
+dependencies = [
+ "anyhow",
+ "assert-json-diff 2.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "crypto",
+ "hex",
+ "serde 1.0.137",
+ "serde_json",
+ "thiserror",
+]
+
+[[package]]
+name = "mavryk_interop"
+version = "3.1.1"
+dependencies = [
+ "anyhow",
+ "assert-json-diff 2.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "bencher",
+ "bincode",
+ "criterion",
+ "crypto",
+ "futures",
+ "hex",
+ "lazy_static",
+ "mavryk-sys",
+ "mavryk_api",
+ "mavryk_context",
+ "mavryk_context_api",
+ "mavryk_conv",
+ "mavryk_interop",
+ "mavryk_messages",
+ "mavryk_protocol_ipc_messages",
+ "ocaml-interop",
+ "serde_json",
+ "serial_test 0.5.1",
+ "slog-async",
+ "slog-term",
+ "strum",
+ "thiserror",
+]
+
+[[package]]
+name = "mavryk_lib_storage_ffi"
+version = "3.1.1"
+dependencies = [
+ "mavryk_context",
+ "mavryk_interop",
+ "ocaml-interop",
+ "tempfile",
+]
+
+[[package]]
+name = "mavryk_messages"
+version = "3.1.1"
+dependencies = [
+ "anyhow",
+ "assert-json-diff 2.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "bytes",
+ "criterion",
+ "crypto",
+ "csv",
+ "derive_builder",
+ "fuzzcheck",
+ "getset",
+ "hex",
+ "lazy_static",
+ "mavryk_encoding",
+ "mavryk_encoding_derive",
+ "mavryk_identity",
+ "nom 6.1.2",
+ "num-bigint 0.3.3",
+ "num-traits",
+ "quickcheck",
+ "quickcheck_derive 0.3.0 (git+https://github.com/tezedge/quickcheck_derive)",
+ "rand 0.7.3",
+ "serde 1.0.137",
+ "serde_json",
+ "slog",
+ "strum",
+ "strum_macros",
+ "thiserror",
+ "time",
+]
+
+[[package]]
+name = "mavryk_protocol_ipc_client"
+version = "3.1.1"
+dependencies = [
+ "async_ipc",
+ "crypto",
+ "fuzzcheck",
+ "mavryk_api",
+ "mavryk_context_api",
+ "mavryk_messages",
+ "mavryk_protocol_ipc_messages",
+ "nix 0.23.1",
+ "serde 1.0.137",
+ "slog",
+ "thiserror",
+ "tokio",
+]
+
+[[package]]
+name = "mavryk_protocol_ipc_messages"
+version = "3.1.1"
+dependencies = [
+ "crypto",
+ "enum-kinds",
+ "fuzzcheck",
+ "mavryk_api",
+ "mavryk_context_api",
+ "mavryk_messages",
+ "serde 1.0.137",
+ "strum_macros",
+]
+
+[[package]]
+name = "mavryk_spsc"
+version = "3.1.1"
+dependencies = [
+ "loom",
+]
+
+[[package]]
+name = "mavryk_timing"
+version = "3.1.1"
+dependencies = [
+ "crypto",
+ "mavryk_conv",
+ "mavryk_spsc",
+ "rusqlite",
+ "serde 1.0.137",
+ "static_assertions",
+]
 
 [[package]]
 name = "md5"
@@ -2606,6 +2892,8 @@ dependencies = [
  "futures",
  "http",
  "json-rpc-types",
+ "mavryk_api",
+ "mavryk_messages",
  "networking",
  "rand 0.7.3",
  "rpc",
@@ -2616,8 +2904,6 @@ dependencies = [
  "slog_derive",
  "storage",
  "tezedge-actor-system",
- "tezos_api",
- "tezos_messages",
  "tokio",
  "tokio-stream",
  "uuid",
@@ -2674,6 +2960,9 @@ dependencies = [
  "hex",
  "itertools",
  "lazy_static",
+ "mavryk_encoding",
+ "mavryk_identity",
+ "mavryk_messages",
  "quickcheck",
  "quickcheck_derive 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "rand 0.7.3",
@@ -2685,9 +2974,6 @@ dependencies = [
  "slog-term",
  "storage",
  "tezedge-actor-system",
- "tezos_encoding",
- "tezos_identity",
- "tezos_messages",
  "thiserror",
  "tokio",
  "tokio-test",
@@ -3278,15 +3564,15 @@ dependencies = [
  "clap 2.34.0",
  "crypto",
  "ctrlc",
+ "mavryk_api",
+ "mavryk_context",
+ "mavryk_context_api",
+ "mavryk_interop",
+ "mavryk_messages",
  "ocaml-interop",
  "slog",
  "slog-async",
  "slog-term",
- "tezos_api",
- "tezos_context",
- "tezos_context_api",
- "tezos_interop",
- "tezos_messages",
  "thiserror",
  "tikv-jemallocator",
 ]
@@ -3630,6 +3916,12 @@ dependencies = [
  "hyper-tls",
  "itertools",
  "lazy_static",
+ "mavryk_api",
+ "mavryk_context_api",
+ "mavryk_context_ipc_client",
+ "mavryk_messages",
+ "mavryk_protocol_ipc_client",
+ "mavryk_timing",
  "networking",
  "num",
  "path-tree",
@@ -3646,12 +3938,6 @@ dependencies = [
  "storage",
  "strum",
  "strum_macros",
- "tezos_api",
- "tezos_context_api",
- "tezos_context_ipc_client",
- "tezos_messages",
- "tezos_protocol_ipc_client",
- "tezos_timing",
  "thiserror",
  "time",
  "tokio",
@@ -3737,6 +4023,7 @@ dependencies = [
  "colored",
  "hex",
  "itertools",
+ "mavryk_api",
  "nix 0.23.1",
  "os_type",
  "rand 0.7.3",
@@ -3746,7 +4033,6 @@ dependencies = [
  "slog",
  "slog-async",
  "slog-term",
- "tezos_api",
  "thiserror",
  "tokio",
  "wait-timeout",
@@ -4001,6 +4287,12 @@ dependencies = [
  "hex",
  "itertools",
  "lazy_static",
+ "mavryk_api",
+ "mavryk_context_api",
+ "mavryk_encoding",
+ "mavryk_identity",
+ "mavryk_messages",
+ "mavryk_protocol_ipc_client",
  "networking",
  "nix 0.23.1",
  "nom 6.1.2",
@@ -4016,12 +4308,6 @@ dependencies = [
  "slog-term",
  "storage",
  "tezedge-actor-system",
- "tezos_api",
- "tezos_context_api",
- "tezos_encoding",
- "tezos_identity",
- "tezos_messages",
- "tezos_protocol_ipc_client",
  "thiserror",
  "time",
  "tokio",
@@ -4047,6 +4333,13 @@ dependencies = [
  "fuzzcheck_mutators_derive",
  "getset",
  "hex",
+ "mavryk_api",
+ "mavryk_context_api",
+ "mavryk_encoding",
+ "mavryk_identity",
+ "mavryk_messages",
+ "mavryk_protocol_ipc_client",
+ "mavryk_protocol_ipc_messages",
  "mio 0.7.14",
  "networking",
  "nix 0.23.1",
@@ -4066,13 +4359,6 @@ dependencies = [
  "strum",
  "strum_macros",
  "tezedge-actor-system",
- "tezos_api",
- "tezos_context_api",
- "tezos_encoding",
- "tezos_identity",
- "tezos_messages",
- "tezos_protocol_ipc_client",
- "tezos_protocol_ipc_messages",
  "thiserror",
  "tokio",
  "ureq",
@@ -4085,19 +4371,19 @@ version = "3.1.1"
 dependencies = [
  "bytes",
  "crypto",
+ "mavryk_api",
+ "mavryk_context_api",
+ "mavryk_encoding",
+ "mavryk_identity",
+ "mavryk_messages",
+ "mavryk_protocol_ipc_client",
+ "mavryk_protocol_ipc_messages",
  "networking",
  "serde 1.0.137",
  "serde_json",
  "shell_automaton",
  "slab",
  "storage",
- "tezos_api",
- "tezos_context_api",
- "tezos_encoding",
- "tezos_identity",
- "tezos_messages",
- "tezos_protocol_ipc_client",
- "tezos_protocol_ipc_messages",
 ]
 
 [[package]]
@@ -4107,12 +4393,12 @@ dependencies = [
  "anyhow",
  "crypto",
  "futures",
+ "mavryk_api",
+ "mavryk_messages",
  "serde 1.0.137",
  "serde_json",
  "slog",
  "storage",
- "tezos_api",
- "tezos_messages",
  "thiserror",
  "uuid",
 ]
@@ -4329,6 +4615,9 @@ dependencies = [
  "hex",
  "itertools",
  "lazy_static",
+ "mavryk_api",
+ "mavryk_context_api",
+ "mavryk_messages",
  "num",
  "num_cpus",
  "rand 0.7.3",
@@ -4341,9 +4630,6 @@ dependencies = [
  "slog-term",
  "strum",
  "strum_macros",
- "tezos_api",
- "tezos_context_api",
- "tezos_messages",
  "thiserror",
  "zstd",
 ]
@@ -4584,292 +4870,6 @@ dependencies = [
  "proc-macro2 1.0.40",
  "quote 1.0.20",
  "syn 1.0.98",
-]
-
-[[package]]
-name = "tezos-sys"
-version = "3.1.1"
-dependencies = [
- "colored",
- "fs_extra",
- "hex",
- "os_type",
- "serde 1.0.137",
- "serde_json",
- "sha2 0.9.9",
-]
-
-[[package]]
-name = "tezos_api"
-version = "3.1.1"
-dependencies = [
- "anyhow",
- "assert-json-diff 2.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "crypto",
- "derive_builder",
- "fuzzcheck",
- "hex",
- "nom 6.1.2",
- "num-bigint 0.3.3",
- "serde 1.0.137",
- "serde_json",
- "slog",
- "strum",
- "strum_macros",
- "tezos_context_api",
- "tezos_encoding",
- "tezos_messages",
- "thiserror",
- "time",
- "url",
-]
-
-[[package]]
-name = "tezos_context"
-version = "3.1.1"
-dependencies = [
- "anyhow",
- "bincode",
- "blake2",
- "crc32fast",
- "crossbeam-channel",
- "crypto",
- "flate2",
- "fs_extra",
- "hex",
- "ipc",
- "lazy_static",
- "leb128",
- "libc",
- "modular-bitfield",
- "ocaml-interop",
- "parking_lot 0.12.1",
- "rand 0.8.5",
- "serde 1.0.137",
- "serde_json",
- "slog",
- "static_assertions",
- "storage",
- "strum",
- "strum_macros",
- "tezos-sys",
- "tezos_api",
- "tezos_context_api",
- "tezos_conv",
- "tezos_messages",
- "tezos_spsc",
- "tezos_timing",
- "thiserror",
- "tikv-jemalloc-ctl",
- "tikv-jemallocator",
-]
-
-[[package]]
-name = "tezos_context_api"
-version = "3.1.1"
-dependencies = [
- "crypto",
- "derive_builder",
- "fuzzcheck",
- "nom 6.1.2",
- "serde 1.0.137",
- "strum",
- "strum_macros",
- "tezos_encoding",
- "tezos_messages",
- "time",
-]
-
-[[package]]
-name = "tezos_context_ipc_client"
-version = "3.1.1"
-dependencies = [
- "async_ipc",
- "crypto",
- "tezos_context_api",
- "tezos_protocol_ipc_client",
- "thiserror",
-]
-
-[[package]]
-name = "tezos_conv"
-version = "3.1.1"
-dependencies = [
- "crypto",
- "num-bigint 0.3.3",
- "ocaml-interop",
- "tezos-sys",
- "tezos_api",
- "tezos_context_api",
- "tezos_messages",
- "tezos_protocol_ipc_messages",
-]
-
-[[package]]
-name = "tezos_encoding"
-version = "3.1.1"
-dependencies = [
- "bit-vec",
- "crypto",
- "fuzzcheck",
- "hex",
- "lazy_static",
- "nom 6.1.2",
- "num-bigint 0.3.3",
- "num-traits",
- "serde 1.0.137",
- "serde_json",
- "tezos_encoding_derive",
- "thiserror",
-]
-
-[[package]]
-name = "tezos_encoding_derive"
-version = "3.1.1"
-dependencies = [
- "lazy_static",
- "once_cell",
- "parse-display",
- "proc-macro2 1.0.40",
- "quote 1.0.20",
- "syn 1.0.98",
-]
-
-[[package]]
-name = "tezos_identity"
-version = "3.1.1"
-dependencies = [
- "anyhow",
- "assert-json-diff 2.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "crypto",
- "hex",
- "serde 1.0.137",
- "serde_json",
- "thiserror",
-]
-
-[[package]]
-name = "tezos_interop"
-version = "3.1.1"
-dependencies = [
- "anyhow",
- "assert-json-diff 2.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "bencher",
- "bincode",
- "criterion",
- "crypto",
- "futures",
- "hex",
- "lazy_static",
- "ocaml-interop",
- "serde_json",
- "serial_test 0.5.1",
- "slog-async",
- "slog-term",
- "strum",
- "tezos-sys",
- "tezos_api",
- "tezos_context",
- "tezos_context_api",
- "tezos_conv",
- "tezos_interop",
- "tezos_messages",
- "tezos_protocol_ipc_messages",
- "thiserror",
-]
-
-[[package]]
-name = "tezos_lib_storage_ffi"
-version = "3.1.1"
-dependencies = [
- "ocaml-interop",
- "tempfile",
- "tezos_context",
- "tezos_interop",
-]
-
-[[package]]
-name = "tezos_messages"
-version = "3.1.1"
-dependencies = [
- "anyhow",
- "assert-json-diff 2.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "bytes",
- "criterion",
- "crypto",
- "csv",
- "derive_builder",
- "fuzzcheck",
- "getset",
- "hex",
- "lazy_static",
- "nom 6.1.2",
- "num-bigint 0.3.3",
- "num-traits",
- "quickcheck",
- "quickcheck_derive 0.3.0 (git+https://github.com/tezedge/quickcheck_derive)",
- "rand 0.7.3",
- "serde 1.0.137",
- "serde_json",
- "slog",
- "strum",
- "strum_macros",
- "tezos_encoding",
- "tezos_encoding_derive",
- "tezos_identity",
- "thiserror",
- "time",
-]
-
-[[package]]
-name = "tezos_protocol_ipc_client"
-version = "3.1.1"
-dependencies = [
- "async_ipc",
- "crypto",
- "fuzzcheck",
- "nix 0.23.1",
- "serde 1.0.137",
- "slog",
- "tezos_api",
- "tezos_context_api",
- "tezos_messages",
- "tezos_protocol_ipc_messages",
- "thiserror",
- "tokio",
-]
-
-[[package]]
-name = "tezos_protocol_ipc_messages"
-version = "3.1.1"
-dependencies = [
- "crypto",
- "enum-kinds",
- "fuzzcheck",
- "serde 1.0.137",
- "strum_macros",
- "tezos_api",
- "tezos_context_api",
- "tezos_messages",
-]
-
-[[package]]
-name = "tezos_spsc"
-version = "3.1.1"
-dependencies = [
- "loom",
-]
-
-[[package]]
-name = "tezos_timing"
-version = "3.1.1"
-dependencies = [
- "crypto",
- "rusqlite",
- "serde 1.0.137",
- "static_assertions",
- "tezos_conv",
- "tezos_spsc",
 ]
 
 [[package]]

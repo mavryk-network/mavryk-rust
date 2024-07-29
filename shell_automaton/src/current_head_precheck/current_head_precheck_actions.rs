@@ -3,7 +3,7 @@
 
 use crypto::hash::BlockHash;
 use redux_rs::EnablingCondition;
-use tezos_messages::{
+use mavryk_messages::{
     base::signature_public_key::SignaturePublicKey, p2p::encoding::block_header::BlockHeader,
 };
 

@@ -13,7 +13,7 @@ use networking::network_channel::{
 };
 use storage::BlockHeaderWithHash;
 use tezedge_actor_system::actors::*;
-use tezos_messages::p2p::encoding::prelude::{MetadataMessage, NetworkVersion};
+use mavryk_messages::p2p::encoding::prelude::{MetadataMessage, NetworkVersion};
 
 use crate::peer::PeerId;
 

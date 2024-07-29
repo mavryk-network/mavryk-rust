@@ -5,7 +5,7 @@ use std::net::SocketAddr;
 
 use serde::{Deserialize, Serialize};
 
-use tezos_messages::base::signature_public_key::SignaturePublicKeyHash;
+use mavryk_messages::base::signature_public_key::SignaturePublicKeyHash;
 
 use crate::service::storage_service::{
     StorageRequestPayload, StorageResponseError, StorageResponseSuccess,

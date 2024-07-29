@@ -13,11 +13,11 @@ use shell_automaton::{
     check_timeouts, effects, reducer, Action, EnablingCondition, MioWaitForEventsAction, State,
     Store,
 };
-use tezos_identity::Identity;
-use tezos_messages::p2p::binary_message::{BinaryChunk, BinaryWrite};
-use tezos_messages::p2p::encoding::ack::{AckMessage, NackInfo};
-use tezos_messages::p2p::encoding::connection::ConnectionMessage;
-use tezos_messages::p2p::encoding::metadata::MetadataMessage;
+use mavryk_identity::Identity;
+use mavryk_messages::p2p::binary_message::{BinaryChunk, BinaryWrite};
+use mavryk_messages::p2p::encoding::ack::{AckMessage, NackInfo};
+use mavryk_messages::p2p::encoding::connection::ConnectionMessage;
+use mavryk_messages::p2p::encoding::metadata::MetadataMessage;
 
 use crate::service::{
     ActorsServiceDummy, BakerServiceDummy, ConnectedState, DnsServiceMocked, IOCondition,

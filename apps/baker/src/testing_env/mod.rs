@@ -14,12 +14,12 @@ use std::{
     time::{Duration, Instant},
 };
 
-use crypto::hash::{BlockHash, ContractTz1Hash};
+use crypto::hash::{BlockHash, ContractMv1Hash};
 use reqwest::blocking::Client;
 use thiserror::Error;
 
 use redux_rs::Store;
-use tezos_messages::protocol::proto_012::operation::{
+use mavryk_messages::protocol::proto_012::operation::{
     InlinedEndorsementMempoolContents, InlinedPreendorsementContents,
 };
 
@@ -42,7 +42,7 @@ pub enum TestError {
 pub type Baker = Store<BakerStateEjectable, Services, Action>;
 
 pub mod accessor {
-    use crypto::hash::ContractTz1Hash;
+    use crypto::hash::ContractMv1Hash;
 
     use super::{Baker, BakerAction};
 
@@ -51,7 +51,7 @@ pub mod accessor {
         st.tb_state.level()
     }
 
-    pub fn key(baker: &Baker) -> ContractTz1Hash {
+    pub fn key(baker: &Baker) -> ContractMv1Hash {
         let st = baker.state().as_ref().as_ref().unwrap().as_ref();
         st.this.clone()
     }
@@ -108,7 +108,7 @@ where
             "--private-node=true",
             "--log=terminal",
             "--log-level=info",
-            "--tezos-context-storage=irmin",
+            "--mavryk-context-storage=irmin",
             "--peer-thresh-low=0",
             "--peer-thresh-high=1",
             "--identity-expected-pow=0",
@@ -117,7 +117,7 @@ where
             "--p2p-port=9732",
             "--rpc-port=18732",
         ])
-        .arg(format!("--tezos-data-dir={}", dir.join("node").display()))
+        .arg(format!("--mavryk-data-dir={}", dir.join("node").display()))
         .arg(format!(
             "--bootstrap-db-path={}",
             dir.join("node/bootstrap_db").display()
@@ -175,7 +175,7 @@ where
         .write_all(parameters.as_bytes())
         .expect("msg");
 
-    Command::new("tezos-client")
+    Command::new("mavryk-client")
         .arg("-base-dir")
         .arg(dir.join("client").display().to_string())
         .args(&[
@@ -189,7 +189,7 @@ where
         .output()
         .expect("msg");
 
-    let output = Command::new("tezos-client")
+    let output = Command::new("mavryk-client")
         .arg("-base-dir")
         .arg(dir.join("client").display().to_string())
         .args(&[
@@ -327,7 +327,7 @@ fn inspect_state(id: usize, baker: &Baker) {
 #[derive(Default)]
 pub struct BlockWatcher {
     blocks: BTreeMap<BlockHash, Block>,
-    observed: BTreeMap<ContractTz1Hash, BTreeSet<i32>>,
+    observed: BTreeMap<ContractMv1Hash, BTreeSet<i32>>,
 }
 
 impl BlockWatcher {

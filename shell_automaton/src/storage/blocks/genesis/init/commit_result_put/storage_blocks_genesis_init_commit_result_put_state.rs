@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 use serde::{Deserialize, Serialize};
-use tezos_api::ffi::CommitGenesisResult;
+use mavryk_api::ffi::CommitGenesisResult;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum StorageBlocksGenesisInitCommitResultPutState {

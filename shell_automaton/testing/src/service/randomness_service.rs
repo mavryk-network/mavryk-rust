@@ -6,7 +6,7 @@ use std::net::SocketAddr;
 use crypto::nonce::{Nonce, NONCE_SIZE};
 use shell_automaton::baker::seed_nonce::{SeedNonce, SeedNonceHash};
 use shell_automaton::service::RandomnessService;
-use tezos_messages::p2p::encoding::block_header::Level;
+use mavryk_messages::p2p::encoding::block_header::Level;
 
 #[derive(Debug, Clone)]
 pub enum RandomnessServiceMocked {

@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: MIT
 
 use slog::FnValue;
-use tezos_api::ffi::{ProtocolRpcRequest, RpcMethod, RpcRequest};
-use tezos_encoding::{binary_reader::BinaryReaderError, nom::NomReader};
-use tezos_messages::p2p::binary_message::BinaryRead;
+use mavryk_api::ffi::{ProtocolRpcRequest, RpcMethod, RpcRequest};
+use mavryk_encoding::{binary_reader::BinaryReaderError, nom::NomReader};
+use mavryk_messages::p2p::binary_message::BinaryRead;
 
 use crate::{
     service::{protocol_runner_service::ProtocolRunnerResult, ProtocolRunnerService},

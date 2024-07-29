@@ -1,7 +1,7 @@
 // Copyright (c) SimpleStaking, Viable Systems and Tezedge Contributors
 // SPDX-License-Identifier: MIT
 
-use tezos_api::ffi::{
+use mavryk_api::ffi::{
     BeginConstructionRequest, ClassifiedOperation, Errored, OperationClassification,
     ValidateOperationRequest, ValidateOperationResult, Validated,
 };

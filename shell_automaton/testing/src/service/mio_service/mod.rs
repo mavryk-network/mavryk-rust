@@ -18,7 +18,7 @@ pub use peer_mocked::*;
 mod peer_mocked_id;
 pub use peer_mocked_id::*;
 use shell_automaton::service::mio_service::{MioPeerRefMut, PeerConnectionIncomingAcceptError};
-use tezos_identity::Identity;
+use mavryk_identity::Identity;
 
 #[derive(Clone)]
 pub struct MioServiceMocked {

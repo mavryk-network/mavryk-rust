@@ -8,8 +8,8 @@ use redux_rs::{ActionWithMeta, Store, TimeService};
 use crypto::hash::{BlockHash, BlockPayloadHash, NonceHash, OperationHash, OperationListHash};
 use serde::Deserialize;
 use tenderbake as tb;
-use tezos_encoding::{enc::BinWriter, types::SizedBytes};
-use tezos_messages::{
+use mavryk_encoding::{enc::BinWriter, types::SizedBytes};
+use mavryk_messages::{
     p2p::{
         binary_message::MessageHash,
         encoding::operation::{DecodedOperation, Operation},

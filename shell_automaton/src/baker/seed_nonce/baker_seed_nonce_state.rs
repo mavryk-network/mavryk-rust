@@ -6,14 +6,14 @@ use std::collections::BTreeSet;
 use serde::{Deserialize, Serialize};
 
 use crypto::hash::BlockHash;
-use tezos_encoding::enc::BinWriter;
-use tezos_messages::p2p::encoding::block_header::Level;
-use tezos_messages::p2p::encoding::operation::Operation;
+use mavryk_encoding::enc::BinWriter;
+use mavryk_messages::p2p::encoding::block_header::Level;
+use mavryk_messages::p2p::encoding::operation::Operation;
 
 pub type SeedNonceHash = crypto::hash::NonceHash;
-pub type SeedNonce = tezos_encoding::types::SizedBytes<32>;
+pub type SeedNonce = mavryk_encoding::types::SizedBytes<32>;
 #[cfg(feature = "fuzzing")]
-pub type SeedNonceMutator = tezos_encoding::fuzzing::sizedbytes::SizedBytesMutator<32>;
+pub type SeedNonceMutator = mavryk_encoding::fuzzing::sizedbytes::SizedBytesMutator<32>;
 
 #[cfg_attr(feature = "fuzzing", derive(fuzzcheck::DefaultMutator))]
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -26,8 +26,8 @@ pub struct SeedNonceRevelationOperationWithForgedBytes {
 
 impl SeedNonceRevelationOperationWithForgedBytes {
     pub fn new(level: i32, nonce: SeedNonce) -> Self {
-        use tezos_messages::protocol::proto_005::operation::SeedNonceRevelationOperation;
-        use tezos_messages::protocol::proto_012::operation::Contents;
+        use mavryk_messages::protocol::proto_005::operation::SeedNonceRevelationOperation;
+        use mavryk_messages::protocol::proto_012::operation::Contents;
         let op = Contents::SeedNonceRevelation(SeedNonceRevelationOperation {
             level,
             nonce: nonce.clone(),

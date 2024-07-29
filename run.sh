@@ -102,8 +102,8 @@ run_node() {
 
   # Default light-node commandline arguments:
   #
-  # -d | --tezos-data-dir
-  TEZOS_DIR=/tmp/tezedge
+  # -d | --mavryk-data-dir
+  MAVRYK_DIR=/tmp/tezedge
   # -c | --config-file-path
   CONFIG_FILE=./light_node/etc/tezedge/tezedge.config
   # -B | --bootstrap-db-path
@@ -120,13 +120,13 @@ run_node() {
   # Supports '--arg=val' and '--arg val' syntax of the commandline arguments.
   while [ "$#" -gt 0 ]; do
     case $1 in
-      --tezos-data-dir=*)
-        TEZOS_DIR="${1#*=}"
+      --mavryk-data-dir=*)
+        MAVRYK_DIR="${1#*=}"
         shift
         ;;
-      --tezos-data-dir)
+      --mavryk-data-dir)
         shift
-        TEZOS_DIR="$1"
+        MAVRYK_DIR="$1"
         shift
         ;;
       --config-file=*)
@@ -157,12 +157,12 @@ run_node() {
 
   # cleanup data directory
   if [ -z "$KEEP_DATA" ]; then
-    rm -rf $TEZOS_DIR $BOOTSTRAP_DIR || true
-    mkdir -p $TEZOS_DIR $BOOTSTRAP_DIR
+    rm -rf $MAVRYK_DIR $BOOTSTRAP_DIR || true
+    mkdir -p $MAVRYK_DIR $BOOTSTRAP_DIR
   fi
 
   # protocol_runner needs 'libtezos.so' to run
-  export LD_LIBRARY_PATH="${BASH_SOURCE%/*}/tezos/sys/lib_tezos/artifacts:${BASH_SOURCE%/*}/target/$PROFILE"
+  export LD_LIBRARY_PATH="${BASH_SOURCE%/*}/mavryk/sys/lib_tezos/artifacts:${BASH_SOURCE%/*}/target/$PROFILE"
   # start node
   if [ -z "$CARGO_BUILD_TARGET" ]; then
     PROTOCOL_RUNNER_BINARY=./target/$PROFILE/protocol-runner
@@ -172,7 +172,7 @@ run_node() {
 
   cargo run $CARGO_PROFILE_ARG --bin light-node -- \
             --config-file "$CONFIG_FILE" \
-            --tezos-data-dir "$TEZOS_DIR" \
+            --mavryk-data-dir "$MAVRYK_DIR" \
             --identity-file "$IDENTITY_FILE" \
             --bootstrap-db-path "$BOOTSTRAP_DIR" \
             --protocol-runner $PROTOCOL_RUNNER_BINARY "${args[@]}"
@@ -190,24 +190,24 @@ run_docker() {
 run_sandbox() {
   # Default light-node commandline arguments:
   #
-  # -d | --tezos-data-dir
-  TEZOS_DIR=/tmp/tezedge
+  # -d | --mavryk-data-dir
+  MAVRYK_DIR=/tmp/tezedge
   # -B | --bootstrap-db-path
   BOOTSTRAP_DIR=bootstrap_db
   # -n | --network
   NETWORK=sandbox
 
   # protocol_runner needs 'libtezos.so' to run
-  export LD_LIBRARY_PATH="${BASH_SOURCE%/*}/tezos/sys/lib_tezos/artifacts:${BASH_SOURCE%/*}/target/$PROFILE"
+  export LD_LIBRARY_PATH="${BASH_SOURCE%/*}/mavryk/sys/lib_tezos/artifacts:${BASH_SOURCE%/*}/target/$PROFILE"
 
-  export TEZOS_CLIENT_UNSAFE_DISABLE_DISCLAIMER="Y"
+  export MAVRYK_CLIENT_UNSAFE_DISABLE_DISCLAIMER="Y"
 
   cargo run $CARGO_PROFILE_ARG --bin sandbox -- \
             --log-level "info" \
             --sandbox-rpc-port "3030" \
             --light-node-path "./target/$PROFILE/light-node" \
             --protocol-runner-path "./target/$PROFILE/protocol-runner" \
-            --tezos-client-path "./sandbox/artifacts/tezos-client" "${args[@]}"
+            --mavryk-client-path "./sandbox/artifacts/mavryk-client" "${args[@]}"
 }
 
 case $1 in

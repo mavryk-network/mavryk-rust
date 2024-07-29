@@ -1,7 +1,7 @@
 // Copyright (c) SimpleStaking, Viable Systems and Tezedge Contributors
 // SPDX-License-Identifier: MIT
 
-use tezos_api::ffi::{ProtocolRpcRequest, RpcMethod, RpcRequest};
+use mavryk_api::ffi::{ProtocolRpcRequest, RpcMethod, RpcRequest};
 
 use crate::{
     service::{protocol_runner_service::ProtocolRunnerResult, ProtocolRunnerService},

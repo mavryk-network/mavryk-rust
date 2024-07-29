@@ -6,8 +6,8 @@ use std::collections::BTreeMap;
 use serde::{Deserialize, Serialize};
 
 use crypto::hash::Signature;
-use tezos_messages::p2p::encoding::block_header::{BlockHeader, Level};
-use tezos_messages::p2p::encoding::operation::Operation;
+use mavryk_messages::p2p::encoding::block_header::{BlockHeader, Level};
+use mavryk_messages::p2p::encoding::operation::Operation;
 
 use crate::baker::block_endorser::EndorsementWithForgedBytes;
 use crate::baker::seed_nonce::BakerSeedNonceState;

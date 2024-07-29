@@ -4,7 +4,7 @@
 use std::collections::VecDeque;
 
 use storage::StorageInitInfo;
-use tezos_api::ffi::CommitGenesisResult;
+use mavryk_api::ffi::CommitGenesisResult;
 
 use shell_automaton::service::service_channel::{RequestSendError, ResponseTryRecvError};
 use shell_automaton::service::storage_service::StorageError;

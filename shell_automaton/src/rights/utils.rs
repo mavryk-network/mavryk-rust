@@ -5,7 +5,7 @@ use std::collections::BTreeMap;
 
 use crypto::blake2b;
 use storage::{cycle_storage::CycleData, num_from_slice};
-use tezos_messages::p2p::encoding::block_header::Level;
+use mavryk_messages::p2p::encoding::block_header::Level;
 
 use super::{
     cycle_eras::{CycleEra, CycleEras},
@@ -69,25 +69,25 @@ pub(super) fn get_cycle(
 
 #[cfg_attr(feature = "fuzzing", derive(fuzzcheck::DefaultMutator))]
 #[derive(thiserror::Error, Debug, Clone, serde::Serialize, serde::Deserialize)]
-pub enum TezosPRNGError {
+pub enum MavrykPRNGError {
     #[error("Digest error: `{0}`")]
     Hash(#[from] blake2b::Blake2bError),
     #[error("Bounds error: `{0}`")]
     Bounds(String),
 }
 
-struct TezosPRNG {
+struct MavrykPRNG {
     state: Vec<u8>,
 }
 
-impl TezosPRNG {
+impl MavrykPRNG {
     fn initialize(
         seed_bytes: &[u8],
         nonce_size: usize,
         use_: &[u8],
         cycle_position: i32,
         offset: i32,
-    ) -> Result<Self, TezosPRNGError> {
+    ) -> Result<Self, MavrykPRNGError> {
         let zero_bytes = vec![0; nonce_size];
         let cycle_position_bytes = cycle_position.to_be_bytes();
 
@@ -112,9 +112,9 @@ impl TezosPRNG {
         })
     }
 
-    fn get_next(&mut self, bound: i32) -> Result<i32, TezosPRNGError> {
+    fn get_next(&mut self, bound: i32) -> Result<i32, MavrykPRNGError> {
         if bound < 1 {
-            return Err(TezosPRNGError::Bounds(format!(
+            return Err(MavrykPRNGError::Bounds(format!(
                 "bound is negative: `{bound}`"
             )));
         }
@@ -133,7 +133,7 @@ impl TezosPRNG {
         Ok(num)
     }
 
-    fn digest(data: &[&[u8]]) -> Result<Vec<u8>, TezosPRNGError> {
+    fn digest(data: &[&[u8]]) -> Result<Vec<u8>, MavrykPRNGError> {
         Ok(blake2b::digest_all(data, 32)?)
     }
 }
@@ -145,8 +145,8 @@ pub(super) fn random_owner(
     use_: &[u8],
     cycle_position: i32,
     offset: impl Into<i32>,
-) -> Result<Delegate, TezosPRNGError> {
-    let mut prng = TezosPRNG::initialize(
+) -> Result<Delegate, MavrykPRNGError> {
+    let mut prng = MavrykPRNG::initialize(
         cycle_meta_data.seed_bytes(),
         nonce_length.into(),
         use_,
@@ -170,7 +170,7 @@ pub(super) fn endorser_rights_owner(
     rolls_map: &BTreeMap<i32, Delegate>,
     cycle_position: i32,
     slot: u16,
-) -> Result<Delegate, TezosPRNGError> {
+) -> Result<Delegate, MavrykPRNGError> {
     random_owner(
         nonce_length,
         cycle_meta_data,
@@ -187,7 +187,7 @@ pub(super) fn baking_rights_owner(
     rolls_map: &BTreeMap<i32, Delegate>,
     cycle_position: i32,
     priority: u16,
-) -> Result<Delegate, TezosPRNGError> {
+) -> Result<Delegate, MavrykPRNGError> {
     random_owner(
         nonce_length,
         cycle_meta_data,

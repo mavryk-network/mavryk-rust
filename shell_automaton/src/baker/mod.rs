@@ -12,7 +12,7 @@ pub use baker_state::*;
 mod baker_effects;
 pub use baker_effects::*;
 
-use tezos_messages::base::signature_public_key::SignaturePublicKeyHash;
+use mavryk_messages::base::signature_public_key::SignaturePublicKeyHash;
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 #[cfg_attr(feature = "fuzzing", derive(fuzzcheck::DefaultMutator))]

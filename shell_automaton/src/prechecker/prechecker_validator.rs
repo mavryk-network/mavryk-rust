@@ -8,7 +8,7 @@ use crypto::{
     CryptoError,
 };
 use slog::{debug, FnValue, Logger};
-use tezos_messages::{
+use mavryk_messages::{
     base::signature_public_key::SignatureWatermark,
     p2p::{binary_message::BinaryWrite, encoding::block_header::Level},
 };
@@ -78,9 +78,9 @@ pub(super) trait OperationProtocolData {
     fn as_json(&self) -> serde_json::Value;
 }
 
-impl OperationProtocolData for tezos_messages::protocol::proto_010::operation::Operation {
+impl OperationProtocolData for mavryk_messages::protocol::proto_010::operation::Operation {
     fn endorsement_level(&self) -> Option<Level> {
-        use tezos_messages::protocol::proto_010::operation::*;
+        use mavryk_messages::protocol::proto_010::operation::*;
         if self.contents.len() != 1 {
             return None;
         }
@@ -102,9 +102,9 @@ impl OperationProtocolData for tezos_messages::protocol::proto_010::operation::O
     }
 }
 
-impl OperationProtocolData for tezos_messages::protocol::proto_011::operation::Operation {
+impl OperationProtocolData for mavryk_messages::protocol::proto_011::operation::Operation {
     fn endorsement_level(&self) -> Option<Level> {
-        use tezos_messages::protocol::proto_011::operation::*;
+        use mavryk_messages::protocol::proto_011::operation::*;
         if self.contents.len() != 1 {
             return None;
         }
@@ -126,9 +126,9 @@ impl OperationProtocolData for tezos_messages::protocol::proto_011::operation::O
     }
 }
 
-impl OperationProtocolData for tezos_messages::protocol::proto_012::operation::Operation {
+impl OperationProtocolData for mavryk_messages::protocol::proto_012::operation::Operation {
     fn endorsement_level(&self) -> Option<Level> {
-        use tezos_messages::protocol::proto_012::operation::*;
+        use mavryk_messages::protocol::proto_012::operation::*;
         if self.contents.len() != 1 {
             return None;
         }
@@ -199,13 +199,13 @@ impl EndorsementValidator for OperationDecodedContents {
 }
 
 fn validate_endorsement_010_granada(
-    operation: &tezos_messages::protocol::proto_010::operation::Operation,
+    operation: &mavryk_messages::protocol::proto_010::operation::Operation,
     chain_id: &ChainId,
     block_hash: &BlockHash,
     rights: &EndorsingRightsOld,
     log: &Logger,
 ) -> Result<(), EndorsementValidationError> {
-    use tezos_messages::protocol::proto_010::operation::*;
+    use mavryk_messages::protocol::proto_010::operation::*;
 
     let start = Instant::now();
 
@@ -241,13 +241,13 @@ fn validate_endorsement_010_granada(
 }
 
 fn validate_endorsement_011_hangzhou(
-    operation: &tezos_messages::protocol::proto_011::operation::Operation,
+    operation: &mavryk_messages::protocol::proto_011::operation::Operation,
     chain_id: &ChainId,
     block_hash: &BlockHash,
     rights: &EndorsingRightsOld,
     log: &Logger,
 ) -> Result<(), EndorsementValidationError> {
-    use tezos_messages::protocol::proto_011::operation::*;
+    use mavryk_messages::protocol::proto_011::operation::*;
 
     let start = Instant::now();
 
@@ -283,7 +283,7 @@ fn validate_endorsement_011_hangzhou(
 }
 
 fn validate_inlined_endorsement(
-    endorsement: &tezos_messages::protocol::proto_005_2::operation::InlinedEndorsement,
+    endorsement: &mavryk_messages::protocol::proto_005_2::operation::InlinedEndorsement,
     block_hash: &BlockHash,
     slot: u16,
     rights: &EndorsingRightsOld,

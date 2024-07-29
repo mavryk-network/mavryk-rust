@@ -3,9 +3,9 @@
 
 use std::net::SocketAddr;
 
-use tezos_encoding::binary_writer::BinaryWriterError;
-use tezos_messages::p2p::binary_message::BinaryWrite;
-use tezos_messages::p2p::encoding::peer::{PeerMessage, PeerMessageResponse};
+use mavryk_encoding::binary_writer::BinaryWriterError;
+use mavryk_messages::p2p::binary_message::BinaryWrite;
+use mavryk_messages::p2p::encoding::peer::{PeerMessage, PeerMessageResponse};
 
 use crate::peer::binary_message::write::{
     PeerBinaryMessageWriteSetContentAction, PeerBinaryMessageWriteState,

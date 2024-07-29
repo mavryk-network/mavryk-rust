@@ -11,9 +11,9 @@ use std::sync::{Arc, RwLock};
 use std::time::Duration;
 use storage::PersistentStorage;
 use storage::{BlockHeaderWithHash, StorageInitInfo};
-use tezos_api::environment::TezosEnvironmentConfiguration;
-use tezos_messages::p2p::encoding::version::NetworkVersion;
-use tezos_protocol_ipc_client::ProtocolRunnerApi;
+use mavryk_api::environment::MavrykEnvironmentConfiguration;
+use mavryk_messages::p2p::encoding::version::NetworkVersion;
+use mavryk_protocol_ipc_client::ProtocolRunnerApi;
 use tokio::runtime::Handle;
 
 use crate::server::{spawn_server, RpcCollectedState, RpcServiceEnvironment};
@@ -45,8 +45,8 @@ impl RpcServer {
         rpc_listen_address: SocketAddr,
         tokio_executor: Handle,
         persistent_storage: &PersistentStorage,
-        tezos_protocol_api: Arc<ProtocolRunnerApi>,
-        tezos_env: TezosEnvironmentConfiguration,
+        mavryk_protocol_api: Arc<ProtocolRunnerApi>,
+        mavryk_env: MavrykEnvironmentConfiguration,
         network_version: Arc<NetworkVersion>,
         init_storage_data: &StorageInitInfo,
         hydrated_current_head_block: Arc<BlockHeaderWithHash>,
@@ -62,10 +62,10 @@ impl RpcServer {
         let env = Arc::new(RpcServiceEnvironment::new(
             Arc::new(tokio_executor),
             shell_automaton_channel,
-            tezos_env,
+            mavryk_env,
             network_version,
             persistent_storage,
-            tezos_protocol_api,
+            mavryk_protocol_api,
             init_storage_data.chain_id.clone(),
             shared_state,
             init_storage_data.context_stats_db_path.clone(),

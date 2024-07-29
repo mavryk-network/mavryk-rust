@@ -1,0 +1,25 @@
+[package]
+name = "mavryk_context_api"
+version = "3.1.1"
+edition = "2021"
+rust-version = "1.58"
+authors = ["Bruno Deferrari <bruno.deferrari@viablesystems.io>"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+derive_builder = "0.9"
+time = { version = "0.3", features = ["serde"] }
+serde = { version = "1.0", features = ["derive"] }
+strum = "0.20"
+strum_macros = "0.20"
+nom = "6.1"
+# local dependencies
+crypto = { path = "../../crypto" }
+mavryk_encoding = { path = "../encoding" }
+mavryk_messages = { path = "../messages" }
+fuzzcheck = { git = "https://github.com/tezedge/fuzzcheck-rs.git", optional = true }
+
+[features]
+fuzzing = ["fuzzcheck", "crypto/fuzzing", "mavryk_encoding/fuzzing", "mavryk_messages/fuzzing"]
+

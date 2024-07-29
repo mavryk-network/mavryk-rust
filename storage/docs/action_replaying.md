@@ -48,7 +48,7 @@ cargo build --release --bin context-actions-replayer
 
 ```
 # run binary
-LD_LIBRARY_PATH=./tezos/sys/lib_tezos/artifacts ./target/release/context-actions-replayer --input /tmp/test_action_file.data --output /tmp/context_action_replayer --context-kv-store rocksdb
+LD_LIBRARY_PATH=./mavryk/sys/lib_tezos/artifacts ./target/release/context-actions-replayer --input /tmp/test_action_file.data --output /tmp/context_action_replayer --context-kv-store rocksdb
 ```
 
 ## 4. Result

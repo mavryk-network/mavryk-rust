@@ -8,7 +8,7 @@ use crypto::{
     seeded_step::{Seed, Step},
 };
 use storage::BlockHeaderWithHash;
-use tezos_messages::p2p::encoding::block_header::{BlockHeaderBuilder, Level};
+use mavryk_messages::p2p::encoding::block_header::{BlockHeaderBuilder, Level};
 
 pub mod one_real_node_cluster;
 pub mod service;

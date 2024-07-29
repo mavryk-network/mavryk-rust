@@ -3,7 +3,7 @@
 
 use std::io::{self, Write};
 
-use tezos_messages::p2p::binary_message::BinaryChunk;
+use mavryk_messages::p2p::binary_message::BinaryChunk;
 
 use super::extendable_as_writable::ExtendableAsWritable;
 

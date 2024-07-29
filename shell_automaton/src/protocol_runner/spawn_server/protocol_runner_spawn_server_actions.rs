@@ -3,7 +3,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use tezos_protocol_ipc_client::ProtocolRunnerError;
+use mavryk_protocol_ipc_client::ProtocolRunnerError;
 
 use crate::protocol_runner::ProtocolRunnerState;
 use crate::{EnablingCondition, State};

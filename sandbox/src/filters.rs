@@ -14,14 +14,14 @@ use crate::handlers::{
     start_node_with_config, stop_node,
 };
 use crate::node_runner::{LightNodeRunnerRef, NodeRpcIpPort};
-use crate::tezos_client_runner::{
-    BakeRequest, SandboxWallets, TezosClientRunnerRef, TezosProtcolActivationParameters,
+use crate::mavryk_client_runner::{
+    BakeRequest, SandboxWallets, MavrykClientRunnerRef, MavrykProtcolActivationParameters,
 };
 
 pub fn sandbox(
     log: Logger,
     runner: LightNodeRunnerRef,
-    client_runner: TezosClientRunnerRef,
+    client_runner: MavrykClientRunnerRef,
     peers: Arc<Mutex<HashSet<NodeRpcIpPort>>>,
 ) -> BoxedFilter<(impl warp::Reply,)> {
     // Allow cors from any origin
@@ -60,7 +60,7 @@ pub fn sandbox(
 pub fn start(
     log: Logger,
     runner: LightNodeRunnerRef,
-    client_runner: TezosClientRunnerRef,
+    client_runner: MavrykClientRunnerRef,
     peers: Arc<Mutex<HashSet<NodeRpcIpPort>>>,
 ) -> BoxedFilter<(impl warp::Reply,)> {
     warp::path!("start")
@@ -77,7 +77,7 @@ pub fn start(
 pub fn stop(
     log: Logger,
     runner: LightNodeRunnerRef,
-    client_runner: TezosClientRunnerRef,
+    client_runner: MavrykClientRunnerRef,
     peers: Arc<Mutex<HashSet<NodeRpcIpPort>>>,
 ) -> BoxedFilter<(impl warp::Reply,)> {
     warp::path!("stop")
@@ -105,7 +105,7 @@ pub fn list(
 
 pub fn init_client(
     log: Logger,
-    client_runner: TezosClientRunnerRef,
+    client_runner: MavrykClientRunnerRef,
     peers: Arc<Mutex<HashSet<NodeRpcIpPort>>>,
 ) -> BoxedFilter<(impl warp::Reply,)> {
     warp::path!("init_client")
@@ -120,7 +120,7 @@ pub fn init_client(
 
 pub fn wallets(
     log: Logger,
-    client_runner: TezosClientRunnerRef,
+    client_runner: MavrykClientRunnerRef,
     peers: Arc<Mutex<HashSet<NodeRpcIpPort>>>,
 ) -> BoxedFilter<(impl warp::Reply,)> {
     warp::path!("wallets")
@@ -134,7 +134,7 @@ pub fn wallets(
 
 pub fn activate(
     log: Logger,
-    client_runner: TezosClientRunnerRef,
+    client_runner: MavrykClientRunnerRef,
     peers: Arc<Mutex<HashSet<NodeRpcIpPort>>>,
 ) -> BoxedFilter<(impl warp::Reply,)> {
     warp::path!("activate_protocol")
@@ -149,7 +149,7 @@ pub fn activate(
 
 pub fn bake(
     log: Logger,
-    client_runner: TezosClientRunnerRef,
+    client_runner: MavrykClientRunnerRef,
     peers: Arc<Mutex<HashSet<NodeRpcIpPort>>>,
 ) -> BoxedFilter<(impl warp::Reply,)> {
     warp::path!("bake")
@@ -164,7 +164,7 @@ pub fn bake(
 
 pub fn bake_random(
     log: Logger,
-    client_runner: TezosClientRunnerRef,
+    client_runner: MavrykClientRunnerRef,
     peers: Arc<Mutex<HashSet<NodeRpcIpPort>>>,
 ) -> BoxedFilter<(impl warp::Reply,)> {
     warp::path!("bake")
@@ -192,8 +192,8 @@ fn init_client_json_body() -> BoxedFilter<(SandboxWallets,)> {
         .boxed()
 }
 
-fn activation_json_body() -> BoxedFilter<(TezosProtcolActivationParameters,)> {
-    // When accepting a body, we want a JSON body and serialize it to TezosProtcolActivationParameters
+fn activation_json_body() -> BoxedFilter<(MavrykProtcolActivationParameters,)> {
+    // When accepting a body, we want a JSON body and serialize it to MavrykProtcolActivationParameters
     // (and to reject huge payloads)...
     warp::body::content_length_limit(1024 * 16)
         .and(warp::body::json())
@@ -216,7 +216,7 @@ fn with_runner(runner: LightNodeRunnerRef) -> BoxedFilter<(LightNodeRunnerRef,)>
     warp::any().map(move || runner.clone()).boxed()
 }
 
-fn with_client_runner(client_runner: TezosClientRunnerRef) -> BoxedFilter<(TezosClientRunnerRef,)> {
+fn with_client_runner(client_runner: MavrykClientRunnerRef) -> BoxedFilter<(MavrykClientRunnerRef,)> {
     warp::any().map(move || client_runner.clone()).boxed()
 }
 

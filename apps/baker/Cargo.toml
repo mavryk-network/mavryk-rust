@@ -38,9 +38,9 @@ fuzzcheck_mutators_derive = { git = "https://github.com/tezedge/fuzzcheck-rs.git
 
 redux-rs = { git = "https://github.com/tezedge/redux-rs.git", rev = "56e116d", features = ["serde"] }
 crypto = { path = "../../crypto" }
-tezos_messages = { path = "../../tezos/messages" }
-tezos_encoding = { path = "../../tezos/encoding" }
-tezos_encoding_derive = { path = "../../tezos/encoding-derive" }
+mavryk_messages = { path = "../../mavryk/messages" }
+mavryk_encoding = { path = "../../mavryk/encoding" }
+mavryk_encoding_derive = { path = "../../mavryk/encoding-derive" }
 tenderbake = { path = "../tenderbake" }
 
 [features]
@@ -49,8 +49,8 @@ fuzzing = [
     "fuzzcheck_mutators_derive",
     "redux-rs/fuzzing",
     "crypto/fuzzing",
-    "tezos_encoding/fuzzing",
-    "tezos_messages/fuzzing",
+    "mavryk_encoding/fuzzing",
+    "mavryk_messages/fuzzing",
     "tenderbake/fuzzing",
 ]
 # default = ["fuzzing"]

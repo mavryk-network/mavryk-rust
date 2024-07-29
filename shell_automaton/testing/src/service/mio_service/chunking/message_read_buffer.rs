@@ -3,7 +3,7 @@
 
 use std::io::{self, Read};
 
-use tezos_messages::p2p::{
+use mavryk_messages::p2p::{
     binary_message::{BinaryRead, SizeFromChunk},
     encoding::peer::PeerMessageResponse,
 };

@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: MIT
 
 use storage::BlockHeaderWithHash;
-use tezos_api::ffi::ComputePathRequest;
-use tezos_messages::p2p::encoding::operations_for_blocks::{
+use mavryk_api::ffi::ComputePathRequest;
+use mavryk_messages::p2p::encoding::operations_for_blocks::{
     OperationsForBlock, OperationsForBlocksMessage,
 };
 

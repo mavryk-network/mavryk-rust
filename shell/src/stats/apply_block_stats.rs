@@ -6,7 +6,7 @@ use std::time::{Duration, Instant};
 
 use getset::Getters;
 
-use tezos_messages::p2p::encoding::block_header::Level;
+use mavryk_messages::p2p::encoding::block_header::Level;
 
 /// Statistics about applying
 #[derive(Getters, Clone, Debug, Default)]

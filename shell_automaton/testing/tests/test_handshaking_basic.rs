@@ -10,10 +10,10 @@ use shell_automaton::shell_compatibility_version::ShellCompatibilityVersion;
 use shell_automaton::{Config, State};
 use shell_automaton_testing::one_real_node_cluster::{Cluster, HandshakeError};
 use shell_automaton_testing::service::IOCondition;
-use tezos_identity::Identity;
-use tezos_messages::p2p::encoding::ack::NackMotive;
-use tezos_messages::p2p::encoding::connection::ConnectionMessage;
-use tezos_messages::p2p::encoding::version::NetworkVersion;
+use mavryk_identity::Identity;
+use mavryk_messages::p2p::encoding::ack::NackMotive;
+use mavryk_messages::p2p::encoding::connection::ConnectionMessage;
+use mavryk_messages::p2p::encoding::version::NetworkVersion;
 
 fn build_cluster(pow_target: f64) -> Cluster {
     let initial_time = SystemTime::now();
@@ -23,7 +23,7 @@ fn build_cluster(pow_target: f64) -> Cluster {
         pow_target,
         identity: Identity::generate(pow_target).unwrap(),
         shell_compatibility_version: ShellCompatibilityVersion::new(
-            "TEZOS_LOCALNET".to_owned(),
+            "MAVRYK_LOCALNET".to_owned(),
             vec![1],
             vec![1],
         ),
@@ -97,7 +97,7 @@ fn test_handshaking_nack_unknown_chain_name() {
         &peer.identity().public_key,
         &peer.identity().proof_of_work_stamp,
         Nonce::random(),
-        NetworkVersion::new("TEZOS_UNKNOWN".to_owned(), 1, 1),
+        NetworkVersion::new("MAVRYK_UNKNOWN".to_owned(), 1, 1),
     )
     .unwrap();
 
@@ -144,7 +144,7 @@ fn test_handshaking_nack_deprecated_distributed_version() {
         &peer.identity().public_key,
         &peer.identity().proof_of_work_stamp,
         Nonce::random(),
-        NetworkVersion::new("TEZOS_LOCALNET".to_owned(), 0, 1),
+        NetworkVersion::new("MAVRYK_LOCALNET".to_owned(), 0, 1),
     )
     .unwrap();
 
@@ -193,7 +193,7 @@ fn test_handshaking_nack_deprecated_p2p_version() {
         &peer.identity().public_key,
         &peer.identity().proof_of_work_stamp,
         Nonce::random(),
-        NetworkVersion::new("TEZOS_LOCALNET".to_owned(), 1, 0),
+        NetworkVersion::new("MAVRYK_LOCALNET".to_owned(), 1, 0),
     )
     .unwrap();
 

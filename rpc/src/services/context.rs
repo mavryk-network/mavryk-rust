@@ -7,7 +7,7 @@ use rusqlite::{named_params, Connection, OptionalExtension};
 use serde::Serialize;
 
 use crypto::hash::BlockHash;
-use tezos_timing::{
+use mavryk_timing::{
     hash_to_string, Protocol, QueryData, QueryStats, QueryStatsWithRange, RangeStats, FILENAME_DB,
     STATS_ALL_PROTOCOL,
 };
@@ -424,7 +424,7 @@ mod tests {
         let block_hash = BlockHash::try_from_bytes(&[1; 32]).unwrap();
         let block_hash_str = hash_to_string(block_hash.as_ref());
 
-        let schema = include_str!("../../../tezos/timing/src/schema_stats.sql");
+        let schema = include_str!("../../../mavryk/timing/src/schema_stats.sql");
         let mut batch = Batch::new(&sql, schema);
         while let Some(mut stmt) = batch.next().unwrap() {
             stmt.execute([]).unwrap();

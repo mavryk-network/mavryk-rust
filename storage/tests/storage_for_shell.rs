@@ -14,16 +14,16 @@ use crypto::hash::{chain_id_from_block_hash, BlockHash, ContextHash, ProtocolHas
 use storage::chain_meta_storage::ChainMetaStorageReader;
 use storage::tests_common::TmpStorage;
 use storage::*;
-use tezos_api::environment::TezosEnvironmentConfiguration;
-use tezos_api::ffi::{ApplyBlockResponse, CommitGenesisResult};
-use tezos_context_api::{
+use mavryk_api::environment::MavrykEnvironmentConfiguration;
+use mavryk_api::ffi::{ApplyBlockResponse, CommitGenesisResult};
+use mavryk_context_api::{
     ContextKvStoreConfiguration, GenesisChain, ProtocolOverrides,
-    TezosContextIrminStorageConfiguration, TezosContextStorageConfiguration,
-    TezosContextTezEdgeStorageConfiguration, TezosContextTezedgeOnDiskBackendOptions,
+    MavrykContextIrminStorageConfiguration, MavrykContextStorageConfiguration,
+    MavrykContextTezEdgeStorageConfiguration, MavrykContextTezedgeOnDiskBackendOptions,
 };
-use tezos_messages::p2p::binary_message::BinaryRead;
-use tezos_messages::p2p::encoding::prelude::*;
-use tezos_messages::Head;
+use mavryk_messages::p2p::binary_message::BinaryRead;
+use mavryk_messages::p2p::encoding::prelude::*;
+use mavryk_messages::Head;
 
 #[test]
 fn test_storage() -> Result<(), Error> {
@@ -42,8 +42,8 @@ fn test_storage() -> Result<(), Error> {
     let cycle_eras_storage = CycleErasStorage::new(tmp_storage.storage());
     let constants_storage = ConstantsStorage::new(tmp_storage.storage());
 
-    // tezos env - sample
-    let tezos_env = TezosEnvironmentConfiguration {
+    // mavryk env - sample
+    let mavryk_env = MavrykEnvironmentConfiguration {
         genesis: GenesisChain {
             time: "2019-08-06T15:18:56Z".to_string(),
             block: "BLockGenesisGenesisGenesisGenesisGenesiscde8db4cX94".to_string(),
@@ -53,7 +53,7 @@ fn test_storage() -> Result<(), Error> {
             "bootstrap.zeronet.fun".to_string(),
             "bootzero.tzbeta.net".to_string(),
         ],
-        version: "TEZOS_ZERONET_2019-08-06T15:18:56Z".to_string(),
+        version: "MAVRYK_ZERONET_2019-08-06T15:18:56Z".to_string(),
         protocol_overrides: ProtocolOverrides {
             user_activated_upgrades: vec![],
             user_activated_protocol_overrides: vec![],
@@ -61,12 +61,12 @@ fn test_storage() -> Result<(), Error> {
         enable_testchain: true,
         patch_context_genesis_parameters: None,
     };
-    let context_storage_configuration = TezosContextStorageConfiguration::Both(
-        TezosContextIrminStorageConfiguration {
+    let context_storage_configuration = MavrykContextStorageConfiguration::Both(
+        MavrykContextIrminStorageConfiguration {
             data_dir: context_dir,
         },
-        TezosContextTezEdgeStorageConfiguration {
-            backend: ContextKvStoreConfiguration::InMem(TezosContextTezedgeOnDiskBackendOptions {
+        MavrykContextTezEdgeStorageConfiguration {
+            backend: ContextKvStoreConfiguration::InMem(MavrykContextTezedgeOnDiskBackendOptions {
                 base_path: tmp_storage_dir.to_str().unwrap().to_string(),
                 startup_check: false,
             }),
@@ -76,7 +76,7 @@ fn test_storage() -> Result<(), Error> {
 
     // initialize empty storage
     let init_data = resolve_storage_init_chain_data(
-        &tezos_env,
+        &mavryk_env,
         &tmp_storage_dir,
         &context_storage_configuration,
         &None,
@@ -89,11 +89,11 @@ fn test_storage() -> Result<(), Error> {
     let init_data = init_data.unwrap();
     assert_eq!(
         init_data.genesis_block_header_hash,
-        BlockHash::try_from(tezos_env.genesis.block.as_str())?
+        BlockHash::try_from(mavryk_env.genesis.block.as_str())?
     );
     assert_eq!(
         init_data.chain_id,
-        chain_id_from_block_hash(&BlockHash::try_from(tezos_env.genesis.block.as_str())?)?
+        chain_id_from_block_hash(&BlockHash::try_from(mavryk_env.genesis.block.as_str())?)?
     );
 
     // load current head (non)
@@ -111,7 +111,7 @@ fn test_storage() -> Result<(), Error> {
         &block_storage,
         &block_meta_storage,
         &init_data,
-        &tezos_env,
+        &mavryk_env,
         &new_context_hash,
         &log,
     )?;

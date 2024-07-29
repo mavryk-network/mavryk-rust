@@ -10,9 +10,9 @@ use tezedge_actor_system::actors::*;
 
 use crypto::hash::{BlockHash, ChainId};
 use storage::BlockHeaderWithHash;
-use tezos_messages::p2p::encoding::metadata::MetadataMessage;
-use tezos_messages::p2p::encoding::peer::PeerMessageResponse;
-use tezos_messages::p2p::encoding::version::NetworkVersion;
+use mavryk_messages::p2p::encoding::metadata::MetadataMessage;
+use mavryk_messages::p2p::encoding::peer::PeerMessageResponse;
+use mavryk_messages::p2p::encoding::version::NetworkVersion;
 
 use crate::PeerId;
 

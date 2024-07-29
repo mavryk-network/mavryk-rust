@@ -18,10 +18,10 @@ use shell_automaton_testing::service::IOCondition;
 use shell_automaton_testing::{build_expected_history, generate_chain};
 use shell_automaton_testing::{one_real_node_cluster::Cluster, service::StorageResponse};
 use storage::BlockHeaderWithHash;
-use tezos_identity::Identity;
-use tezos_messages::p2p::encoding::block_header::Level;
-use tezos_messages::p2p::encoding::peer::PeerMessage;
-use tezos_messages::p2p::encoding::prelude::{BlockLocator, GetCurrentBranchMessage};
+use mavryk_identity::Identity;
+use mavryk_messages::p2p::encoding::block_header::Level;
+use mavryk_messages::p2p::encoding::peer::PeerMessage;
+use mavryk_messages::p2p::encoding::prelude::{BlockLocator, GetCurrentBranchMessage};
 
 fn data(current_head_level: Level) -> (Cluster, Vec<BlockHeaderWithHash>) {
     let initial_time = SystemTime::now();
@@ -31,7 +31,7 @@ fn data(current_head_level: Level) -> (Cluster, Vec<BlockHeaderWithHash>) {
         pow_target: 0.0,
         identity: Identity::generate(0.0).unwrap(),
         shell_compatibility_version: ShellCompatibilityVersion::new(
-            "TEZOS_LOCALNET".to_owned(),
+            "MAVRYK_LOCALNET".to_owned(),
             vec![1],
             vec![1],
         ),

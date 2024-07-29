@@ -4,7 +4,7 @@
 use std::convert::TryInto;
 
 use crypto::blake2b;
-use tezos_encoding::enc::BinWriter;
+use mavryk_encoding::enc::BinWriter;
 
 pub fn guess_proof_of_work(
     header: &impl BinWriter,
@@ -40,8 +40,8 @@ mod tests {
     use crypto::hash::{
         BlockHash, BlockPayloadHash, ContextHash, OperationListListHash, Signature,
     };
-    use tezos_encoding::{enc::BinWriter, types::SizedBytes};
-    use tezos_messages::protocol::proto_012::operation::FullHeader;
+    use mavryk_encoding::{enc::BinWriter, types::SizedBytes};
+    use mavryk_messages::protocol::proto_012::operation::FullHeader;
 
     use crate::proof_of_work::check_proof_of_work;
 
@@ -124,7 +124,7 @@ mod tests {
             )
             .unwrap(),
             payload_hash: BlockPayloadHash::from_base58_check(
-                "vh2VjzHiqaTcKh8wu5AbP6TZ5ibRCqkz7qQ2bAhGK7i2Ffj2akkp",
+                "vh2VjzHiqaTcKh8wu5AbP6MV5ibRCqkz7qQ2bAhGK7i2Ffj2akkp",
             )
             .unwrap(),
             payload_round: 0,

@@ -5,7 +5,7 @@ use std::sync::Arc;
 
 use crypto::hash::{BlockPayloadHash, OperationHash, ProtocolHash};
 use storage::BlockHeaderWithHash;
-use tezos_messages::p2p::encoding::operation::Operation;
+use mavryk_messages::p2p::encoding::operation::Operation;
 
 use crate::{EnablingCondition, State};
 

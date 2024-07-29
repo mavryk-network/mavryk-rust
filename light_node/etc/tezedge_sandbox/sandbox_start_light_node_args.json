@@ -8,7 +8,7 @@
     "sandbox_patch_context_json": {
         "genesis_pubkey": "edpkuSLWfVU1Vq7Jg9FucPyKmma6otcMHac9zG4oU1KMHSTBpJuGQ2"
     },
-    "tezos_data_dir": "/tmp/tezedge_developer/tezos-node",
+    "mavryk_data_dir": "/tmp/tezedge_developer/mavryk-node",
     "identity_file": "/tmp/sandbox/light-node/identity.json",
     "bootstrap_db_path": "bootstrap_db",
     "db_cfg_max_threads": "4",

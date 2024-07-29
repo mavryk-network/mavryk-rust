@@ -18,11 +18,11 @@ use crypto::hash::{
     ChainId, Ed25519Signature, SecretKeyEd25519, SeedEd25519, Signature, TryFromPKError,
 };
 use crypto::{blake2b, CryptoError, PublicKeyWithHash};
-use tezos_encoding::enc::{BinError, BinWriter};
-use tezos_encoding::types::SizedBytes;
-use tezos_messages::base::signature_public_key::{SignaturePublicKey, SignaturePublicKeyHash};
-use tezos_messages::base::ConversionError;
-use tezos_messages::p2p::encoding::block_header::BlockHeader;
+use mavryk_encoding::enc::{BinError, BinWriter};
+use mavryk_encoding::types::SizedBytes;
+use mavryk_messages::base::signature_public_key::{SignaturePublicKey, SignaturePublicKeyHash};
+use mavryk_messages::base::ConversionError;
+use mavryk_messages::p2p::encoding::block_header::BlockHeader;
 
 use super::service_channel::{
     worker_channel, ResponseTryRecvError, ServiceWorkerRequester, ServiceWorkerResponder,
@@ -177,7 +177,7 @@ pub enum BakerSignerParseError {
     Conversion(ConversionError),
     #[error("{_0}")]
     InvalidUrl(url::ParseError),
-    #[error("missing \"/tz1...\"")]
+    #[error("missing \"/mv1...\"")]
     MissingPkhPathSegment,
 }
 
@@ -501,7 +501,7 @@ fn check_proof_of_work(header_bytes: &[u8], proof_of_work_threshold: i64) -> boo
 mod tests {
     use super::*;
 
-    use tezos_messages::protocol::proto_012::operation::{
+    use mavryk_messages::protocol::proto_012::operation::{
         InlinedEndorsement, InlinedEndorsementMempoolContents,
         InlinedEndorsementMempoolContentsEndorsementVariant, InlinedPreendorsement,
         InlinedPreendorsementContents, InlinedPreendorsementVariant,

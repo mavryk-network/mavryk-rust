@@ -21,9 +21,9 @@ tokio = { version = "1.19", features = ["time", "net", "io-util", "rt-multi-thre
 lazy_static = "1.4"
 # local dependencies
 crypto = { path = "../crypto" }
-tezos_encoding = { path = "../tezos/encoding" }
-tezos_identity = { path = "../tezos/identity" }
-tezos_messages = { path = "../tezos/messages" }
+mavryk_encoding = { path = "../mavryk/encoding" }
+mavryk_identity = { path = "../mavryk/identity" }
+mavryk_messages = { path = "../mavryk/messages" }
 storage = { path = "../storage" }
 
 [dev-dependencies]

@@ -4,15 +4,15 @@
 use std::path::PathBuf;
 
 use crypto::hash::ChainId;
-use tezos_api::environment::TezosEnvironmentConfiguration;
-use tezos_api::ffi::{
+use mavryk_api::environment::MavrykEnvironmentConfiguration;
+use mavryk_api::ffi::{
     ApplyBlockRequest, BeginConstructionRequest, ComputePathRequest, PreapplyBlockRequest,
-    ProtocolRpcRequest, TezosRuntimeConfiguration, ValidateOperationRequest,
+    ProtocolRpcRequest, MavrykRuntimeConfiguration, ValidateOperationRequest,
 };
-use tezos_context_api::{PatchContext, TezosContextStorageConfiguration};
-use tezos_messages::p2p::encoding::block_header::{BlockHeader, Level};
-use tezos_protocol_ipc_client::ProtocolServiceError;
-use tezos_protocol_ipc_messages::GenesisResultDataParams;
+use mavryk_context_api::{PatchContext, MavrykContextStorageConfiguration};
+use mavryk_messages::p2p::encoding::block_header::{BlockHeader, Level};
+use mavryk_protocol_ipc_client::ProtocolServiceError;
+use mavryk_protocol_ipc_messages::GenesisResultDataParams;
 
 use shell_automaton::protocol_runner::ProtocolRunnerToken;
 pub use shell_automaton::service::protocol_runner_service::{
@@ -50,14 +50,14 @@ impl ProtocolRunnerService for ProtocolRunnerServiceDummy {
 
     fn spawn_server(&mut self) {}
 
-    fn init_runtime(&mut self, _: TezosRuntimeConfiguration) -> ProtocolRunnerToken {
+    fn init_runtime(&mut self, _: MavrykRuntimeConfiguration) -> ProtocolRunnerToken {
         self.new_token()
     }
 
     fn init_context(
         &mut self,
-        _: TezosContextStorageConfiguration,
-        _: &TezosEnvironmentConfiguration,
+        _: MavrykContextStorageConfiguration,
+        _: &MavrykEnvironmentConfiguration,
         _: bool,
         _: bool,
         _: bool,
@@ -69,7 +69,7 @@ impl ProtocolRunnerService for ProtocolRunnerServiceDummy {
 
     fn init_context_ipc_server(
         &mut self,
-        _: TezosContextStorageConfiguration,
+        _: MavrykContextStorageConfiguration,
     ) -> ProtocolRunnerToken {
         self.new_token()
     }

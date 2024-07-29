@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 use crypto::hash::{BlockHash, BlockPayloadHash, ChainId};
-use tezos_messages::{
+use mavryk_messages::{
     base::signature_public_key::SignaturePublicKey,
     p2p::encoding::operation::Operation,
     protocol::{proto_012::operation::OperationVerifyError, SupportedProtocol},
@@ -15,10 +15,10 @@ use super::{OperationProtocolData, PrecheckerError, TenderbakeConsensusContents}
 #[cfg_attr(feature = "fuzzing", derive(fuzzcheck::DefaultMutator))]
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub enum OperationDecodedContents {
-    Proto010(tezos_messages::protocol::proto_010::operation::Operation),
-    Proto011(tezos_messages::protocol::proto_011::operation::Operation),
-    Proto012(tezos_messages::protocol::proto_012::operation::Operation),
-    Proto013(tezos_messages::protocol::proto_013::operation::Operation),
+    Proto010(mavryk_messages::protocol::proto_010::operation::Operation),
+    Proto011(mavryk_messages::protocol::proto_011::operation::Operation),
+    Proto012(mavryk_messages::protocol::proto_012::operation::Operation),
+    Proto013(mavryk_messages::protocol::proto_013::operation::Operation),
 }
 
 impl OperationDecodedContents {
@@ -42,25 +42,25 @@ impl OperationDecodedContents {
         shell_operation: &Operation,
         proto: &SupportedProtocol,
     ) -> Result<Self, PrecheckerError> {
-        use tezos_messages::protocol::FromShell;
+        use mavryk_messages::protocol::FromShell;
         Ok(match proto {
             SupportedProtocol::Proto010 => Self::Proto010(
-                tezos_messages::protocol::proto_010::operation::Operation::convert_from(
+                mavryk_messages::protocol::proto_010::operation::Operation::convert_from(
                     shell_operation,
                 )?,
             ),
             SupportedProtocol::Proto011 => Self::Proto011(
-                tezos_messages::protocol::proto_011::operation::Operation::convert_from(
+                mavryk_messages::protocol::proto_011::operation::Operation::convert_from(
                     shell_operation,
                 )?,
             ),
             SupportedProtocol::Proto012 => Self::Proto012(
-                tezos_messages::protocol::proto_012::operation::Operation::convert_from(
+                mavryk_messages::protocol::proto_012::operation::Operation::convert_from(
                     shell_operation,
                 )?,
             ),
             SupportedProtocol::Proto013 => Self::Proto013(
-                tezos_messages::protocol::proto_013::operation::Operation::convert_from(
+                mavryk_messages::protocol::proto_013::operation::Operation::convert_from(
                     shell_operation,
                 )?,
             ),

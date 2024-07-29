@@ -5,7 +5,7 @@ use std::net::SocketAddr;
 
 use crate::EnablingCondition;
 use crypto::hash::BlockHash;
-use tezos_messages::base::signature_public_key::SignaturePublicKey;
+use mavryk_messages::base::signature_public_key::SignaturePublicKey;
 
 use crate::State;
 

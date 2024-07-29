@@ -5,8 +5,8 @@ use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use storage::block_meta_storage::Meta;
 use storage::{BlockAdditionalData, BlockHeaderWithHash};
-use tezos_api::ffi::{ApplyBlockRequest, ApplyBlockResponse};
-use tezos_protocol_ipc_client::ProtocolServiceError;
+use mavryk_api::ffi::{ApplyBlockRequest, ApplyBlockResponse};
+use mavryk_protocol_ipc_client::ProtocolServiceError;
 
 use crypto::hash::BlockHash;
 

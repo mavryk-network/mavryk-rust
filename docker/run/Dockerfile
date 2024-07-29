@@ -1,5 +1,5 @@
 # Build stage 1
-FROM tezedge/tezos-opam-builder:debian10
+FROM tezedge/mavryk-opam-builder:debian10
 
 USER root
 RUN apt-get install -y openssl libssl-dev zlib1g

@@ -6,9 +6,9 @@ use std::collections::BTreeMap;
 use derive_more::From;
 use serde::{Deserialize, Serialize};
 
-use crypto::hash::{BlockHash, ContractTz1Hash, NonceHash};
+use crypto::hash::{BlockHash, ContractMv1Hash, NonceHash};
 use redux_rs::EnablingCondition;
-use tezos_messages::protocol::proto_012::operation::{InlinedEndorsement, InlinedPreendorsement};
+use mavryk_messages::protocol::proto_012::operation::{InlinedEndorsement, InlinedPreendorsement};
 
 use crate::services::event::{Block, OperationSimple, Slots};
 
@@ -61,7 +61,7 @@ where
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct SlotsEventAction {
     pub level: i32,
-    pub delegates: BTreeMap<ContractTz1Hash, Slots>,
+    pub delegates: BTreeMap<ContractMv1Hash, Slots>,
 }
 
 impl<S> EnablingCondition<S> for SlotsEventAction

@@ -7,14 +7,14 @@ use std::time::{Duration, SystemTime};
 use hex::FromHex;
 use serde::{Deserialize, Serialize};
 use storage::StorageInitInfo;
-use tezos_api::{environment::TezosEnvironmentConfiguration, ffi::TezosRuntimeConfiguration};
-use tezos_context_api::{
-    ContextKvStoreConfiguration, GenesisChain, ProtocolOverrides, TezosContextStorageConfiguration,
-    TezosContextTezEdgeStorageConfiguration, TezosContextTezedgeOnDiskBackendOptions,
+use mavryk_api::{environment::MavrykEnvironmentConfiguration, ffi::MavrykRuntimeConfiguration};
+use mavryk_context_api::{
+    ContextKvStoreConfiguration, GenesisChain, ProtocolOverrides, MavrykContextStorageConfiguration,
+    MavrykContextTezEdgeStorageConfiguration, MavrykContextTezedgeOnDiskBackendOptions,
 };
-use tezos_messages::base::signature_public_key::SignaturePublicKeyHash;
-use tezos_messages::p2p::encoding::block_header::Level;
-use tezos_protocol_ipc_client::ProtocolRunnerConfiguration;
+use mavryk_messages::base::signature_public_key::SignaturePublicKeyHash;
+use mavryk_messages::p2p::encoding::block_header::Level;
+use mavryk_protocol_ipc_client::ProtocolRunnerConfiguration;
 
 use crate::baker::block_baker::LiquidityBakingToggleVote;
 use crate::shell_compatibility_version::ShellCompatibilityVersion;
@@ -23,7 +23,7 @@ use crypto::{
     hash::{BlockHash, ChainId, CryptoboxPublicKeyHash, HashTrait},
     proof_of_work::ProofOfWork,
 };
-use tezos_identity::Identity;
+use mavryk_identity::Identity;
 
 use crate::Port;
 
@@ -144,11 +144,11 @@ pub fn default_test_config() -> Config {
         initial_time: SystemTime::now(),
 
         protocol_runner: ProtocolRunnerConfiguration {
-            runtime_configuration: TezosRuntimeConfiguration {
+            runtime_configuration: MavrykRuntimeConfiguration {
                 log_enabled: false,
                 log_level: None,
             },
-            environment: TezosEnvironmentConfiguration {
+            environment: MavrykEnvironmentConfiguration {
                 genesis: GenesisChain {
                     time: "2018-06-30T16:07:32Z".to_string(),
                     block: "BLockGenesisGenesisGenesisGenesisGenesisf79b5d1CoW2".to_string(),
@@ -164,10 +164,10 @@ pub fn default_test_config() -> Config {
                 patch_context_genesis_parameters: None,
             },
             enable_testchain: false,
-            storage: TezosContextStorageConfiguration::TezEdgeOnly(
-                TezosContextTezEdgeStorageConfiguration {
+            storage: MavrykContextStorageConfiguration::TezEdgeOnly(
+                MavrykContextTezEdgeStorageConfiguration {
                     backend: ContextKvStoreConfiguration::InMem(
-                        TezosContextTezedgeOnDiskBackendOptions {
+                        MavrykContextTezedgeOnDiskBackendOptions {
                             base_path: "/tmp/tezedge".to_string(),
                             startup_check: false,
                         },
@@ -196,7 +196,7 @@ pub fn default_test_config() -> Config {
         // identity: Identity::generate(pow_target).unwrap(),
         identity: identity_1(),
         shell_compatibility_version: ShellCompatibilityVersion::new(
-            "TEZOS_MAINNET".to_owned(),
+            "MAVRYK_MAINNET".to_owned(),
             vec![0, 1],
             vec![1],
         ),

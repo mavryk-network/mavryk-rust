@@ -15,7 +15,7 @@ start_sandbox_node() {
       "sandbox_patch_context_json": {
           "genesis_pubkey": "edpkuSLWfVU1Vq7Jg9FucPyKmma6otcMHac9zG4oU1KMHSTBpJuGQ2"
       },
-      "tezos_data_dir": "/tmp/tezedge/tezos-node",
+      "mavryk_data_dir": "/tmp/tezedge/mavryk-node",
       "identity_file": "/tmp/tezedge/identity.json",
       "bootstrap_db_path": "/tmp/tezedge/light-node",
       "db_cfg_max_threads": "4",
@@ -36,7 +36,7 @@ start_sandbox_node() {
   sleep 3
 
 
-  # init tezos client for sandbox node
+  # init mavryk client for sandbox node
   curl --location --request POST $LAUNCHER'/init_client' \
   --header 'Content-Type: application/json' \
   --data-raw '[
@@ -148,39 +148,39 @@ send_transactions() {
 	wallets_json=$(mktemp -t wallets-XXXXXXXXXX.json)
 	echo $wallets > $wallets_json
 
-	# init several tezos clients with own data dir
-	export TEZOS_CLIENT_UNSAFE_DISABLE_DISCLAIMER="Y"
-	tezos_client=$2
-	if test -f "$tezos_client"; then
-		echo "Tezos_client binary path: '$tezos_client' exist."
+	# init several mavryk clients with own data dir
+	export MAVRYK_CLIENT_UNSAFE_DISABLE_DISCLAIMER="Y"
+	mavryk_client=$2
+	if test -f "$mavryk_client"; then
+		echo "Tezos_client binary path: '$mavryk_client' exist."
 	else
-	  tezos_client="./sandbox/artifacts/tezos-client"
-	  if test -f "$tezos_client"; then
-		  echo "Tezos_client binary path: '$tezos_client' exist."
+	  mavryk_client="./sandbox/artifacts/mavryk-client"
+	  if test -f "$mavryk_client"; then
+		  echo "Tezos_client binary path: '$mavryk_client' exist."
 	  else
-		  echo "Tezos_client binary path: '$tezos_client' does not exist."
+		  echo "Tezos_client binary path: '$mavryk_client' does not exist."
 		  exit;
 		fi
 	fi
 
-	tezos_client_wrappers_0="$tezos_client --base-dir $(mktemp -d -t tcd-XXXXXXXXXX) -A $sandbox_node_host -P $sandbox_node_port"
-	tezos_client_wrappers_1="$tezos_client --base-dir $(mktemp -d -t tcd-XXXXXXXXXX) -A $sandbox_node_host -P $sandbox_node_port"
-	tezos_client_wrappers_2="$tezos_client --base-dir $(mktemp -d -t tcd-XXXXXXXXXX) -A $sandbox_node_host -P $sandbox_node_port"
-	tezos_client_wrappers_3="$tezos_client --base-dir $(mktemp -d -t tcd-XXXXXXXXXX) -A $sandbox_node_host -P $sandbox_node_port"
-	tezos_client_wrappers_4="$tezos_client --base-dir $(mktemp -d -t tcd-XXXXXXXXXX) -A $sandbox_node_host -P $sandbox_node_port"
+	mavryk_client_wrappers_0="$mavryk_client --base-dir $(mktemp -d -t tcd-XXXXXXXXXX) -A $sandbox_node_host -P $sandbox_node_port"
+	mavryk_client_wrappers_1="$mavryk_client --base-dir $(mktemp -d -t tcd-XXXXXXXXXX) -A $sandbox_node_host -P $sandbox_node_port"
+	mavryk_client_wrappers_2="$mavryk_client --base-dir $(mktemp -d -t tcd-XXXXXXXXXX) -A $sandbox_node_host -P $sandbox_node_port"
+	mavryk_client_wrappers_3="$mavryk_client --base-dir $(mktemp -d -t tcd-XXXXXXXXXX) -A $sandbox_node_host -P $sandbox_node_port"
+	mavryk_client_wrappers_4="$mavryk_client --base-dir $(mktemp -d -t tcd-XXXXXXXXXX) -A $sandbox_node_host -P $sandbox_node_port"
 
 
-	# initialize tezos-client-binary with wallets
+	# initialize mavryk-client-binary with wallets
 	jq -c '.[]' $wallets_json | while read wallet; do
 		alias=$(echo $wallet | jq -r '.alias')
 		secret_key=unencrypted:$(echo $wallet | jq -r '.secret_key')
 		echo "Initialize wallet: " $alias " - " $secret_key
 
-		$tezos_client_wrappers_0 import secret key $alias $secret_key
-		$tezos_client_wrappers_1 import secret key $alias $secret_key
-		$tezos_client_wrappers_2 import secret key $alias $secret_key
-		$tezos_client_wrappers_3 import secret key $alias $secret_key
-		$tezos_client_wrappers_4 import secret key $alias $secret_key
+		$mavryk_client_wrappers_0 import secret key $alias $secret_key
+		$mavryk_client_wrappers_1 import secret key $alias $secret_key
+		$mavryk_client_wrappers_2 import secret key $alias $secret_key
+		$mavryk_client_wrappers_3 import secret key $alias $secret_key
+		$mavryk_client_wrappers_4 import secret key $alias $secret_key
 	done
 
 	# send transactions
@@ -199,11 +199,11 @@ send_transactions() {
 		client=$(( $RANDOM % 4))
 
 		case $client in
-			0) $tezos_client_wrappers_0 transfer $transfer from $wallet1 to $wallet2 --burn-cap $burn_cap &;;
-			1) $tezos_client_wrappers_1 transfer $transfer from $wallet1 to $wallet2 --burn-cap $burn_cap &;;
-			2) $tezos_client_wrappers_2 transfer $transfer from $wallet1 to $wallet2 --burn-cap $burn_cap &;;
-			3) $tezos_client_wrappers_3 transfer $transfer from $wallet1 to $wallet2 --burn-cap $burn_cap &;;
-			4) $tezos_client_wrappers_4 transfer $transfer from $wallet1 to $wallet2 --burn-cap $burn_cap &;;
+			0) $mavryk_client_wrappers_0 transfer $transfer from $wallet1 to $wallet2 --burn-cap $burn_cap &;;
+			1) $mavryk_client_wrappers_1 transfer $transfer from $wallet1 to $wallet2 --burn-cap $burn_cap &;;
+			2) $mavryk_client_wrappers_2 transfer $transfer from $wallet1 to $wallet2 --burn-cap $burn_cap &;;
+			3) $mavryk_client_wrappers_3 transfer $transfer from $wallet1 to $wallet2 --burn-cap $burn_cap &;;
+			4) $mavryk_client_wrappers_4 transfer $transfer from $wallet1 to $wallet2 --burn-cap $burn_cap &;;
 		esac
 	} done
 }
@@ -229,7 +229,7 @@ esac
 # ./run.sh sandbox
 # ./test.sh start_sandbox_node
 # ps -ef | grep runner
-# ./test.sh send_transactions /home/dev/tezos/tezos-client
+# ./test.sh send_transactions /home/dev/mavryk/mavryk-client
 # ps -ef | grep runner
 # curl http://trace.dev.tezedge.com:18732/chains/main/mempool/pending_operations
 # ./test.sh stop_sandbox_node

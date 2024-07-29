@@ -4,7 +4,7 @@ services:
 
   node:
     image: tezedge/tezedge:v3.1.1
-    command: ["--network=mainnet", "--p2p-port=9732", "--rpc-port=18732", "--websocket-address=0.0.0.0:4927", "--peer-thresh-low", "30", "--peer-thresh-high", "45", "--tezos-context-storage=${TEZOS_CONTEXT_STORAGE:-irmin}"]
+    command: ["--network=mainnet", "--p2p-port=9732", "--rpc-port=18732", "--websocket-address=0.0.0.0:4927", "--peer-thresh-low", "30", "--peer-thresh-high", "45", "--mavryk-context-storage=${MAVRYK_CONTEXT_STORAGE:-irmin}"]
     hostname: node
     ports:
       - "4927:4927"
@@ -14,7 +14,7 @@ services:
       - default
     tty: true
     environment:
-      - TEZOS_CONTEXT=index-log-size=2_500_000
+      - MAVRYK_CONTEXT=index-log-size=2_500_000
 
   explorer:
     image: tezedge/tezedge-explorer:v2.2.3

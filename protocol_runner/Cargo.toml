@@ -15,10 +15,10 @@ slog-async = "2.6"
 slog-term = "2.9"
 # local dependencies
 crypto = { path = "../crypto" }
-tezos_api = { path = "../tezos/api" }
-tezos_context = { path = "../tezos/context" }
-tezos_context_api = { path = "../tezos/context-api" }
-tezos_interop = { path = "../tezos/interop" }
-tezos_messages = { path = "../tezos/messages" }
+mavryk_api = { path = "../mavryk/api" }
+mavryk_context = { path = "../mavryk/context" }
+mavryk_context_api = { path = "../mavryk/context-api" }
+mavryk_interop = { path = "../mavryk/interop" }
+mavryk_messages = { path = "../mavryk/messages" }
 ocaml-interop = { version = "0.8.7", features = ["without-ocamlopt", "caml-state"] }
 

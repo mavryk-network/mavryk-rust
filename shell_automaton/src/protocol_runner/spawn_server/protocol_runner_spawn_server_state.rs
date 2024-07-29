@@ -3,7 +3,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use tezos_protocol_ipc_client::ProtocolRunnerError;
+use mavryk_protocol_ipc_client::ProtocolRunnerError;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum ProtocolRunnerSpawnServerState {

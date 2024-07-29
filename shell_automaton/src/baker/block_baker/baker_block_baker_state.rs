@@ -10,14 +10,14 @@ use crypto::hash::{
     Signature,
 };
 use storage::BlockHeaderWithHash;
-use tezos_encoding::enc::{BinError, BinWriter};
-use tezos_encoding::encoding::HasEncoding;
-use tezos_encoding::types::SizedBytes;
-use tezos_messages::p2p::encoding::block_header::BlockHeader;
-use tezos_messages::p2p::encoding::operation::Operation;
-use tezos_messages::p2p::encoding::operations_for_blocks::Path;
-use tezos_messages::protocol::SupportedProtocol;
-use tezos_messages::Timestamp;
+use mavryk_encoding::enc::{BinError, BinWriter};
+use mavryk_encoding::encoding::HasEncoding;
+use mavryk_encoding::types::SizedBytes;
+use mavryk_messages::p2p::encoding::block_header::BlockHeader;
+use mavryk_messages::p2p::encoding::operation::Operation;
+use mavryk_messages::p2p::encoding::operations_for_blocks::Path;
+use mavryk_messages::protocol::SupportedProtocol;
+use mavryk_messages::Timestamp;
 
 use crate::protocol_runner::ProtocolRunnerToken;
 use crate::request::RequestId;
@@ -288,9 +288,9 @@ pub struct BlockPreapplyRequest {
     pub predecessor_max_operations_ttl: i32,
 }
 
-impl From<BlockPreapplyRequest> for tezos_api::ffi::PreapplyBlockRequest {
+impl From<BlockPreapplyRequest> for mavryk_api::ffi::PreapplyBlockRequest {
     fn from(req: BlockPreapplyRequest) -> Self {
-        tezos_api::ffi::PreapplyBlockRequest {
+        mavryk_api::ffi::PreapplyBlockRequest {
             chain_id: req.chain_id.clone(),
             protocol_data: req.protocol_data.clone(),
             timestamp: Some(req.timestamp.i64()),
@@ -303,4 +303,4 @@ impl From<BlockPreapplyRequest> for tezos_api::ffi::PreapplyBlockRequest {
     }
 }
 
-pub type BlockPreapplyResponse = tezos_api::ffi::PreapplyBlockResponse;
+pub type BlockPreapplyResponse = mavryk_api::ffi::PreapplyBlockResponse;

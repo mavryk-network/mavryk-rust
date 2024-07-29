@@ -4,7 +4,7 @@
 use std::convert::TryInto;
 
 use crypto::hash::BlockHash;
-use tezos_messages::p2p::{binary_message::MessageHash, encoding::peer::PeerMessage};
+use mavryk_messages::p2p::{binary_message::MessageHash, encoding::peer::PeerMessage};
 
 use crate::{
     mempool::mempool_actions::BlockInjectAction,

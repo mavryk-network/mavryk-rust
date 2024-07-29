@@ -8,7 +8,7 @@ use getset::Getters;
 use serde::{Deserialize, Serialize};
 
 use crypto::hash::{BlockHash, ContextHash};
-use tezos_messages::p2p::encoding::block_header::Level;
+use mavryk_messages::p2p::encoding::block_header::Level;
 
 use crate::commit_log::{CommitLogWithSchema, Location};
 use crate::database::tezedge_database::{KVStoreKeyValueSchema, TezedgeDatabaseWithIterator};

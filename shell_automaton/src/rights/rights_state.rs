@@ -9,7 +9,7 @@ use std::{
 use crypto::hash::{ProtocolHash, TryFromPKError};
 use redux_rs::ActionId;
 use storage::cycle_storage::CycleData;
-use tezos_messages::{
+use mavryk_messages::{
     base::signature_public_key::{SignaturePublicKey, SignaturePublicKeyHash},
     p2p::encoding::block_header::{BlockHeader, Level},
     protocol::{SupportedProtocol, UnsupportedProtocolError},

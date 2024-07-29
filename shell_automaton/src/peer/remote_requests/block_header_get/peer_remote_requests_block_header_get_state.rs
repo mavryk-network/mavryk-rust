@@ -6,7 +6,7 @@ use std::collections::BTreeSet;
 use serde::{Deserialize, Serialize};
 
 use crypto::hash::BlockHash;
-use tezos_messages::p2p::encoding::block_header::BlockHeader;
+use mavryk_messages::p2p::encoding::block_header::BlockHeader;
 
 use crate::request::RequestId;
 use crate::service::storage_service::StorageError;

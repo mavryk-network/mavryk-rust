@@ -15,7 +15,7 @@ mod configuration;
 mod filters;
 mod handlers;
 mod node_runner;
-mod tezos_client_runner;
+mod mavryk_client_runner;
 
 #[tokio::main]
 async fn main() {
@@ -46,9 +46,9 @@ async fn main() {
     )));
 
     // create a thread safe reference to the client runner struct
-    let client_runner = Arc::new(RwLock::new(tezos_client_runner::TezosClientRunner::new(
-        "tezos-client",
-        env.tezos_client_path,
+    let client_runner = Arc::new(RwLock::new(mavryk_client_runner::MavrykClientRunner::new(
+        "mavryk-client",
+        env.mavryk_client_path,
     )));
 
     // the port to open the rpc server on

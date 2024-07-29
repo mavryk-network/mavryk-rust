@@ -8,7 +8,7 @@
 
 # Get Free XTZ
 
-https://tezos.gitlab.io/introduction/howtouse.html#get-free-tez
+https://protocol.mavryk.org/introduction/howtouse.html#get-free-tez
 
 _Note that link to free Tez ther is outdated, use the one below._
 
@@ -35,7 +35,7 @@ To get node bootstrapped with the rest of the network faster, you can optionally
 
 ``` sh
 $ target/release/light-node import-snapshot \
-  --tezos-data-dir "$HOME/data-dir-013-PtJakart/tezedge-data" \
+  --mavryk-data-dir "$HOME/data-dir-013-PtJakart/tezedge-data" \
   --from http://snapshots.tezedge.com:8880/testnet/tezedge/archive/tezedge_jakarta_<...>_irmin.archive \
 ```
 
@@ -50,25 +50,25 @@ _Note: This cmd runs from the main git sources directory_
 
 
 ```
-$ LD_LIBRARY_PATH=./tezos/sys/lib_tezos/artifacts ./target/release/light-node \
+$ LD_LIBRARY_PATH=./mavryk/sys/lib_tezos/artifacts ./target/release/light-node \
  --network "jakartanet" \
  --identity-file "$HOME/data-dir-013-PtJakart/identity.json" \
  --identity-expected-pow 26.0 \
- --tezos-data-dir "$HOME/data-dir-013-PtJakart/tezedge-data" \
+ --mavryk-data-dir "$HOME/data-dir-013-PtJakart/tezedge-data" \
  --peer-thresh-low 30 --peer-thresh-high 45 \
  --protocol-runner "./target/release/protocol-runner" \
- --init-sapling-spend-params-file "./tezos/sys/lib_tezos/artifacts/sapling-spend.params" \
- --init-sapling-output-params-file "./tezos/sys/lib_tezos/artifacts/sapling-output.params" \
+ --init-sapling-spend-params-file "./mavryk/sys/lib_tezos/artifacts/sapling-spend.params" \
+ --init-sapling-output-params-file "./mavryk/sys/lib_tezos/artifacts/sapling-output.params" \
  --p2p-port 12534 --rpc-port 12535 \
  --tokio-threads 0 \
  --ocaml-log-enabled false \
- --tezos-context-storage=irmin \
+ --mavryk-context-storage=irmin \
  --log terminal \
  --log-level info \
  --log-format simple
 Mar 31 16:10:22.937 INFO Open files limit set to 65536.
 Mar 31 16:10:22.937 INFO Loaded configuration, ...
-Mar 31 16:10:22.937 INFO Configured network ["jakartanet", "jakarta"] -> TEZOS_ITHACANET_2022-01-25T15:00:00Z
+Mar 31 16:10:22.937 INFO Configured network ["jakartanet", "jakarta"] -> MAVRYK_ITHACANET_2022-01-25T15:00:00Z
 Mar 31 16:10:22.937 INFO Loading databases...
 Mar 31 16:10:23.358 INFO Storage based on data, patch_context: ...
 Mar 31 16:10:23.359 INFO Databases loaded successfully 421 ms
@@ -76,31 +76,31 @@ Mar 31 16:10:23.359 INFO Checking zcash-params for sapling...
 Mar 31 16:10:23.359 INFO Found existing zcash-params files, output_path: "...", spend_path: "...", candidate_dir: "..."
 Mar 31 16:10:23.359 INFO Found existing zcash-params files, output_path: "...", spend_path: "...", candidate_dir: "..."
 Mar 31 16:10:23.359 INFO Loading identity...
-Mar 31 16:10:23.359 INFO Generating new tezos identity. This will take a while, expected_pow: 26
+Mar 31 16:10:23.359 INFO Generating new mavryk identity. This will take a while, expected_pow: 26
 ...
 ```
 
 ## Download Tezos Client Binaries (or Build from Source)
 
-Download `tezos-client`, `tezos-baker-013-PtJakart` and `tezos-accuser-013-PtJakart` from the [Tezos project v13.0 Releases page at Gitlab.com](https://gitlab.com/tezos/tezos/-/releases). E.g. this [archive containing all x86-64 binaries for v13.0 release](https://gitlab.com/tezos/tezos/-/package_files/36986880/download).
+Download `mavryk-client`, `mavryk-baker-013-PtJakart` and `mavryk-accuser-013-PtJakart` from the [Tezos project v13.0 Releases page at Gitlab.com](https://gitlab.com/mavryk/mavryk/-/releases). E.g. this [archive containing all x86-64 binaries for v13.0 release](https://gitlab.com/mavryk/mavryk/-/package_files/36986880/download).
 
-Or alternatively, build them from source. See [https://tezos.gitlab.io/introduction/howtoget.html#building-from-sources-via-opam](https://tezos.gitlab.io/introduction/howtoget.html#building-from-sources-via-opam) for instructions.
+Or alternatively, build them from source. See [https://protocol.mavryk.org/introduction/howtoget.html#building-from-sources-via-opam](https://protocol.mavryk.org/introduction/howtoget.html#building-from-sources-via-opam) for instructions.
 
 After successfull compilation, you should see this binaries in Tezos source directory:
 ```
-tezos-accuser-013-PtJakart
-tezos-baker-013-PtJakart
-tezos-client
+mavryk-accuser-013-PtJakart
+mavryk-baker-013-PtJakart
+mavryk-client
 ```
 
-To prevent `tezos-client` from issuing a warning about testnet, you can set the variable `TEZOS_CLIENT_UNSAFE_DISABLE_DISCLAIMER` to `y`.
+To prevent `mavryk-client` from issuing a warning about testnet, you can set the variable `MAVRYK_CLIENT_UNSAFE_DISABLE_DISCLAIMER` to `y`.
 
 ``` sh
-$ export TEZOS_CLIENT_UNSAFE_DISABLE_DISCLAIMER=y
+$ export MAVRYK_CLIENT_UNSAFE_DISABLE_DISCLAIMER=y
 ```
 ## TezEdge Baker
 
-It is recommended to use TezEdge baker instead of `tezos-baker-013-PtJakart`.
+It is recommended to use TezEdge baker instead of `mavryk-baker-013-PtJakart`.
 
 See [TezEdge Baker](../../apps/baker/README.md#running) to build and run it.
 
@@ -108,7 +108,7 @@ See [TezEdge Baker](../../apps/baker/README.md#running) to build and run it.
 ## Wait for TezEdge Node to Sync with the Network
 
 ```
-$ tezos-client -E http://localhost:12535 bootstrapped
+$ mavryk-client -E http://localhost:12535 bootstrapped
 Waiting for the node to be bootstrapped...
 Current head: BLU4di1EGgkd (timestamp: 2021-11-05T23:19:31.000-00:00, validation: 2022-02-24T17:07:41.976-00:00)
 Current head: BLKsPJN9yqs9 (timestamp: 2021-11-05T23:19:46.000-00:00, validation: 2022-02-24T17:07:42.100-00:00)
@@ -121,7 +121,7 @@ Node is bootstrapped
 
 _TezEdge node have to be synced already._
 ```
-$ tezos-client \
+$ mavryk-client \
    --endpoint "http://localhost:12535" \
    --base-dir "$HOME/data-dir-013-PtJakart/client" \
     activate account my_delegate with "$HOME/data-dir-013-PtJakart/faucet.json"
@@ -135,7 +135,7 @@ Account my_delegate (tz1XXXXXX) activated with ꜩ76351.572618.
 _TezEdge node have to be synced already._
 
 ```
-$ tezos-client \
+$ mavryk-client \
    --endpoint "http://localhost:12535" \
    --base-dir "$HOME/data-dir-013-PtJakart/client" \
     register key my_delegate as delegate
@@ -161,12 +161,12 @@ $ tezedge-baker \
 ```
 
 
-### Octez Baker
+### Mavkit Baker
 
 _Note. For Tezos baker executable from v12.x.x and higher `--media-type json` (or `-m json`) paramters should be added to make it expect JSON RPC instead of new compact encoding_
 
 ```
-$ tezos-baker-013-PtJakart \
+$ mavryk-baker-013-PtJakart \
    --endpoint "http://localhost:12535" \
    --media-type json \
    --base-dir "$HOME/data-dir-013-PtJakart/client" \
@@ -186,7 +186,7 @@ May 30 16:14:01.447 - 013-PtJakart.baker.transitions:   level 614180, round 0
 ## Run accuser
 
 ```
-$ tezos-accuser-013-PtJakart \
+$ mavryk-accuser-013-PtJakart \
    --endpoint "http://localhost:12535" \
    --media-type json \
    --base-dir "$HOME/data-dir-013-PtJakart/client" \
@@ -209,7 +209,7 @@ You need to fully initialize your device. For details see here: http://ledger.co
 
 _To install Tezos Baker, developer mode should be enabled in Ledger Live_
 
-For extensively detailed information about these applications, visit the developer's [GitHub page](https://github.com/obsidiansystems/ledger-app-tezos).
+For extensively detailed information about these applications, visit the developer's [GitHub page](https://github.com/obsidiansystems/ledger-app-mavryk).
 
 ## Create New Account
 
@@ -219,12 +219,12 @@ You can create a new Tezos account using Ledger Live application.
 
 ## Import Ledger Account to Tezos Client
 
-For this and the following steps, `tezos-client` executable will be used.
+For this and the following steps, `mavryk-client` executable will be used.
 
-First, inspect if the ledger is recognized by the `tezos-client`
+First, inspect if the ledger is recognized by the `mavryk-client`
 
 ```
-$ tezos-client \
+$ mavryk-client \
    --endpoint "http://localhost:12535" \
    --base-dir "$HOME/data-dir-013-PtJakart/client" \
    list connected ledgers
@@ -237,16 +237,16 @@ S@14300000/Nano S@0/IOUSBHostHIDDevice@14300000,0].
 To use keys at BIP32 path m/44'/1729'/0'/0' (default Tezos key path), use one
 of:
 
-tezos-client import secret key ledger_username "ledger://major-squirrel-thick-hedgehog/bip25519/0h/0h"
-tezos-client import secret key ledger_username "ledger://major-squirrel-thick-hedgehog/ed25519/0h/0h"
-tezos-client import secret key ledger_username "ledger://major-squirrel-thick-hedgehog/secp256k1/0h/0h"
-tezos-client import secret key ledger_username "ledger://major-squirrel-thick-hedgehog/P-256/0h/0h"
+mavryk-client import secret key ledger_username "ledger://major-squirrel-thick-hedgehog/bip25519/0h/0h"
+mavryk-client import secret key ledger_username "ledger://major-squirrel-thick-hedgehog/ed25519/0h/0h"
+mavryk-client import secret key ledger_username "ledger://major-squirrel-thick-hedgehog/secp256k1/0h/0h"
+mavryk-client import secret key ledger_username "ledger://major-squirrel-thick-hedgehog/P-256/0h/0h"
 ```
 
 Use the second proposed command (with `ed25519` curve) to import public key from the ledger. _Note that despite the command name is `import secret key`, this is only public key that is imported._
 
 ```
-$ tezos-client \
+$ mavryk-client \
    --endpoint "http://localhost:12535" \
    --base-dir "$HOME/data-dir-013-PtJakart/client" \
    import secret key my_delegate "ledger://major-squirrel-thick-hedgehog/ed25519/0h/0h"
@@ -254,10 +254,10 @@ $ tezos-client \
 
 You will need to confirm addition of the address on the ledger.
 
-Check that the address is now known to the `tezos-client`.
+Check that the address is now known to the `mavryk-client`.
 
 ```
-$ tezos-client \
+$ mavryk-client \
    --endpoint "http://localhost:12535" \
    --base-dir "$HOME/data-dir-013-PtJakart/client" \
    list known addresses
@@ -269,14 +269,14 @@ my_delegate: tzXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX (ledger sk known)
 To get baking/endorsing rights, this account needs owning some funds, at least ꜩ6,000 (one roll). One way of getting them is to receive them from a faucet account (see [Get free XTZ](#get-free-xtz)).
 
 ```
-$ tezos-client \
+$ mavryk-client \
    --endpoint "http://localhost:12535" \
    --base-dir "$HOME/data-dir-013-PtJakart/client" \
     activate account faucet with "$HOME/data-dir-013-PtJakart/faucet.json"
 ...
 Account faucet (tz1XXXXXX) activated with ꜩ76351.572618.
 ...
-$ tezos-client \
+$ mavryk-client \
    --endpoint "http://localhost:12535" \
    --base-dir "$HOME/data-dir-013-PtJakart/client" \
    transfer 76351.572618 from faucet to my_delegate
@@ -286,7 +286,7 @@ $ tezos-client \
 Now register this account in the network as a Tezos delegate:
 
 ```
-$ tezos-client \
+$ mavryk-client \
    --endpoint "http://localhost:12535" \
    --base-dir "$HOME/data-dir-013-PtJakart/client" \
    register key my_delegate as delegate
@@ -298,7 +298,7 @@ $ tezos-client \
 Start baker daemon:
 
 ```
-$ tezos-baker-013-PtJakart \
+$ mavryk-baker-013-PtJakart \
    --endpoint "http://localhost:12535" \
    --media-type json \
    --base-dir "$HOME/data-dir-013-PtJakart/client" \
@@ -318,7 +318,7 @@ Usually you need to interact with ledger to confirm a signing operation. For bak
 To enable non-interactive singing of blocks and endorsements use the following command:
 
 ```
-$ tezos-client \
+$ mavryk-client \
    --endpoint "http://localhost:12535" \
    --base-dir "$HOME/data-dir-013-PtJakart/client" \
    setup ledger to bake for my_delegate
@@ -330,43 +330,43 @@ To make ledger sign blocks and endorsements non-interactively, you need to make 
 
 # Remote Signing
 
-To decouple the node processing blocks and operations and keys used to sign them _remote singer_ can be used. In this case the `tezos-baker` daemon along with a Tezedge node might be running on a cloud server, and communicating with `tezos-signer` application running on a home server with Ledger Nano S connected to it.
+To decouple the node processing blocks and operations and keys used to sign them _remote singer_ can be used. In this case the `mavryk-baker` daemon along with a Tezedge node might be running on a cloud server, and communicating with `mavryk-signer` application running on a home server with Ledger Nano S connected to it.
 
-Tezos client binaries can communicate with `tezos-signer` process via different transports, like _http_, _https_, _tcp_ and _unix_ for unix domain socket. Also it is possible to set up authorization so it accepts signing requests only from authorized client. For more information see [Signer](http://tezos.gitlab.io/user/key-management.html#signer) in Tezos documentation.
+Tezos client binaries can communicate with `mavryk-signer` process via different transports, like _http_, _https_, _tcp_ and _unix_ for unix domain socket. Also it is possible to set up authorization so it accepts signing requests only from authorized client. For more information see [Signer](http://protocol.mavryk.org/user/key-management.html#signer) in Tezos documentation.
 
 ## Set up Signing Server
 
-Make sure that your wallet is available for Tezos client applications on the signing server. If not, you should use commands mentioned above in [Importing Ledger Account to Tezos Client](#importing-ledger-account-to-tezos-client)
+Make sure that your wallet is available for Tezos client applications on the signing server. If not, you should use commands mentioned above in [Importing Ledger Account to Tezos Client](#importing-ledger-account-to-mavryk-client)
 
 Start remote signer application with schema of your choice. For example, the following command will start singning server that uses HTTP transport and listens for incoming connections on port 12536.
 
 ```
-$ tezos-signer \
+$ mavryk-signer \
    --base-dir "$HOME/data-dir-013-PtJakart/client" \
    launch http signer --address 0.0.0.0 -p 12536
 Feb 25 18:09:09.074 - signer.http: accepting HTTP requests on port 12536
 Feb 25 18:09:09.074 - signer.http: listening on address: ::ffff:0.0.0.0
 ```
 
-_Note that the Ledger Nano S should be running Tezos Baking application so `tezos-signer` can use the baker account stored there_
+_Note that the Ledger Nano S should be running Tezos Baking application so `mavryk-signer` can use the baker account stored there_
 
 ## Run Tezedge Node and Tezos Baker with Remote Signer
 
 Start the Tezedge node:
 
-To make `tezos-baker` use remote signing, corresponding remote address should be added to Tezos wallet. If the home server from above is accessible via name `home`, you can use the following command:
+To make `mavryk-baker` use remote signing, corresponding remote address should be added to Tezos wallet. If the home server from above is accessible via name `home`, you can use the following command:
 
 ```
-$ tezos-client \
+$ mavryk-client \
    --endpoint "http://localhost:12535" \
    --base-dir "$HOME/data-dir-013-PtJakart/client" \
    import secret key my_delegate http://home:12536/tz1XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
 
-Now you can run `tezos-baker` using this alias:
+Now you can run `mavryk-baker` using this alias:
 
 ```
-$ tezos-baker-013-PtJakart \
+$ mavryk-baker-013-PtJakart \
    --endpoint "http://localhost:12535" \
    --media-type json \
    --base-dir "$HOME/data-dir-013-PtJakart/client" \

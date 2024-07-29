@@ -7,7 +7,7 @@ use crate::fuzzing::net::SocketAddrMutator;
 use serde::{Deserialize, Serialize};
 use std::net::SocketAddr;
 
-use tezos_messages::p2p::{
+use mavryk_messages::p2p::{
     binary_message::BinaryChunk,
     encoding::{ack::AckMessage, connection::ConnectionMessage, metadata::MetadataMessage},
 };

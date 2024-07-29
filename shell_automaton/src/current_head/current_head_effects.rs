@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 use networking::network_channel::NewCurrentHeadNotification;
-use tezos_messages::protocol::SupportedProtocol;
+use mavryk_messages::protocol::SupportedProtocol;
 
 use crate::bootstrap::BootstrapInitAction;
 use crate::protocol_runner::ProtocolRunnerState;

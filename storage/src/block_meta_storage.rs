@@ -14,7 +14,7 @@ use crypto::hash::{
     BlockHash, BlockMetadataHash, ChainId, HashType, OperationMetadataHash,
     OperationMetadataListListHash, ProtocolHash,
 };
-use tezos_messages::p2p::encoding::block_header::Level;
+use mavryk_messages::p2p::encoding::block_header::Level;
 
 use crate::database::tezedge_database::{KVStoreKeyValueSchema, TezedgeDatabaseWithIterator};
 use crate::persistent::database::{default_table_options, RocksDbKeyValueSchema};
@@ -303,7 +303,7 @@ impl BlockMetaStorageReader for BlockMetaStorage {
         block_hash: BlockHash,
         max_ttl: usize,
     ) -> Result<BTreeMap<BlockHash, Level>, StorageError> {
-        // Note: tezos ocaml for max_ttl=60 returns 61 blocks
+        // Note: mavryk ocaml for max_ttl=60 returns 61 blocks
         let mut live_blocks_counter = max_ttl + 1;
         let mut live_blocks = BTreeMap::new();
         let mut level = match self.get(&block_hash)? {

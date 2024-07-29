@@ -6,7 +6,7 @@ use std::{fmt, str};
 use serde::{Deserialize, Serialize};
 
 use crypto::hash::{BlockHash, BlockPayloadHash, OperationHash, ProtocolHash, Signature};
-use tezos_messages::protocol::proto_012::operation::EndorsementOperation;
+use mavryk_messages::protocol::proto_012::operation::EndorsementOperation;
 
 #[cfg(feature = "fuzzing")]
 use super::operation_mutator::OperationContentMutator;

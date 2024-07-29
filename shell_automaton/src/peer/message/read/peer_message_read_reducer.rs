@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: MIT
 
 use slog::FnValue;
-use tezos_messages::p2p::binary_message::MessageHash;
-use tezos_messages::p2p::encoding::peer::PeerMessage;
+use mavryk_messages::p2p::binary_message::MessageHash;
+use mavryk_messages::p2p::encoding::peer::PeerMessage;
 
 use crate::peer::binary_message::read::PeerBinaryMessageReadState;
 use crate::peer::{PeerCrypto, PeerHandshaked, PeerStatus};

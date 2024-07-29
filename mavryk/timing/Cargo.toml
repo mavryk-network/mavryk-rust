@@ -1,0 +1,15 @@
+[package]
+name = "mavryk_timing"
+version = "3.1.1"
+authors = ["Sebastien Chapuis <sebastien@chapu.is>"]
+edition = "2021"
+rust-version = "1.58"
+
+[dependencies]
+crypto = { path = "../../crypto" }
+serde = { version = "1.0", features = ["derive"] }
+rusqlite = { version = "0.25.1", features = ["bundled"] }
+static_assertions = "1.1"
+mavryk_spsc = { path = "../spsc" }
+mavryk_conv = { path = "../conv" }
+# tinyvec = { version = "1", features = ["alloc"] }

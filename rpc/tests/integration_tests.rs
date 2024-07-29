@@ -1077,7 +1077,7 @@ async fn get_rpc_as_json(
         .parse()
         .unwrap_or_else(|_| panic!("Invalid URL: {}", &url_as_string));
 
-    // we create client for every call, because with new Tezos rpcs with "transfer-encoding: chunked"
+    // we create client for every call, because with new Mavryk rpcs with "transfer-encoding: chunked"
     // with one singleton Client, calls randomly failed: "connection closed before message completed"
     // maybe it has something to do with keep-alive or something
     // see below [test_chunked_call]
@@ -1367,7 +1367,7 @@ mod json_compare {
         Lhs: Serialize,
         Rhs: Serialize,
     {
-        // TODO: hack comparision, because of Tezos bug: https://gitlab.com/tezos/tezos/-/issues/1430
+        // TODO: hack comparision, because of Mavryk bug: https://gitlab.com/mavryk/mavryk/-/issues/1430
         if !ignore_json_properties.is_empty() {
             assert_json_eq_no_panic_with_ignore_json_properties(
                 lhs,

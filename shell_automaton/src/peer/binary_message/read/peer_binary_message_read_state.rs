@@ -3,7 +3,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use tezos_encoding::binary_reader::BinaryReaderError;
+use mavryk_encoding::binary_reader::BinaryReaderError;
 
 use crate::peer::chunk::read::{PeerChunkRead, PeerChunkReadError, ReadCrypto};
 

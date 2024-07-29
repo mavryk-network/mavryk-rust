@@ -11,7 +11,7 @@ use crypto::{
     hash::BlockHash,
     seeded_step::{Seed, Step},
 };
-use tezos_messages::p2p::encoding::block_header::Level;
+use mavryk_messages::p2p::encoding::block_header::Level;
 
 use crate::{bootstrap::PeerIntervalError, Action, ActionWithMeta, State};
 

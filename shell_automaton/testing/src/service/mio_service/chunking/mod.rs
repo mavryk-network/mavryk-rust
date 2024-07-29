@@ -4,8 +4,8 @@
 use std::io;
 
 use crypto::CryptoError;
-use tezos_encoding::{binary_reader::BinaryReaderError, binary_writer::BinaryWriterError};
-use tezos_messages::p2p::binary_message::BinaryChunkError;
+use mavryk_encoding::{binary_reader::BinaryReaderError, binary_writer::BinaryWriterError};
+use mavryk_messages::p2p::binary_message::BinaryChunkError;
 
 mod chunk_read_buffer;
 pub use chunk_read_buffer::*;

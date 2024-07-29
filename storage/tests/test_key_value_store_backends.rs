@@ -1,16 +1,16 @@
 // Copyright (c) SimpleStaking, Viable Systems and Tezedge Contributors
 // SPDX-License-Identifier: MIT
 
-// TODO - TE-261 reimplement in tezos_new_context? maybe it is obsolete
+// TODO - TE-261 reimplement in mavryk_new_context? maybe it is obsolete
 
 //use std::collections::HashSet;
 //use std::env;
 //use std::path::PathBuf;
 //
-//use tezos_new_context::kv_store::test_support::{
+//use mavryk_new_context::kv_store::test_support::{
 //    blob_serialized, entry_hash, TestContextKvStoreFactoryInstance,
 //};
-//use tezos_new_context::kv_store::SupportedContextKeyValueStore;
+//use mavryk_new_context::kv_store::SupportedContextKeyValueStore;
 //
 //fn test_put_get(kv_store_factory: &TestContextKvStoreFactoryInstance) {
 //    let storage = kv_store_factory.create("test_put_get").unwrap();
@@ -233,7 +233,7 @@
 //}
 //
 //lazy_static::lazy_static! {
-//    static ref SUPPORTED_KV_STORES: std::collections::HashMap<SupportedContextKeyValueStore, TestContextKvStoreFactoryInstance> = tezos_new_context::kv_store::test_support::all_kv_stores(out_dir_path());
+//    static ref SUPPORTED_KV_STORES: std::collections::HashMap<SupportedContextKeyValueStore, TestContextKvStoreFactoryInstance> = mavryk_new_context::kv_store::test_support::all_kv_stores(out_dir_path());
 //}
 //
 //fn out_dir_path() -> PathBuf {
@@ -247,20 +247,20 @@
 //        tests_with_storage!(
 //            kv_store_inmemory_tests,
 //            super::SUPPORTED_KV_STORES
-//                .get(&tezos_new_context::kv_store::SupportedContextKeyValueStore::InMem)
+//                .get(&mavryk_new_context::kv_store::SupportedContextKeyValueStore::InMem)
 //                .unwrap()
 //        );
 //        tests_with_storage!(
 //            kv_store_btree_tests,
 //            super::SUPPORTED_KV_STORES
-//                .get(&tezos_new_context::kv_store::SupportedContextKeyValueStore::BTreeMap)
+//                .get(&mavryk_new_context::kv_store::SupportedContextKeyValueStore::BTreeMap)
 //                .unwrap()
 //        );
 //        tests_with_storage!(
 //            kv_store_sled_tests,
 //            super::SUPPORTED_KV_STORES
 //                .get(
-//                    &tezos_new_context::kv_store::SupportedContextKeyValueStore::Sled {
+//                    &mavryk_new_context::kv_store::SupportedContextKeyValueStore::Sled {
 //                        path: super::out_dir_path()
 //                    }
 //                )

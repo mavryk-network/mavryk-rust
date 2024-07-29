@@ -6,8 +6,8 @@ use crypto::PublicKeyWithHash;
 use std::collections::BTreeMap;
 use std::collections::HashMap;
 use std::time::Instant;
-use tezos_messages::base::signature_public_key::SignaturePublicKey;
-use tezos_messages::p2p::encoding::block_header::BlockHeader;
+use mavryk_messages::base::signature_public_key::SignaturePublicKey;
+use mavryk_messages::p2p::encoding::block_header::BlockHeader;
 
 use crate::baker::{BakerAddAction, BakerRemoveAction};
 use crate::block_applier::BlockApplierApplyState;

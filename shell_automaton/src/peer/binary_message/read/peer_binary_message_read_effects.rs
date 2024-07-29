@@ -1,7 +1,7 @@
 // Copyright (c) SimpleStaking, Viable Systems and Tezedge Contributors
 // SPDX-License-Identifier: MIT
 
-use tezos_messages::p2p::{
+use mavryk_messages::p2p::{
     binary_message::SizeFromChunk,
     encoding::{ack::AckMessage, metadata::MetadataMessage, peer::PeerMessageResponse},
 };

@@ -7,10 +7,10 @@ use std::net::SocketAddr;
 use std::time::Instant;
 
 use crypto::hash::OperationHash;
-use tezos_api::ffi::{Errored, HasOperationHash, Validated};
-use tezos_messages::p2p::binary_message::MessageHash;
-use tezos_messages::p2p::encoding::operation::Operation;
-use tezos_messages::p2p::encoding::peer::PeerMessage;
+use mavryk_api::ffi::{Errored, HasOperationHash, Validated};
+use mavryk_messages::p2p::binary_message::MessageHash;
+use mavryk_messages::p2p::encoding::operation::Operation;
+use mavryk_messages::p2p::encoding::peer::PeerMessage;
 
 use crate::block_applier::BlockApplierApplyState;
 use crate::peers::remove::PeersRemoveAction;

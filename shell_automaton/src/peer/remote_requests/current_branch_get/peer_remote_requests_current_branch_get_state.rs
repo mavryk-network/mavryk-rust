@@ -5,8 +5,8 @@ use serde::{Deserialize, Serialize};
 
 use crypto::hash::BlockHash;
 use crypto::seeded_step::Step;
-use tezos_messages::p2p::encoding::block_header::{BlockHeader, Level};
-use tezos_messages::p2p::encoding::prelude::BlockLocator;
+use mavryk_messages::p2p::encoding::block_header::{BlockHeader, Level};
+use mavryk_messages::p2p::encoding::prelude::BlockLocator;
 
 use crate::request::RequestId;
 use crate::service::storage_service::StorageError;

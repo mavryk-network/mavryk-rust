@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 use crypto::hash::OperationHash;
-use tezos_messages::p2p::binary_message::MessageHash;
+use mavryk_messages::p2p::binary_message::MessageHash;
 
 use crate::mempool::MempoolOperationInjectAction;
 use crate::{Action, ActionWithMeta, Service, Store};

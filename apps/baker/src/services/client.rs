@@ -22,12 +22,12 @@ use thiserror::Error;
 use time::{format_description::well_known::Rfc3339, OffsetDateTime};
 
 use crypto::hash::{
-    BlockHash, BlockPayloadHash, ChainId, ContextHash, ContractTz1Hash, NonceHash, OperationHash,
+    BlockHash, BlockPayloadHash, ChainId, ContextHash, ContractMv1Hash, NonceHash, OperationHash,
     OperationListListHash, ProtocolHash, Signature,
 };
-use tezos_encoding::{binary_reader::BinaryReaderError, types::SizedBytes};
-use tezos_encoding::{enc::BinWriter, encoding::HasEncoding, nom::NomReader};
-use tezos_messages::{
+use mavryk_encoding::{binary_reader::BinaryReaderError, types::SizedBytes};
+use mavryk_encoding::{enc::BinWriter, encoding::HasEncoding, nom::NomReader};
+use mavryk_messages::{
     p2p::{
         binary_message::BinaryRead,
         encoding::{fitness::Fitness, operation::DecodedOperation},
@@ -36,7 +36,7 @@ use tezos_messages::{
 };
 
 #[cfg(feature = "fuzzing")]
-use tezos_encoding::fuzzing::sizedbytes::SizedBytesMutator;
+use mavryk_encoding::fuzzing::sizedbytes::SizedBytesMutator;
 
 use super::event::{Block, OperationSimple, Slots};
 use crate::machine::{BakerAction, OperationsEventAction, ProposalEventAction, RpcErrorAction};
@@ -200,7 +200,7 @@ pub struct FullHeaderI {
     pub context: ContextHash,
     pub payload_hash: BlockPayloadHash,
     pub payload_round: i32,
-    #[cfg_attr(feature = "fuzzing", field_mutator(tezos_encoding::fuzzing::sizedbytes::SizedBytesMutator<8>))]
+    #[cfg_attr(feature = "fuzzing", field_mutator(mavryk_encoding::fuzzing::sizedbytes::SizedBytesMutator<8>))]
     pub proof_of_work_nonce: SizedBytes<8>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub seed_nonce_hash: Option<NonceHash>,
@@ -369,7 +369,7 @@ pub struct FullHeaderJ {
     pub context: ContextHash,
     pub payload_hash: BlockPayloadHash,
     pub payload_round: i32,
-    #[cfg_attr(feature = "fuzzing", field_mutator(tezos_encoding::fuzzing::sizedbytes::SizedBytesMutator<8>))]
+    #[cfg_attr(feature = "fuzzing", field_mutator(mavryk_encoding::fuzzing::sizedbytes::SizedBytesMutator<8>))]
     pub proof_of_work_nonce: SizedBytes<8>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub seed_nonce_hash: Option<NonceHash>,
@@ -594,7 +594,7 @@ impl RpcClient {
         })
     }
 
-    pub fn validators(&self, level: i32) -> Result<BTreeMap<ContractTz1Hash, Slots>, RpcError> {
+    pub fn validators(&self, level: i32) -> Result<BTreeMap<ContractMv1Hash, Slots>, RpcError> {
         let mut url = self
             .endpoint
             .join("chains/main/blocks/head/helpers/validators")
@@ -604,7 +604,7 @@ impl RpcClient {
 
         #[derive(Deserialize)]
         struct Validator {
-            delegate: ContractTz1Hash,
+            delegate: ContractMv1Hash,
             slots: Vec<u16>,
         }
 

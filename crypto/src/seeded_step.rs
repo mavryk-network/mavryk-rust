@@ -29,7 +29,7 @@ impl<'s, 'r> Seed<'s, 'r> {
     }
 }
 
-/// Step implementation according to tezos [block_locator.ml]
+/// Step implementation according to mavryk [block_locator.ml]
 /// The sequence is deterministic for a given triple of sender, receiver and block hash.
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Step {

@@ -21,18 +21,18 @@ use storage::{
     BlockHeaderWithHash, BlockMetaStorage, BlockMetaStorageReader, BlockStorage,
     BlockStorageReader, ConstantsStorage, CycleMetaStorage,
 };
-use tezos_api::ffi::{HelpersPreapplyBlockRequest, ProtocolRpcRequest, RpcMethod, RpcRequest};
-use tezos_messages::base::rpc_support::RpcJsonMap;
-use tezos_messages::base::ConversionError;
-use tezos_messages::protocol::{SupportedProtocol, UnsupportedProtocolError};
+use mavryk_api::ffi::{HelpersPreapplyBlockRequest, ProtocolRpcRequest, RpcMethod, RpcRequest};
+use mavryk_messages::base::rpc_support::RpcJsonMap;
+use mavryk_messages::base::ConversionError;
+use mavryk_messages::protocol::{SupportedProtocol, UnsupportedProtocolError};
 
 use crate::helpers::RpcServiceError;
 use crate::server::RpcServiceEnvironment;
 use crate::services::base_services::{
     get_additional_data_or_fail, get_context_hash, get_raw_block_header_with_hash,
 };
-use tezos_context_api::context_key_owned;
-use tezos_context_ipc_client::TezedgeContextClientError;
+use mavryk_context_api::context_key_owned;
+use mavryk_context_ipc_client::TezedgeContextClientError;
 
 mod proto_001;
 mod proto_002;
@@ -94,7 +94,7 @@ impl From<anyhow::Error> for RightsError {
 /// * `persistent_storage` - Persistent storage handler.
 /// * `state` - Current RPC collected state (head).
 ///
-/// Prepare all data to generate baking rights and then use Tezos PRNG to generate them.
+/// Prepare all data to generate baking rights and then use Mavryk PRNG to generate them.
 #[cached(
     name = "BAKING_RIGHTS_CACHE",
     type = "TimedSizedCache<(BlockHash, Option<String>, Option<String>, Option<String>, Option<String>, bool), Option<Vec<RpcJsonMap>>>",
@@ -280,7 +280,7 @@ pub const RIGHTS_TIMED_SIZED_CACHE_SIZE: usize = 10;
 /// * `persistent_storage` - Persistent storage handler.
 /// * `state` - Current RPC collected state (head).
 ///
-/// Prepare all data to generate endorsing rights and then use Tezos PRNG to generate them.
+/// Prepare all data to generate endorsing rights and then use Mavryk PRNG to generate them.
 #[cached(
     name = "ENDORSING_RIGHTS_CACHE",
     type = "TimedSizedCache<(BlockHash, Option<String>, Option<String>, Option<String>, bool), Option<Vec<RpcJsonMap>>>",
@@ -642,7 +642,7 @@ pub(crate) async fn call_protocol_rpc_with_cache(
 ) -> Result<Arc<(u16, String)>, RpcCallError> {
     let request = create_protocol_rpc_request(chain_param, chain_id, block_hash, rpc_request, env)?;
 
-    let mut controller = env.tezos_protocol_api().readable_connection().await?;
+    let mut controller = env.mavryk_protocol_api().readable_connection().await?;
     let result = controller.call_protocol_rpc(request).await;
 
     // TODO: retry on other errors?
@@ -708,7 +708,7 @@ pub async fn call_protocol_rpc(
 
             // TODO: retry?
             let response = env
-                .tezos_protocol_api()
+                .mavryk_protocol_api()
                 .readable_connection()
                 .await?
                 .call_protocol_rpc(request)
@@ -752,7 +752,7 @@ pub async fn preapply_operations(
 
     // TODO: retry?
     let response = env
-        .tezos_protocol_api()
+        .mavryk_protocol_api()
         .readable_connection()
         .await?
         .helpers_preapply_operations(request)
@@ -822,7 +822,7 @@ pub(crate) async fn preapply_block(
 
     // TODO: retry?
     let response = env
-        .tezos_protocol_api()
+        .mavryk_protocol_api()
         .readable_connection()
         .await?
         .helpers_preapply_block(request)
@@ -874,7 +874,7 @@ pub enum ContextParamsError {
     ContextError { reason: TezedgeContextClientError },
     #[error("Context constants, reason: {reason}")]
     ContextConstantsDecodeError {
-        reason: tezos_messages::protocol::ContextConstantsDecodeError,
+        reason: mavryk_messages::protocol::ContextConstantsDecodeError,
     },
     #[error("Unsupported protocol {protocol}")]
     UnsupportedProtocolError { protocol: String },
@@ -904,8 +904,8 @@ impl From<UnsupportedProtocolError> for ContextParamsError {
     }
 }
 
-impl From<tezos_messages::protocol::ContextConstantsDecodeError> for ContextParamsError {
-    fn from(error: tezos_messages::protocol::ContextConstantsDecodeError) -> Self {
+impl From<mavryk_messages::protocol::ContextConstantsDecodeError> for ContextParamsError {
+    fn from(error: mavryk_messages::protocol::ContextConstantsDecodeError) -> Self {
         ContextParamsError::ContextConstantsDecodeError { reason: error }
     }
 }

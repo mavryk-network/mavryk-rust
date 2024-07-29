@@ -16,15 +16,15 @@ use shell_automaton_testing::one_real_node_cluster::Cluster;
 use shell_automaton_testing::service::IOCondition;
 use shell_automaton_testing::{generate_chain, generate_next_block};
 use storage::BlockHeaderWithHash;
-use tezos_identity::Identity;
-use tezos_messages::p2p::encoding::block_header::{GetBlockHeadersMessage, Level};
-use tezos_messages::p2p::encoding::current_head::{CurrentHeadMessage, GetCurrentHeadMessage};
-use tezos_messages::p2p::encoding::mempool::Mempool;
-use tezos_messages::p2p::encoding::operations_for_blocks::{
+use mavryk_identity::Identity;
+use mavryk_messages::p2p::encoding::block_header::{GetBlockHeadersMessage, Level};
+use mavryk_messages::p2p::encoding::current_head::{CurrentHeadMessage, GetCurrentHeadMessage};
+use mavryk_messages::p2p::encoding::mempool::Mempool;
+use mavryk_messages::p2p::encoding::operations_for_blocks::{
     GetOperationsForBlocksMessage, OperationsForBlock, OperationsForBlocksMessage, Path,
 };
-use tezos_messages::p2p::encoding::peer::PeerMessage;
-use tezos_messages::p2p::encoding::prelude::GetCurrentBranchMessage;
+use mavryk_messages::p2p::encoding::peer::PeerMessage;
+use mavryk_messages::p2p::encoding::prelude::GetCurrentBranchMessage;
 
 fn data(chain_level: Level) -> (Cluster, Vec<BlockHeaderWithHash>) {
     let initial_time = SystemTime::now();
@@ -34,7 +34,7 @@ fn data(chain_level: Level) -> (Cluster, Vec<BlockHeaderWithHash>) {
         pow_target: 0.0,
         identity: Identity::generate(0.0).unwrap(),
         shell_compatibility_version: ShellCompatibilityVersion::new(
-            "TEZOS_LOCALNET".to_owned(),
+            "MAVRYK_LOCALNET".to_owned(),
             vec![1],
             vec![1],
         ),

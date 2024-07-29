@@ -20,7 +20,7 @@ use std::convert::TryFrom;
 use std::vec;
 use storage::shell_automaton_action_meta_storage::ShellAutomatonActionStatsForRanges;
 
-use crypto::hash::{BlockHash, ChainId, ContractTz1Hash, ContractTz2Hash, ContractTz3Hash};
+use crypto::hash::{BlockHash, ChainId, ContractMv1Hash, ContractMv2Hash, ContractMv3Hash};
 use shell::stats::memory::{Memory, MemoryData, MemoryStatsResult};
 use shell_automaton::service::rpc_service::RpcRequest as RpcShellAutomatonMsg;
 use shell_automaton::ActionId;
@@ -28,7 +28,7 @@ use storage::cycle_eras_storage::CycleEra;
 use storage::database::backend::BoxedSliceKV;
 use storage::database::error::Error as DBError;
 use storage::persistent::Decoder;
-//use tezos_context::actions::context_action_storage::{
+//use mavryk_context::actions::context_action_storage::{
 //    contract_id_to_contract_address_for_index, ContextActionBlockDetails, ContextActionFilters,
 //    ContextActionJson, ContextActionRecordValue, ContextActionStorageReader, ContextActionType,
 //};
@@ -37,9 +37,9 @@ use storage::{
     CycleErasStorage, Direction, IteratorMode, PersistentStorage, ShellAutomatonActionStorage,
     ShellAutomatonStateStorage, StorageError,
 };
-//use tezos_context::channel::ContextAction;
-use tezos_messages::base::ConversionError;
-use tezos_messages::p2p::encoding::block_header::Level;
+//use mavryk_context::channel::ContextAction;
+use mavryk_messages::base::ConversionError;
+use mavryk_messages::p2p::encoding::block_header::Level;
 
 use crate::helpers::{BlockMetadata, PagedResult, RpcServiceError};
 use crate::server::RpcServiceEnvironment;
@@ -281,7 +281,7 @@ pub(crate) async fn get_blocks(
     }?;
 
     // NOTE: using a single connection here, but could connect to multiple runners, worth it?
-    let mut connection = env.tezos_protocol_api().readable_connection().await?;
+    let mut connection = env.mavryk_protocol_api().readable_connection().await?;
 
     let mut result = Vec::with_capacity(blocks.len());
 
@@ -330,7 +330,7 @@ pub struct SlimBlockData {
     pub block_hash: String,
     pub timestamp: String,
     // TODO: TE-199 Refactor FullBlockInfo (should be i32)
-    // Note: serde's Value can be converted into Option<i64> without panicing, the original tezos value is an i32
+    // Note: serde's Value can be converted into Option<i64> without panicing, the original mavryk value is an i32
     #[serde(skip_serializing_if = "Option::is_none")]
     pub cycle_position: Option<i64>,
 }
@@ -351,17 +351,17 @@ pub(crate) fn contract_id_to_contract_address_for_index(
         } else if contract_id.len() > 3 {
             let mut contract_address = Vec::with_capacity(22);
             match &contract_id[0..3] {
-                "tz1" => {
+                "mv1" => {
                     contract_address.extend(&[0, 0]);
-                    contract_address.extend(ContractTz1Hash::try_from(contract_id)?.as_ref());
+                    contract_address.extend(ContractMv1Hash::try_from(contract_id)?.as_ref());
                 }
-                "tz2" => {
+                "mv2" => {
                     contract_address.extend(&[0, 1]);
-                    contract_address.extend(ContractTz2Hash::try_from(contract_id)?.as_ref());
+                    contract_address.extend(ContractMv2Hash::try_from(contract_id)?.as_ref());
                 }
-                "tz3" => {
+                "mv3" => {
                     contract_address.extend(&[0, 2]);
-                    contract_address.extend(ContractTz3Hash::try_from(contract_id)?.as_ref());
+                    contract_address.extend(ContractMv3Hash::try_from(contract_id)?.as_ref());
                 }
                 "KT1" => {
                     contract_address.push(1);

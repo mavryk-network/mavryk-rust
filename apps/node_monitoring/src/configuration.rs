@@ -5,7 +5,7 @@ use clap::{App, Arg};
 use std::env;
 use std::fmt;
 use std::path::{Path, PathBuf};
-use tezos_messages::base::signature_public_key::SignaturePublicKeyHash;
+use mavryk_messages::base::signature_public_key::SignaturePublicKeyHash;
 
 use crate::node::{Node, NodeStatus, NodeType};
 

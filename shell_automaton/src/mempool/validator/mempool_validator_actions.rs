@@ -4,8 +4,8 @@
 use serde::{Deserialize, Serialize};
 
 use crypto::hash::OperationHash;
-use tezos_api::ffi::{OperationClassification, PrevalidatorWrapper};
-use tezos_messages::p2p::encoding::prelude::Operation;
+use mavryk_api::ffi::{OperationClassification, PrevalidatorWrapper};
+use mavryk_messages::p2p::encoding::prelude::Operation;
 
 use crate::{EnablingCondition, State};
 

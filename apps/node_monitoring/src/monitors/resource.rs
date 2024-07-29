@@ -493,11 +493,11 @@ impl ResourceMonitor {
                         free_disk_space,
                     }
                 } else {
-                    let validators_memory = node.get_memory_stats_children(system, "tezos-node")?;
-                    let validators_cpu = node.get_cpu_data_children(system, "tezos-node")?;
+                    let validators_memory = node.get_memory_stats_children(system, "mavryk-node")?;
+                    let validators_cpu = node.get_cpu_data_children(system, "mavryk-node")?;
 
                     let validators_io =
-                        node.get_io_data_children(system, "tezos-node", measurement_time_delta)?;
+                        node.get_io_data_children(system, "mavryk-node", measurement_time_delta)?;
 
                     let network_stats = match network_statistics {
                         Ok(ref network_statistics) => {
@@ -506,7 +506,7 @@ impl ResourceMonitor {
                             let children_network = node.get_network_data_children(
                                 &network_statistics,
                                 system,
-                                "tezos-node",
+                                "mavryk-node",
                                 measurement_time_delta,
                             )?;
                             NetworkStats {

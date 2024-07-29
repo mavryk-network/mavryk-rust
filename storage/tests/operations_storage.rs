@@ -8,7 +8,7 @@ use crypto::hash::BlockHash;
 
 use storage::tests_common::TmpStorage;
 use storage::*;
-use tezos_messages::p2p::encoding::prelude::*;
+use mavryk_messages::p2p::encoding::prelude::*;
 
 #[test]
 fn test_get_operations() -> Result<(), Error> {

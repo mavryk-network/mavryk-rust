@@ -3,7 +3,7 @@
 
 use slog::{info, Logger};
 
-use tezos_identity::{load_identity, store_identity, Identity, IdentityError};
+use mavryk_identity::{load_identity, store_identity, Identity, IdentityError};
 
 /// Ensures (load or create) identity exists according to the configuration
 pub fn ensure_identity(
@@ -13,7 +13,7 @@ pub fn ensure_identity(
     let identity = if identity_cfg.identity_json_file_path.exists() {
         load_identity(&identity_cfg.identity_json_file_path)
     } else {
-        info!(log, "Generating new tezos identity. This will take a while"; "expected_pow" => identity_cfg.expected_pow);
+        info!(log, "Generating new mavryk identity. This will take a while"; "expected_pow" => identity_cfg.expected_pow);
         let identity = Identity::generate(identity_cfg.expected_pow)?;
         info!(log, "Identity successfully generated");
 

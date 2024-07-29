@@ -41,14 +41,14 @@ redux-rs = { git = "https://github.com/tezedge/redux-rs.git", rev = "56e116d", f
 crypto = { path = "../crypto" }
 storage = { path = "../storage" }
 networking = { path = "../networking" }
-tezos_encoding = { path = "../tezos/encoding" }
-tezos_identity = { path = "../tezos/identity" }
-tezos_messages = { path = "../tezos/messages" }
-tezos_api = { path = "../tezos/api" }
+mavryk_encoding = { path = "../mavryk/encoding" }
+mavryk_identity = { path = "../mavryk/identity" }
+mavryk_messages = { path = "../mavryk/messages" }
+mavryk_api = { path = "../mavryk/api" }
 async_ipc = { path = "../async-ipc" }
-tezos_context_api = { path = "../tezos/context-api" }
-tezos_protocol_ipc_client = { path = "../tezos/protocol-ipc-client" }
-tezos_protocol_ipc_messages = { path = "../tezos/protocol-ipc-messages" }
+mavryk_context_api = { path = "../mavryk/context-api" }
+mavryk_protocol_ipc_client = { path = "../mavryk/protocol-ipc-client" }
+mavryk_protocol_ipc_messages = { path = "../mavryk/protocol-ipc-messages" }
 
 fuzzcheck = { git = "https://github.com/tezedge/fuzzcheck-rs.git", optional = true }
 fuzzcheck_mutators_derive = { git = "https://github.com/tezedge/fuzzcheck-rs.git", optional = true }
@@ -66,12 +66,12 @@ fuzzing = [
     "redux-rs/fuzzing",
     "crypto/fuzzing",
     "storage/fuzzing",
-    "tezos_encoding/fuzzing",
-    "tezos_identity/fuzzing",
-    "tezos_messages/fuzzing",
-    "tezos_api/fuzzing",
-    "tezos_context_api/fuzzing",
-    "tezos_protocol_ipc_client/fuzzing",
-    "tezos_protocol_ipc_messages/fuzzing",
+    "mavryk_encoding/fuzzing",
+    "mavryk_identity/fuzzing",
+    "mavryk_messages/fuzzing",
+    "mavryk_api/fuzzing",
+    "mavryk_context_api/fuzzing",
+    "mavryk_protocol_ipc_client/fuzzing",
+    "mavryk_protocol_ipc_messages/fuzzing",
     "async_ipc/fuzzing"
     ]

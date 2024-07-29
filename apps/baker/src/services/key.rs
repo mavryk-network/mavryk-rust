@@ -11,12 +11,12 @@ use thiserror::Error;
 use crypto::{
     base58::FromBase58CheckError,
     hash::{
-        ChainId, ContractTz1Hash, Ed25519Signature, SecretKeyEd25519, SeedEd25519, Signature,
+        ChainId, ContractMv1Hash, Ed25519Signature, SecretKeyEd25519, SeedEd25519, Signature,
         TryFromPKError,
     },
     CryptoError,
 };
-use tezos_encoding::enc::{BinError, BinWriter};
+use mavryk_encoding::enc::{BinError, BinWriter};
 
 #[derive(Debug, Error, From)]
 pub enum ReadKeyError {
@@ -91,7 +91,7 @@ impl CryptoService {
         Ok(CryptoService(signer, LastSigned::default()))
     }
 
-    pub fn public_key_hash(&self) -> &ContractTz1Hash {
+    pub fn public_key_hash(&self) -> &ContractMv1Hash {
         &self.0.pkh
     }
 
@@ -167,7 +167,7 @@ impl CryptoService {
 
 struct Signer {
     backend: SignerBackend,
-    pkh: ContractTz1Hash,
+    pkh: ContractMv1Hash,
 }
 
 enum SignerBackend {
@@ -178,7 +178,7 @@ enum SignerBackend {
     RemoteHttps(Client, Url),
     // example: tcp://127.0.0.1:7732/tz1TXkLKR4F4HUSCQKve7daPPLSxhZNx45px
     // RemoteTcp(SocketAddr),
-    // example: unix:/home/dev/.tezos-signer/socket?pkh=tz1TXkLKR4F4HUSCQKve7daPPLSxhZNx45px
+    // example: unix:/home/dev/.mavryk-signer/socket?pkh=tz1TXkLKR4F4HUSCQKve7daPPLSxhZNx45px
     // UnixDomainSocket(PathBuf),
 }
 
@@ -198,7 +198,7 @@ pub enum SignerParseError {
     PkFormat(TryFromPKError),
     #[error("{_0}")]
     InvalidUrl(url::ParseError),
-    #[error("missing \"/tz1...\"")]
+    #[error("missing \"/mv1...\"")]
     MissingPkhPathSegment,
 }
 
@@ -218,7 +218,7 @@ impl FromStr for Signer {
 
                 Ok(Signer {
                     backend: SignerBackend::LiteralSecretKey(secret_key),
-                    pkh: ContractTz1Hash::try_from(public_key)?,
+                    pkh: ContractMv1Hash::try_from(public_key)?,
                 })
             }
             "http" | "https" => {
@@ -228,7 +228,7 @@ impl FromStr for Signer {
                     .ok_or(SignerParseError::MissingPkhPathSegment)?
                     .last()
                     .ok_or(SignerParseError::MissingPkhPathSegment)?;
-                let pkh = ContractTz1Hash::from_base58_check(pkh_str)?;
+                let pkh = ContractMv1Hash::from_base58_check(pkh_str)?;
                 let client = Client::new();
                 Ok(Signer {
                     backend: SignerBackend::RemoteHttps(client, url),

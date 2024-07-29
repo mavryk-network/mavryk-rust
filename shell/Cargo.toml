@@ -30,10 +30,10 @@ crypto = { path = "../crypto" }
 networking = { path = "../networking" }
 shell_automaton = { path = "../shell_automaton" }
 storage = { path = "../storage" }
-tezos_api = { path = "../tezos/api" }
-tezos_identity = { path = "../tezos/identity" }
-tezos_messages = { path = "../tezos/messages" }
-tezos_protocol_ipc_client = { path = "../tezos/protocol-ipc-client" }
+mavryk_api = { path = "../mavryk/api" }
+mavryk_identity = { path = "../mavryk/identity" }
+mavryk_messages = { path = "../mavryk/messages" }
+mavryk_protocol_ipc_client = { path = "../mavryk/protocol-ipc-client" }
 
 [dev-dependencies]
 serial_test = "0.5"
@@ -43,6 +43,6 @@ fs_extra = "1.2.0"
 zip = { git = "https://github.com/zip-rs/zip.git", rev = "2009d162fbaf162190e6495e211cebfe6cd98a96" }
 tokio = { version = "1.19", features = ["sync"] }
 nom = "6.1"
-tezos_encoding = { path = "../tezos/encoding" }
-# TODO: TE-224 - this is not used directly, but test which using PROTOCOL_RUNNER fails without that (tezos_interop can be also replaced with tezos_client, and still works)
-tezos_context_api = { path = "../tezos/context-api" }
+mavryk_encoding = { path = "../mavryk/encoding" }
+# TODO: TE-224 - this is not used directly, but test which using PROTOCOL_RUNNER fails without that (mavryk_interop can be also replaced with mavryk_client, and still works)
+mavryk_context_api = { path = "../mavryk/context-api" }

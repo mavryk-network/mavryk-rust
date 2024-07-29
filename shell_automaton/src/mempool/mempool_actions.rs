@@ -7,8 +7,8 @@ use std::sync::Arc;
 use serde::{Deserialize, Serialize};
 
 use crypto::hash::{BlockHash, ChainId, OperationHash};
-use tezos_messages::p2p::encoding::block_header::BlockHeader;
-use tezos_messages::p2p::encoding::{mempool::Mempool, operation::Operation};
+use mavryk_messages::p2p::encoding::block_header::BlockHeader;
+use mavryk_messages::p2p::encoding::{mempool::Mempool, operation::Operation};
 
 use crate::prechecker::OperationDecodedContents;
 use crate::service::rpc_service::RpcId;

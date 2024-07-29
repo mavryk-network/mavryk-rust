@@ -3,7 +3,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use tezos_api::ffi::InitProtocolContextResult;
+use mavryk_api::ffi::InitProtocolContextResult;
 
 use crate::protocol_runner::ProtocolRunnerToken;
 

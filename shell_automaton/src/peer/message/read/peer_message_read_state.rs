@@ -6,8 +6,8 @@ use std::sync::Arc;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
-use tezos_encoding::binary_reader::BinaryReaderError;
-use tezos_messages::p2p::encoding::peer::PeerMessageResponse;
+use mavryk_encoding::binary_reader::BinaryReaderError;
+use mavryk_messages::p2p::encoding::peer::PeerMessageResponse;
 
 use crate::peer::binary_message::read::PeerBinaryMessageReadState;
 use crate::peer::chunk::read::ReadCrypto;

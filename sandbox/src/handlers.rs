@@ -13,9 +13,9 @@ use warp::http::StatusCode;
 use warp::{reject, Rejection, Reply};
 
 use crate::node_runner::{LightNodeRunnerError, LightNodeRunnerRef, NodeRpcIpPort};
-use crate::tezos_client_runner::{
-    reply_with_client_output, BakeRequest, SandboxWallets, TezosClientRunnerError,
-    TezosClientRunnerRef, TezosProtcolActivationParameters,
+use crate::mavryk_client_runner::{
+    reply_with_client_output, BakeRequest, SandboxWallets, MavrykClientRunnerError,
+    MavrykClientRunnerRef, MavrykProtcolActivationParameters,
 };
 
 #[derive(Debug, Serialize, Clone)]
@@ -76,7 +76,7 @@ pub async fn start_node_with_config(
     cfg: serde_json::Value,
     log: Logger,
     runner: LightNodeRunnerRef,
-    client_runner: TezosClientRunnerRef,
+    client_runner: MavrykClientRunnerRef,
     peers: Arc<Mutex<HashSet<NodeRpcIpPort>>>,
 ) -> Result<impl warp::Reply, reject::Rejection> {
     info!(log, "Received request to start the light node"; "config" => format!("{:?})", cfg));
@@ -90,8 +90,8 @@ pub async fn start_node_with_config(
     info!(log, "Starting light-node...");
     let (node_ref, data_dir) = runner.spawn(cfg, &log)?;
 
-    // initialize data for tezos client
-    info!(log, "Initializing tezos-client data for light-node";
+    // initialize data for mavryk client
+    info!(log, "Initializing mavryk-client data for light-node";
                "node_ref" => format!("{}", &node_ref),
                "client_data_dir" => data_dir.as_path().display().to_string());
     let mut client_runner = client_runner
@@ -115,7 +115,7 @@ pub async fn start_node_with_config(
 pub async fn stop_node(
     log: Logger,
     runner: LightNodeRunnerRef,
-    client_runner: TezosClientRunnerRef,
+    client_runner: MavrykClientRunnerRef,
     peers: Arc<Mutex<HashSet<NodeRpcIpPort>>>,
     node_ref: Option<NodeRpcIpPort>,
 ) -> Result<impl warp::Reply, reject::Rejection> {
@@ -135,7 +135,7 @@ pub async fn stop_node(
         errors.push(format!("{:?}", e));
     }
 
-    // try to cleanup tezos client data
+    // try to cleanup mavryk client data
     if let Err(e) = client_runner.cleanup(&node_ref) {
         errors.push(format!("{:?}", e));
     }
@@ -187,10 +187,10 @@ pub async fn list_nodes(
 pub async fn init_client_data(
     wallets: SandboxWallets,
     log: Logger,
-    client_runner: TezosClientRunnerRef,
+    client_runner: MavrykClientRunnerRef,
     node_ref: Option<NodeRpcIpPort>,
 ) -> Result<impl warp::Reply, reject::Rejection> {
-    info!(log, "Received request to init the tezos-client");
+    info!(log, "Received request to init the mavryk-client");
 
     let node_ref = ensure_node(node_ref)?;
     let mut client_runner = client_runner
@@ -203,7 +203,7 @@ pub async fn init_client_data(
 
 pub async fn get_wallets(
     log: Logger,
-    client_runner: TezosClientRunnerRef,
+    client_runner: MavrykClientRunnerRef,
     node_ref: Option<NodeRpcIpPort>,
 ) -> Result<impl warp::Reply, reject::Rejection> {
     info!(log, "Received request to list the activated wallets");
@@ -224,9 +224,9 @@ pub async fn get_wallets(
 }
 
 pub async fn activate_protocol(
-    activation_parameters: TezosProtcolActivationParameters,
+    activation_parameters: MavrykProtcolActivationParameters,
     log: Logger,
-    client_runner: TezosClientRunnerRef,
+    client_runner: MavrykClientRunnerRef,
     node_ref: Option<NodeRpcIpPort>,
 ) -> Result<impl warp::Reply, reject::Rejection> {
     info!(log, "Received request to activate the protocol");
@@ -243,7 +243,7 @@ pub async fn activate_protocol(
 pub async fn bake_block_with_client(
     request: BakeRequest,
     log: Logger,
-    client_runner: TezosClientRunnerRef,
+    client_runner: MavrykClientRunnerRef,
     node_ref: Option<NodeRpcIpPort>,
 ) -> Result<impl warp::Reply, reject::Rejection> {
     info!(log, "Received request to bake a block");
@@ -259,7 +259,7 @@ pub async fn bake_block_with_client(
 
 pub async fn bake_block_with_client_arbitrary(
     log: Logger,
-    client_runner: TezosClientRunnerRef,
+    client_runner: MavrykClientRunnerRef,
     node_ref: Option<NodeRpcIpPort>,
 ) -> Result<impl warp::Reply, reject::Rejection> {
     info!(log, "Received request to bake arbitrary a block");
@@ -292,24 +292,24 @@ pub async fn handle_rejection(err: Rejection, log: Logger) -> Result<impl Reply,
                 detail,
             ),
         )
-    } else if let Some(tcre) = err.find::<TezosClientRunnerError>() {
-        // Tezos client errors
+    } else if let Some(tcre) = err.find::<MavrykClientRunnerError>() {
+        // Mavryk client errors
         match tcre {
-            TezosClientRunnerError::ProtocolParameterError { .. }
-            | TezosClientRunnerError::NonexistantWallet { .. }
-            | TezosClientRunnerError::UnavailableSandboxNodeError
-            | TezosClientRunnerError::IOError { .. }
-            | TezosClientRunnerError::SandboxDataDirNotInitialized { .. }
-            | TezosClientRunnerError::SerdeError { .. } => {
+            MavrykClientRunnerError::ProtocolParameterError { .. }
+            | MavrykClientRunnerError::NonexistantWallet { .. }
+            | MavrykClientRunnerError::UnavailableSandboxNodeError
+            | MavrykClientRunnerError::IOError { .. }
+            | MavrykClientRunnerError::SandboxDataDirNotInitialized { .. }
+            | MavrykClientRunnerError::SerdeError { .. } => {
                 let message = format!("{}", tcre);
-                error!(log, "Rpc handle error (tezos-client)"; "message" => message.clone());
+                error!(log, "Rpc handle error (mavryk-client)"; "message" => message.clone());
                 (
                     StatusCode::BAD_REQUEST,
                     ErrorMessage::generic(StatusCode::BAD_REQUEST, &message, "".to_string()),
                 )
             }
-            TezosClientRunnerError::CallError { message } => {
-                error!(log, "Rpc handle error (tezos-client)"; "message" => format!("{:?}", message));
+            MavrykClientRunnerError::CallError { message } => {
+                error!(log, "Rpc handle error (mavryk-client)"; "message" => format!("{:?}", message));
                 (
                     StatusCode::from_u16(message.code).unwrap_or(StatusCode::INTERNAL_SERVER_ERROR),
                     message.clone(),
@@ -401,9 +401,9 @@ pub fn resolve_node_from_request(
         .cloned()
 }
 
-fn ensure_node(node_ref: Option<NodeRpcIpPort>) -> Result<NodeRpcIpPort, TezosClientRunnerError> {
+fn ensure_node(node_ref: Option<NodeRpcIpPort>) -> Result<NodeRpcIpPort, MavrykClientRunnerError> {
     match node_ref {
         Some(node_ref) => Ok(node_ref),
-        None => Err(TezosClientRunnerError::UnavailableSandboxNodeError),
+        None => Err(MavrykClientRunnerError::UnavailableSandboxNodeError),
     }
 }

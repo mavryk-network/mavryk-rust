@@ -13,7 +13,7 @@ pub use rights_reducer::rights_reducer;
 
 mod rights_effects;
 pub use rights_effects::rights_effects;
-use tezos_messages::p2p::encoding::block_header::Level;
+use mavryk_messages::p2p::encoding::block_header::Level;
 
 mod utils;
 

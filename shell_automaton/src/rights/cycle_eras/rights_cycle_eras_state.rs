@@ -4,9 +4,9 @@
 use std::collections::{btree_map, BTreeMap};
 
 use crypto::hash::{BlockHash, ProtocolHash};
-use tezos_encoding::binary_reader::BinaryReaderError;
-use tezos_messages::p2p::encoding::block_header::BlockHeader;
-use tezos_protocol_ipc_client::ProtocolServiceError;
+use mavryk_encoding::binary_reader::BinaryReaderError;
+use mavryk_messages::p2p::encoding::block_header::BlockHeader;
+use mavryk_protocol_ipc_client::ProtocolServiceError;
 
 use crate::{
     protocol_runner::ProtocolRunnerToken, service::protocol_runner_service::ContextRawBytesError,

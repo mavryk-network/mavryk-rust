@@ -19,10 +19,10 @@ use slog::{info, warn, Logger};
 
 use networking::network_channel::NetworkChannelRef;
 use storage::{PersistentStorage, StorageInitInfo};
-use tezos_identity::Identity;
-use tezos_messages::base::signature_public_key::SignaturePublicKeyHash;
-use tezos_messages::p2p::encoding::block_header::Level;
-use tezos_protocol_ipc_client::{ProtocolRunnerApi, ProtocolRunnerConfiguration};
+use mavryk_identity::Identity;
+use mavryk_messages::base::signature_public_key::SignaturePublicKeyHash;
+use mavryk_messages::p2p::encoding::block_header::Level;
+use mavryk_protocol_ipc_client::{ProtocolRunnerApi, ProtocolRunnerConfiguration};
 
 use shell_automaton::baker::block_baker::LiquidityBakingToggleVote;
 pub use shell_automaton::service::actors_service::{

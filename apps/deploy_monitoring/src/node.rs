@@ -96,7 +96,7 @@ impl DeployMonitoringContainer for OcamlNode {
 impl OcamlNode {
     pub fn collect_disk_data() -> Result<OcamlDiskData, anyhow::Error> {
         Ok(OcamlDiskData::new(
-            dir::get_size(&format!("{}/{}", DEBUGGER_VOLUME_PATH, "tezos")).unwrap_or(0),
+            dir::get_size(&format!("{}/{}", DEBUGGER_VOLUME_PATH, "mavryk")).unwrap_or(0),
             dir::get_size(&format!("{}/{}", OCAML_VOLUME_PATH, "data/store")).unwrap_or(0),
             dir::get_size(&format!("{}/{}", OCAML_VOLUME_PATH, "data/context")).unwrap_or(0),
         ))
@@ -109,17 +109,17 @@ impl OcamlNode {
         // collect all processes from the system
         let system_processes = system.get_processes();
 
-        // collect all PIDs from process called tezos-node (ocaml node)
-        let tezos_ocaml_processes: Vec<Option<i32>> = system_processes
+        // collect all PIDs from process called mavryk-node (ocaml node)
+        let mavryk_ocaml_processes: Vec<Option<i32>> = system_processes
             .iter()
-            .filter(|(_, process)| process.name().contains("tezos-node"))
+            .filter(|(_, process)| process.name().contains("mavryk-node"))
             .map(|(pid, _)| Some(*pid))
             .collect();
 
         // collect all processes that is the child of the main process and sum up the memory usage
         let valaidators: ProcessMemoryStats = system_processes
             .iter()
-            .filter(|(_, process)| tezos_ocaml_processes.contains(&process.parent()))
+            .filter(|(_, process)| mavryk_ocaml_processes.contains(&process.parent()))
             .map(|(_, process)| {
                 ProcessMemoryStats::new(
                     (process.virtual_memory() * 1024).try_into().unwrap(),

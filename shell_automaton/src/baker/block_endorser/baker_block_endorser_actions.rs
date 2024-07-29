@@ -4,8 +4,8 @@
 use serde::{Deserialize, Serialize};
 
 use crypto::hash::{BlockPayloadHash, Signature};
-use tezos_messages::base::signature_public_key::SignaturePublicKeyHash;
-use tezos_messages::p2p::encoding::block_header::Level;
+use mavryk_messages::base::signature_public_key::SignaturePublicKeyHash;
+use mavryk_messages::p2p::encoding::block_header::Level;
 
 use crate::baker::BakerState;
 use crate::current_head::CurrentHeadState;

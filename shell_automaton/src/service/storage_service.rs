@@ -19,11 +19,11 @@ use storage::{
     OperationsStorageReader, PersistentStorage, ShellAutomatonActionStorage,
     ShellAutomatonStateStorage, StorageInitInfo,
 };
-use tezos_api::ffi::{ApplyBlockRequest, ApplyBlockResponse, CommitGenesisResult};
-use tezos_messages::p2p::encoding::block_header::{BlockHeader, Level};
-use tezos_messages::p2p::encoding::fitness::Fitness;
-use tezos_messages::p2p::encoding::operation::Operation;
-use tezos_messages::p2p::encoding::operations_for_blocks::OperationsForBlocksMessage;
+use mavryk_api::ffi::{ApplyBlockRequest, ApplyBlockResponse, CommitGenesisResult};
+use mavryk_messages::p2p::encoding::block_header::{BlockHeader, Level};
+use mavryk_messages::p2p::encoding::fitness::Fitness;
+use mavryk_messages::p2p::encoding::operation::Operation;
+use mavryk_messages::p2p::encoding::operations_for_blocks::OperationsForBlocksMessage;
 
 use crate::current_head::ProtocolConstants;
 use crate::request::RequestId;

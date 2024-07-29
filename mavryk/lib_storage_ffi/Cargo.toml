@@ -1,0 +1,17 @@
+[package]
+name = "mavryk_lib_storage_ffi"
+version = "3.1.1"
+authors = ["Bruno Deferrari <bruno.deferrari@viablesystems.io>"]
+edition = "2021"
+rust-version = "1.58"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ocaml-interop = { version = "0.8.7", features = ["without-ocamlopt", "caml-state"] }
+# local dependencies
+mavryk_interop = { path = "../interop" }
+mavryk_context = { path = "../context" }
+
+[dev-dependencies]
+tempfile = "3"

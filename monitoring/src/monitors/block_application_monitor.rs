@@ -3,7 +3,7 @@
 
 use std::time::Instant;
 
-use tezos_messages::Head;
+use mavryk_messages::Head;
 
 use crate::websocket::ws_messages::{BlockApplicationMessage, BlockInfo};
 

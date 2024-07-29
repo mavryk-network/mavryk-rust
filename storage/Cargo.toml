@@ -29,9 +29,9 @@ fuzzcheck = { git = "https://github.com/tezedge/fuzzcheck-rs.git", optional = tr
 
 # local dependencies
 crypto = { path = "../crypto" }
-tezos_api = { path = "../tezos/api" }
-tezos_messages = { path = "../tezos/messages" }
-tezos_context_api = { path = "../tezos/context-api" }
+mavryk_api = { path = "../mavryk/api" }
+mavryk_messages = { path = "../mavryk/messages" }
+mavryk_context_api = { path = "../mavryk/context-api" }
 
 # Context actions replayer binary and his dependencies
 clap = "2.33"
@@ -57,7 +57,7 @@ maindb-backend-edgekv = []
 fuzzing = [
     "fuzzcheck",
     "crypto/fuzzing",
-    "tezos_api/fuzzing",
-    "tezos_messages/fuzzing",
-    "tezos_context_api/fuzzing"
+    "mavryk_api/fuzzing",
+    "mavryk_messages/fuzzing",
+    "mavryk_context_api/fuzzing"
     ]

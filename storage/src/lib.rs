@@ -15,21 +15,21 @@ pub use rocksdb;
 use rocksdb::Cache;
 use serde::{Deserialize, Serialize};
 use slog::{info, Logger};
-use tezos_context_api::{PatchContext, TezosContextStorageConfiguration};
-use tezos_messages::p2p::encoding::fitness::Fitness;
+use mavryk_context_api::{PatchContext, MavrykContextStorageConfiguration};
+use mavryk_messages::p2p::encoding::fitness::Fitness;
 use thiserror::Error;
 
 use crypto::{
     base58::FromBase58CheckError,
     hash::{BlockHash, ChainId, ContextHash, FromBytesError, HashType},
 };
-use tezos_api::environment::{
-    get_empty_operation_list_list_hash, TezosEnvironmentConfiguration, TezosEnvironmentError,
+use mavryk_api::environment::{
+    get_empty_operation_list_list_hash, MavrykEnvironmentConfiguration, MavrykEnvironmentError,
 };
-use tezos_api::ffi::{ApplyBlockRequest, ApplyBlockResponse, CommitGenesisResult};
-use tezos_messages::p2p::binary_message::{BinaryRead, BinaryWrite, MessageHash, MessageHashError};
-use tezos_messages::p2p::encoding::prelude::BlockHeader;
-use tezos_messages::Head;
+use mavryk_api::ffi::{ApplyBlockRequest, ApplyBlockResponse, CommitGenesisResult};
+use mavryk_messages::p2p::binary_message::{BinaryRead, BinaryWrite, MessageHash, MessageHashError};
+use mavryk_messages::p2p::encoding::prelude::BlockHeader;
+use mavryk_messages::Head;
 
 pub use crate::block_meta_storage::{
     BlockAdditionalData, BlockMetaStorage, BlockMetaStorageKV, BlockMetaStorageReader,
@@ -147,8 +147,8 @@ pub enum StorageError {
     InvalidColumn,
     #[error("Sequence generator failed: {error}")]
     SequenceError { error: SequenceError },
-    #[error("Tezos environment configuration error: {error}")]
-    TezosEnvironmentError { error: TezosEnvironmentError },
+    #[error("Mavryk environment configuration error: {error}")]
+    MavrykEnvironmentError { error: MavrykEnvironmentError },
     #[error("Message hash error: {error}")]
     MessageHashError { error: MessageHashError },
     #[error("Error constructing hash: {error}")]
@@ -193,9 +193,9 @@ impl From<SequenceError> for StorageError {
     }
 }
 
-impl From<TezosEnvironmentError> for StorageError {
-    fn from(error: TezosEnvironmentError) -> Self {
-        StorageError::TezosEnvironmentError { error }
+impl From<MavrykEnvironmentError> for StorageError {
+    fn from(error: MavrykEnvironmentError) -> Self {
+        StorageError::MavrykEnvironmentError { error }
     }
 }
 
@@ -265,17 +265,17 @@ pub struct StorageInitInfo {
 
 /// Resolve main chain id and genesis header from configuration
 pub fn resolve_storage_init_chain_data(
-    tezos_env: &TezosEnvironmentConfiguration,
+    mavryk_env: &MavrykEnvironmentConfiguration,
     storage_db_path: &Path,
-    context_storage_configuration: &TezosContextStorageConfiguration,
+    context_storage_configuration: &MavrykContextStorageConfiguration,
     patch_context: &Option<PatchContext>,
     context_stats_db_path: &Option<PathBuf>,
     replay: &Option<Replay>,
     log: &Logger,
 ) -> Result<StorageInitInfo, StorageError> {
     let init_data = StorageInitInfo {
-        chain_id: tezos_env.main_chain_id()?,
-        genesis_block_header_hash: tezos_env.genesis_header_hash()?,
+        chain_id: mavryk_env.main_chain_id()?,
+        genesis_block_header_hash: mavryk_env.genesis_header_hash()?,
         patch_context: patch_context.clone(),
         replay: replay.clone(),
         context_stats_db_path: context_stats_db_path.clone(),
@@ -284,7 +284,7 @@ pub fn resolve_storage_init_chain_data(
     info!(
         log,
         "Storage based on data";
-        "chain_name" => &tezos_env.version,
+        "chain_name" => &mavryk_env.version,
         "init_data.chain_id" => format!("{:?}", init_data.chain_id.to_base58_check()),
         "init_data.genesis_header" => format!("{:?}", init_data.genesis_block_header_hash.to_base58_check()),
         "storage_db_path" => format!("{:?}", storage_db_path),
@@ -571,7 +571,7 @@ pub fn initialize_storage_with_genesis_block(
     block_storage: &BlockStorage,
     block_meta_storage: &BlockMetaStorage,
     init_storage_data: &StorageInitInfo,
-    tezos_env: &TezosEnvironmentConfiguration,
+    mavryk_env: &MavrykEnvironmentConfiguration,
     context_hash: &ContextHash,
     log: &Logger,
 ) -> Result<BlockHeaderWithHash, StorageError> {
@@ -581,14 +581,14 @@ pub fn initialize_storage_with_genesis_block(
     let genesis_with_hash = BlockHeaderWithHash {
         hash: init_storage_data.genesis_block_header_hash.clone(),
         header: Arc::new(
-            tezos_env
+            mavryk_env
                 .genesis_header(context_hash.clone(), get_empty_operation_list_list_hash()?)?,
         ),
     };
     let _ = block_storage.put_block_header(&genesis_with_hash)?;
 
     // store additional data
-    let genesis_additional_data = tezos_env.genesis_additional_data()?;
+    let genesis_additional_data = mavryk_env.genesis_additional_data()?;
     let block_additional_data = BlockAdditionalData::new(
         genesis_additional_data.max_operations_ttl,
         genesis_additional_data.last_allowed_fork_level,
@@ -780,8 +780,8 @@ pub mod initializer {
             error!(log, "Incompatible database version found (expected {}, found {}). Please re-sync your node to empty storage - see configuration!", expected_database_version, found_database_version);
         }
 
-        let tezos_env_main_chain_id = &expected_main_chain.chain_id;
-        let tezos_env_main_chain_name = &expected_main_chain.chain_name;
+        let mavryk_env_main_chain_id = &expected_main_chain.chain_id;
+        let mavryk_env_main_chain_name = &expected_main_chain.chain_name;
 
         let (chain_id_ok, previous_chain_name, requested_chain_name) =
             match system_info.get_chain_id()? {
@@ -791,18 +791,18 @@ pub mod initializer {
                         None => "-unknown-".to_string(),
                     };
 
-                    if chain_id == *tezos_env_main_chain_id
-                        && previous_chain_name.eq(tezos_env_main_chain_name.as_str())
+                    if chain_id == *mavryk_env_main_chain_id
+                        && previous_chain_name.eq(mavryk_env_main_chain_name.as_str())
                     {
-                        (true, previous_chain_name, tezos_env_main_chain_name)
+                        (true, previous_chain_name, mavryk_env_main_chain_name)
                     } else {
-                        (false, previous_chain_name, tezos_env_main_chain_name)
+                        (false, previous_chain_name, mavryk_env_main_chain_name)
                     }
                 }
                 None => {
-                    system_info.set_chain_id(tezos_env_main_chain_id)?;
-                    system_info.set_chain_name(tezos_env_main_chain_name)?;
-                    (true, "-none-".to_string(), tezos_env_main_chain_name)
+                    system_info.set_chain_id(mavryk_env_main_chain_id)?;
+                    system_info.set_chain_name(mavryk_env_main_chain_name)?;
+                    (true, "-none-".to_string(), mavryk_env_main_chain_name)
                 }
             };
 
@@ -1053,7 +1053,7 @@ pub mod tests_common {
 
     #[cfg(test)]
     mod tests {
-        use tezos_messages::p2p::encoding::fitness::Fitness;
+        use mavryk_messages::p2p::encoding::fitness::Fitness;
 
         use super::TmpStorage;
         use crate::{ChainId, ChainMetaStorage, Head};

@@ -6,12 +6,12 @@ use crypto::hash::ContextHash;
 use itertools::Itertools;
 
 use storage::num_from_slice;
-use tezos_messages::base::signature_public_key::SignaturePublicKeyHash;
-use tezos_messages::protocol::proto_003::votes::VoteListings;
+use mavryk_messages::base::signature_public_key::SignaturePublicKeyHash;
+use mavryk_messages::protocol::proto_003::votes::VoteListings;
 
 use crate::server::RpcServiceEnvironment;
 use crate::services::protocol::VotesError;
-use tezos_context_api::context_key_owned;
+use mavryk_context_api::context_key_owned;
 
 pub async fn get_votes_listings(
     env: &RpcServiceEnvironment,

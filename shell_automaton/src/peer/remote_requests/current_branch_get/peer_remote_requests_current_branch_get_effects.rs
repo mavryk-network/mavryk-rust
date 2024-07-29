@@ -3,8 +3,8 @@
 
 use std::sync::Arc;
 
-use tezos_messages::p2p::encoding::peer::PeerMessage;
-use tezos_messages::p2p::encoding::prelude::CurrentBranchMessage;
+use mavryk_messages::p2p::encoding::peer::PeerMessage;
+use mavryk_messages::p2p::encoding::prelude::CurrentBranchMessage;
 
 use crate::peer::message::write::PeerMessageWriteInitAction;
 use crate::service::storage_service::StorageRequestPayload;

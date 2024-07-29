@@ -9,9 +9,9 @@ use std::{
 
 use serde::{Deserialize, Serialize};
 
-use crypto::hash::{BlockHash, BlockPayloadHash, ChainId, ContractTz1Hash, Signature};
+use crypto::hash::{BlockHash, BlockPayloadHash, ChainId, ContractMv1Hash, Signature};
 use tenderbake as tb;
-use tezos_messages::protocol::proto_012::operation::{
+use mavryk_messages::protocol::proto_012::operation::{
     EndorsementOperation, InlinedEndorsement, InlinedEndorsementMempoolContents,
     InlinedEndorsementMempoolContentsEndorsementVariant, InlinedPreendorsement,
     InlinedPreendorsementContents, InlinedPreendorsementVariant,
@@ -32,18 +32,18 @@ use super::{
 #[derive(Clone, Serialize, Deserialize)]
 pub struct SlotsInfo {
     pub committee_size: u32,
-    pub ours: Vec<ContractTz1Hash>,
+    pub ours: Vec<ContractMv1Hash>,
     pub level: i32,
-    pub delegates: BTreeMap<i32, BTreeMap<ContractTz1Hash, Slots>>,
+    pub delegates: BTreeMap<i32, BTreeMap<ContractMv1Hash, Slots>>,
 }
 
 #[derive(Serialize, Deserialize)]
 #[allow(clippy::enum_variant_names)]
 pub enum Gathering {
-    GetCornerSlots(Request<i32, BTreeMap<ContractTz1Hash, Slots>, String>),
+    GetCornerSlots(Request<i32, BTreeMap<ContractMv1Hash, Slots>, String>),
     // for some `level: i32` we request a collection of public key hash
     // and corresponding slots
-    GetSlots(Request<i32, BTreeMap<ContractTz1Hash, Slots>, String>),
+    GetSlots(Request<i32, BTreeMap<ContractMv1Hash, Slots>, String>),
     // for some `BlockHash` we request its operations
     GetOperations(Request<BlockHash, Vec<Vec<OperationSimple>>, String>),
     // for some `BlockHash` we request a list of live blocks
@@ -104,7 +104,7 @@ pub struct Initialized {
     pub liquidity_baking_toggle_vote: LiquidityBakingToggleVote,
     pub chain_id: ChainId,
     pub proof_of_work_threshold: u64,
-    pub this: ContractTz1Hash,
+    pub this: ContractMv1Hash,
     // cycle state
     pub nonces: CycleNonce,
     // live blocks
@@ -117,7 +117,7 @@ pub struct Initialized {
     pub new_operations: Vec<OperationSimple>,
     // tenderbake machine
     pub tb_config: tb::Config<tb::TimingLinearGrow, SlotsInfo>,
-    pub tb_state: tb::Machine<ContractTz1Hash, OperationSimple>,
+    pub tb_state: tb::Machine<ContractMv1Hash, OperationSimple>,
 
     pub actions: Vec<BakerAction>,
 }
@@ -162,7 +162,7 @@ impl BakerState {
     pub fn new(
         chain_id: ChainId,
         constants: Constants,
-        this: ContractTz1Hash,
+        this: ContractMv1Hash,
         protocol: Protocol,
         liquidity_baking_toggle_vote: LiquidityBakingToggleVote,
     ) -> Self {
@@ -553,7 +553,7 @@ impl BakerState {
 }
 
 impl Initialized {
-    fn handle_tb_actions(&mut self, tb_actions: Vec<tb::Action<ContractTz1Hash, OperationSimple>>) {
+    fn handle_tb_actions(&mut self, tb_actions: Vec<tb::Action<ContractMv1Hash, OperationSimple>>) {
         for tb_action in tb_actions {
             match tb_action {
                 tb::Action::ScheduleTimeout(deadline) => {
@@ -637,7 +637,7 @@ impl Initialized {
             .push(BakerAction::Vote(VoteAction { op: endorsement }));
     }
 
-    fn propose(&mut self, block: tb::Block<ContractTz1Hash, OperationSimple>) {
+    fn propose(&mut self, block: tb::Block<ContractMv1Hash, OperationSimple>) {
         let payload = match block.payload {
             Some(v) => v,
             None => return,
@@ -707,7 +707,7 @@ impl Initialized {
 }
 
 impl tb::ProposerMap for SlotsInfo {
-    type Id = ContractTz1Hash;
+    type Id = ContractMv1Hash;
 
     fn proposer(&self, level: i32, round: i32) -> Option<(i32, Self::Id)> {
         let c = self.committee_size as i32;
@@ -741,7 +741,7 @@ impl SlotsInfo {
         level: i32,
         slot: u16,
         operation: OperationSimple,
-    ) -> Option<tb::Validator<ContractTz1Hash, OperationSimple>> {
+    ) -> Option<tb::Validator<ContractMv1Hash, OperationSimple>> {
         let i = self.delegates.get(&level)?;
         let (id, s) = i.iter().find(|&(_, v)| v.0.first() == Some(&slot))?;
         Some(tb::Validator {
@@ -764,7 +764,7 @@ fn proposal(
     block: &Block,
     operations: Vec<Vec<OperationSimple>>,
     tb_config: &tb::Config<tb::TimingLinearGrow, SlotsInfo>,
-) -> tb::Block<ContractTz1Hash, OperationSimple> {
+) -> tb::Block<ContractMv1Hash, OperationSimple> {
     tb::Block {
         pred_hash: block.predecessor.clone(),
         level: block.level,

@@ -12,10 +12,10 @@ use nix::{
     unistd::Pid,
 };
 use slog::Logger;
-use tezos_api::ffi::TezosRuntimeConfiguration;
-use tezos_context_api::TezosContextStorageConfiguration;
-use tezos_protocol_ipc_client::{ProtocolRunnerApi, ProtocolRunnerConnection, ProtocolRunnerError};
-use tezos_protocol_ipc_messages::{InitProtocolContextParams, ProtocolMessage};
+use mavryk_api::ffi::MavrykRuntimeConfiguration;
+use mavryk_context_api::MavrykContextStorageConfiguration;
+use mavryk_protocol_ipc_client::{ProtocolRunnerApi, ProtocolRunnerConnection, ProtocolRunnerError};
+use mavryk_protocol_ipc_messages::{InitProtocolContextParams, ProtocolMessage};
 use tokio::process::Child;
 use tokio::sync::Mutex;
 
@@ -38,9 +38,9 @@ pub struct ProtocolRunnerServiceWorker {
     api: ProtocolRunnerApi,
     channel: ProtocolRunnerResponder,
     child_process_handle: Option<Child>,
-    tezos_runtime_configuration: Option<TezosRuntimeConfiguration>,
+    mavryk_runtime_configuration: Option<MavrykRuntimeConfiguration>,
     init_protocol_context_params: Option<InitProtocolContextParams>,
-    init_protocol_context_ipc_cfg: Option<TezosContextStorageConfiguration>,
+    init_protocol_context_ipc_cfg: Option<MavrykContextStorageConfiguration>,
     log: Logger,
 
     // FIXME: doesn't properly handle `ForMempool` messages, but those are not used right now.
@@ -60,7 +60,7 @@ pub struct ProtocolRunnerServiceWorker {
 impl ProtocolRunnerServiceWorker {
     pub fn new(api: ProtocolRunnerApi, channel: ProtocolRunnerResponder, log: Logger) -> Self {
         let child_process_handle = None;
-        let tezos_runtime_configuration = None;
+        let mavryk_runtime_configuration = None;
         let init_protocol_context_params = None;
         let init_protocol_context_ipc_cfg = None;
         let prevalidator_predecessor_hash = Arc::new(Mutex::new(None));
@@ -71,7 +71,7 @@ impl ProtocolRunnerServiceWorker {
             api,
             channel,
             child_process_handle,
-            tezos_runtime_configuration,
+            mavryk_runtime_configuration,
             init_protocol_context_params,
             init_protocol_context_ipc_cfg,
             validate_operation_connection_alive,
@@ -402,7 +402,7 @@ impl ProtocolRunnerServiceWorker {
 
                 let mut conn = self.api.connect().await.unwrap();
 
-                if let Some(config) = &self.tezos_runtime_configuration {
+                if let Some(config) = &self.mavryk_runtime_configuration {
                     slog::info!(self.log, "Restoring runtime configuration...");
                     conn.change_runtime_configuration(config.clone())
                         .await
@@ -432,7 +432,7 @@ impl ProtocolRunnerServiceWorker {
             // Keep these around to be able to properly reinitialize the protocol
             // runner after a restart
             ProtocolMessage::ChangeRuntimeConfigurationCall(cfg) => {
-                self.tezos_runtime_configuration = Some(cfg.clone());
+                self.mavryk_runtime_configuration = Some(cfg.clone());
             }
             ProtocolMessage::InitProtocolContextCall(params) => {
                 self.init_protocol_context_params = Some(params.clone());

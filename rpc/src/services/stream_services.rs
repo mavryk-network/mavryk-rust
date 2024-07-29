@@ -11,7 +11,7 @@ use slog::{error, Logger};
 use crypto::hash::{BlockHash, ProtocolHash};
 use shell_integration::{generate_stream_id, StreamCounter, StreamId};
 use storage::{BlockHeaderWithHash, BlockMetaStorage, BlockMetaStorageReader, PersistentStorage};
-use tezos_messages::TimestampOutOfRangeError;
+use mavryk_messages::TimestampOutOfRangeError;
 
 use crate::helpers::RpcServiceError;
 use crate::server::RpcCollectedStateRef;

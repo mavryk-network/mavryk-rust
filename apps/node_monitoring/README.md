@@ -9,7 +9,7 @@ Only works on linux like systems because it heavily uses the /proc filesystem
 ## Options
 
 - `tezedge-nodes`: An array of tezedge type nodes separated by space in the following notation: \<node_tag\>:\<node_rpc_port\>:\<path to node database\>
-- `ocaml-nodes`:(Optional) An array of octez type nodes separated by space in the following notation: \<node_tag\>:\<node_rpc_port\>:\<path to node database\>
+- `ocaml-nodes`:(Optional) An array of mavkit type nodes separated by space in the following notation: \<node_tag\>:\<node_rpc_port\>:\<path to node database\>
 - `debugger-path`: (Optional) Specify the path to the debugger database to monitor the size of the debugger database for the node. 
 - `rpc-port`: (Optional) Custom port for the resources endpoints. Defaults to 38732.
 - `slack-url`: (Optional) Slack webhook url used to send messages to specific channels

@@ -3,7 +3,7 @@
 
 use std::io::Write;
 
-use tezos_messages::p2p::binary_message::{BinaryChunk, BinaryWrite, CONTENT_LENGTH_MAX};
+use mavryk_messages::p2p::binary_message::{BinaryChunk, BinaryWrite, CONTENT_LENGTH_MAX};
 
 use super::extendable_as_writable::ExtendableAsWritable;
 use super::{ChunkWriter, WriteMessageError};

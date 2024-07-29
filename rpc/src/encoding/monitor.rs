@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 use crypto::hash::BlockHash;
-use tezos_messages::p2p::encoding::prelude::*;
+use mavryk_messages::p2p::encoding::prelude::*;
 
 use super::base_types::*;
 

@@ -19,7 +19,7 @@ use crate::websocket::ws_json_rpc::JsonRpcResponse;
 use crate::websocket::ws_messages::{WebsocketMessage, WebsocketMessageWrapper};
 use crate::websocket::RpcClient;
 use crate::{monitors::*, websocket::ws_messages::PeerConnectionStatus};
-use tezos_messages::Head;
+use mavryk_messages::Head;
 
 /// How often to print stats in logs
 const LOG_INTERVAL: Duration = Duration::from_secs(60);
@@ -72,7 +72,7 @@ impl Monitor {
 
     fn process_peer_message(&mut self, msg: PeerMessageReceived, log: &Logger) {
         use std::mem::size_of_val;
-        use tezos_messages::p2p::encoding::peer::PeerMessage;
+        use mavryk_messages::p2p::encoding::peer::PeerMessage;
 
         if let PeerMessage::CurrentBranch(msg) = msg.message.message() {
             if msg.current_branch().current_head().level() > 0 {

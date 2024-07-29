@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 // cargo build -p baker --tests --release
-// LD_LIBRARY_PATH=tezos/sys/lib_tezos/artifacts PATH=$PATH:(pwd)/target/release
+// LD_LIBRARY_PATH=mavryk/sys/lib_mavryk/artifacts PATH=$PATH:(pwd)/target/release
 // ./target/release/deps/basic-????????????????
 
 use std::time::Duration;

@@ -14,7 +14,7 @@ use serde::Deserialize;
 use sha2::{Digest, Sha256};
 
 const GIT_RELEASE_DISTRIBUTIONS_FILE: &str =
-    "../tezos/sys/lib_tezos/libtezos-ffi-distribution-summary.json";
+    "../mavryk/sys/lib_mavryk/libmavryk-ffi-distribution-summary.json";
 const ARTIFACTS_DIR: &str = "artifacts";
 
 #[derive(Debug)]
@@ -70,7 +70,7 @@ fn get_remote_libs() -> Vec<RemoteLib> {
         _ => None,
     };
 
-    let required_artifacts: Vec<String> = vec!["tezos-client", "tezos-admin-client"]
+    let required_artifacts: Vec<String> = vec!["mavryk-client", "mavryk-admin-client"]
         .iter()
         .map(|s| s.to_string())
         .collect();
@@ -109,14 +109,14 @@ fn get_remote_libs() -> Vec<RemoteLib> {
                             "cargo:warning=No precompiled library found for '{:?}'.",
                             platform
                         );
-                        println!("{}", "To add support for your platform create a PR or open a new issue at https://github.com/tezedge/tezos-opam-builder".bright_white());
+                        println!("{}", "To add support for your platform create a PR or open a new issue at https://github.com/tezedge/mavryk-opam-builder".bright_white());
                         panic!("No precompiled library");
                     }
                 }
             }
             None => {
                 println!("cargo:warning=Not yet supported platform: '{:?}', requested artifact_for_platform: {:?}!", platform, required_artifact);
-                println!("{}", "To add support for your platform create a PR or open a new issue at https://github.com/tezedge/tezos-opam-builder".bright_white());
+                println!("{}", "To add support for your platform create a PR or open a new issue at https://github.com/tezedge/mavryk-opam-builder".bright_white());
                 panic!("Not yet supported platform!");
             }
         }
@@ -140,15 +140,15 @@ fn current_release_distributions_artifacts() -> Vec<Artifact> {
 fn run_builder(build_chain: &str) {
     match build_chain {
         "local" => {
-            println!("Resolved build_chain is local, so we expect that you have already tezos-client binary");
+            println!("Resolved build_chain is local, so we expect that you have already mavryk-client binary");
         }
         "remote" => {
-            // let libtezos_path = Path::new("artifacts").join("tezos-client");
+            // let libmavryk_path = Path::new("artifacts").join("mavryk-client");
             let remote_libs = get_remote_libs();
             println!("Resolved platform-dependent remote_lib: {:?}", &remote_libs);
 
             for remote_lib in remote_libs {
-                // get library: $ curl <remote_url> --output lib_tezos/artifacts/tezos-client-*
+                // get library: $ curl <remote_url> --output lib_mavryk/artifacts/mavryk-client-*
                 let lib_path = Path::new("artifacts").join(&format!("{}.gz", remote_lib.name));
                 Command::new("curl")
                     .args(&[
@@ -158,7 +158,7 @@ fn run_builder(build_chain: &str) {
                         lib_path.as_os_str().to_str().unwrap(),
                     ])
                     .status()
-                    .expect("Couldn't retrieve compiled tezos binary.");
+                    .expect("Couldn't retrieve compiled mavryk binary.");
 
                 // get sha256 checksum file: $ curl <remote_url>
                 let remote_lib_sha256: Output = Command::new("curl")
@@ -166,7 +166,7 @@ fn run_builder(build_chain: &str) {
                     .output()
                     .unwrap_or_else(|_| {
                         panic!(
-                            "Couldn't retrieve sha256check file for tezos binary from url: {:?}!",
+                            "Couldn't retrieve sha256check file for mavryk binary from url: {:?}!",
                             remote_lib.sha256_checksum_url.as_str()
                         )
                     });
@@ -178,7 +178,7 @@ fn run_builder(build_chain: &str) {
                 // check sha256 hash
                 {
                     let mut file =
-                        File::open(&lib_path).expect("Failed to read contents of libtezos.so");
+                        File::open(&lib_path).expect("Failed to read contents of libmavryk.so");
                     // need to set executable persissions
                     if let Err(e) = file.set_permissions(fs::Permissions::from_mode(0o722)) {
                         eprintln!(
@@ -188,9 +188,9 @@ fn run_builder(build_chain: &str) {
                     }
                     let mut sha256 = Sha256::new();
                     std::io::copy(&mut file, &mut sha256)
-                        .expect("Failed to read contents of libtezos.so");
+                        .expect("Failed to read contents of libmavryk.so");
                     let hash = sha256.finalize();
-                    assert_eq!(hash[..], *remote_lib_sha256, "libtezos.so SHA256 mismatch");
+                    assert_eq!(hash[..], *remote_lib_sha256, "libmavryk.so SHA256 mismatch");
                 }
 
                 // Uncompress the artifact
@@ -208,7 +208,7 @@ fn run_builder(build_chain: &str) {
 }
 
 fn main() {
-    // ensure lib_tezos/artifacts directory is empty
+    // ensure lib_mavryk/artifacts directory is empty
     if Path::new(ARTIFACTS_DIR).exists() {
         fs::remove_dir_all(ARTIFACTS_DIR).expect("Failed to delete artifacts directory!");
     }

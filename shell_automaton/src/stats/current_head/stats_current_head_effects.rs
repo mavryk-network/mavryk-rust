@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 use crypto::hash::BlockHash;
-use tezos_messages::p2p::{binary_message::MessageHash, encoding::peer::PeerMessage};
+use mavryk_messages::p2p::{binary_message::MessageHash, encoding::peer::PeerMessage};
 
 use crate::{
     current_head_precheck::CurrentHeadPrecheckSuccessAction,

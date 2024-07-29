@@ -3,8 +3,8 @@
 
 use serde::{Deserialize, Serialize};
 
-use tezos_api::ffi::CommitGenesisResult;
-use tezos_protocol_ipc_client::ProtocolServiceError;
+use mavryk_api::ffi::CommitGenesisResult;
+use mavryk_protocol_ipc_client::ProtocolServiceError;
 
 use crate::protocol_runner::ProtocolRunnerToken;
 use crate::storage::blocks::genesis::init::additional_data_put::StorageBlocksGenesisInitAdditionalDataPutState;

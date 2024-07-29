@@ -1249,7 +1249,7 @@ dependencies = [
  "strum 0.23.0",
  "strum_macros 0.23.1",
  "sysinfo",
- "tezos_messages",
+ "mavryk_messages",
  "thiserror",
  "time",
  "tokio",
@@ -2370,7 +2370,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "tezos_encoding"
+name = "mavryk_encoding"
 version = "3.1.0"
 dependencies = [
  "bit-vec",
@@ -2381,12 +2381,12 @@ dependencies = [
  "num-bigint 0.3.3",
  "num-traits",
  "serde",
- "tezos_encoding_derive",
+ "mavryk_encoding_derive",
  "thiserror",
 ]
 
 [[package]]
-name = "tezos_encoding_derive"
+name = "mavryk_encoding_derive"
 version = "3.1.0"
 dependencies = [
  "lazy_static",
@@ -2398,7 +2398,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "tezos_identity"
+name = "mavryk_identity"
 version = "3.1.0"
 dependencies = [
  "anyhow",
@@ -2410,7 +2410,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "tezos_messages"
+name = "mavryk_messages"
 version = "3.1.0"
 dependencies = [
  "anyhow",
@@ -2430,9 +2430,9 @@ dependencies = [
  "slog",
  "strum 0.20.0",
  "strum_macros 0.20.1",
- "tezos_encoding",
- "tezos_encoding_derive",
- "tezos_identity",
+ "mavryk_encoding",
+ "mavryk_encoding_derive",
+ "mavryk_identity",
  "thiserror",
  "time",
 ]

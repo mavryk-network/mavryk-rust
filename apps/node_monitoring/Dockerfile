@@ -1,6 +1,6 @@
 # ARG BASE_IMAGE=tezedge/tezedge-libs:latest
 
-# FROM tezedge/tezos-opam-builder:debian10 as build-env
+# FROM tezedge/mavryk-opam-builder:debian10 as build-env
 
 FROM debian:10 as build-env
 USER root

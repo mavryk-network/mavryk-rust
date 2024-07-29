@@ -9,7 +9,7 @@ use rocksdb::{Cache, ColumnFamilyDescriptor};
 use serde::{Deserialize, Serialize};
 
 use crypto::hash::{ChainId, HashType};
-use tezos_messages::Head;
+use mavryk_messages::Head;
 
 use crate::database::tezedge_database::{KVStoreKeyValueSchema, TezedgeDatabaseWithIterator};
 use crate::persistent::database::{default_table_options, RocksDbKeyValueSchema};
@@ -268,7 +268,7 @@ mod tests {
     use std::convert::TryInto;
 
     use anyhow::Error;
-    use tezos_messages::p2p::encoding::fitness::Fitness;
+    use mavryk_messages::p2p::encoding::fitness::Fitness;
 
     use crate::tests_common::TmpStorage;
 

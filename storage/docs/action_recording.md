@@ -12,7 +12,7 @@ One can start action recording by running the node:
 
 ```
 ./run.sh node 
-    --tezos-data-dir /tmp/light_node/tezos
+    --mavryk-data-dir /tmp/light_node/mavryk
     --bootstrap-db-path /tmp/light_node/tezedge
     --actions-store-backend file
     --network=<NETWORK>
@@ -42,7 +42,7 @@ Actions in the file are stored as:
 
 where :
  - `header N` - is unsigned int 32 - lenght of the `N` block
- - `block N` - Vec<[ContextAction](https://github.com/tezedge/tezedge/blob/develop/tezos/context/src/channel.rs#L44)> serialized using [bincode crate](https://docs.rs/bincode/1.3.2/bincode/) and then compress  using [snap](https://crates.io/crates/snap)
+ - `block N` - Vec<[ContextAction](https://github.com/tezedge/tezedge/blob/develop/mavryk/context/src/channel.rs#L44)> serialized using [bincode crate](https://docs.rs/bincode/1.3.2/bincode/) and then compress  using [snap](https://crates.io/crates/snap)
 
 single block is represented as `Vec<ContextAction>`
 

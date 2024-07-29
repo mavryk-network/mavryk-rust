@@ -1,7 +1,7 @@
 // Copyright (c) SimpleStaking, Viable Systems and Tezedge Contributors
 // SPDX-License-Identifier: MIT
 
-use tezos_context_api::TezosContextStorageConfiguration;
+use mavryk_context_api::MavrykContextStorageConfiguration;
 
 use crate::current_head::CurrentHeadRehydrateInitAction;
 use crate::protocol_runner::init::context::{
@@ -53,7 +53,7 @@ where
         Action::ProtocolRunnerInitSuccess(_) => {
             let is_irmin_only = matches!(
                 &store.state.get().config.protocol_runner.storage,
-                TezosContextStorageConfiguration::IrminOnly(_)
+                MavrykContextStorageConfiguration::IrminOnly(_)
             );
 
             if is_irmin_only {

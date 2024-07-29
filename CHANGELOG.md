@@ -215,17 +215,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Re-implemented bootstrapping logic in the state machine.
 - In-memory context context now supports loading it's state from disk.
 - Disk usage measurements for the context stats db.
-- Implemented Octez `tezos-accuser` support.
+- Implemented Mavkit `mavryk-accuser` support.
 
 ### Changed
 
 - In-memory context storage now has a new garbage collector that collects everything that doesn't belong to the last few levels.
-- Block application retry logic is now more alike Octez, and can handle protocol runner failures.
+- Block application retry logic is now more alike Mavkit, and can handle protocol runner failures.
 
 ### Fixed
 
 - Fixed `/monitoring/valid_blocks` RPC.
-- Cache-related block application retry logic now in synch with the one in Octez.
+- Cache-related block application retry logic now in synch with the one in Mavkit.
 
 ## [1.16.1] - 2022-03-04
 
@@ -276,7 +276,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-- Various tools for the Rust implementation of the context storage (see `tezos/context-tool`).
+- Various tools for the Rust implementation of the context storage (see `mavryk/context-tool`).
 - `context-integrity-check` flag to check the integrity of the Rust implementatino of the context storage at startup.
 
 ### Changed
@@ -319,7 +319,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
-- Increase Irmin's index log size limit to `2_500_000` to match Octez v11. This should help with freezes during merges by making them happen less often, but increases memory usage a little.
+- Increase Irmin's index log size limit to `2_500_000` to match Mavkit v11. This should help with freezes during merges by making them happen less often, but increases memory usage a little.
 - Tweak the call to apply a block in chain feeder so that it is less prone to block Tokio's worker threads.
 - MessagePack encoding is now used for action and state snapshot storage instead of JSON.
 
@@ -517,7 +517,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - A reworked in-memory backend for the TezEdge context that conforms to the Tezos context API and is now directly accessed from the Tezos protocol code.
-- Flag `--tezos-context-storage` to choose the context backend. Default is `irmin`, supported values are:
+- Flag `--mavryk-context-storage` to choose the context backend. Default is `irmin`, supported values are:
   - `tezedge` - Use the TezEdge context backend.
   - `irmin` - Use the Irmin context backend.
   - `both` - Use both backends at the same time
@@ -793,13 +793,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
-- New library `tezos/identity` for generate/validate identity/pow in rust
+- New library `mavryk/identity` for generate/validate identity/pow in rust
 - Several structs/algorithms unnecessary `clone` optimization
 - Refactoring and cleanup
 
 ### Removed
 
-- Generate identity through OCaml FFI (reimplemented in `tezos/identity`)
+- Generate identity through OCaml FFI (reimplemented in `mavryk/identity`)
 
 ### Security
 
@@ -824,7 +824,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - New configuration parameter `--disable-bootstrap-lookup` to turn off DNS lookup for peers (e.g. used for tests or sandbox).
 - New configuration parameter `--db-cfg-max-threads` to better control system resources.
-- New RPCs to make baking in sandbox mode possible with tezos-client.
+- New RPCs to make baking in sandbox mode possible with mavryk-client.
 - Support for MacOS (10.13 and newer).
 - Enabling core dumps in debug mode (if not set), set max open files for process
 - New sandbox module to launch the light-node via RPCs.
@@ -842,7 +842,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - RPCs for every protocol now support the Tezos indexer 'blockwatch/tzindex'.
 - Support for connecting to Mainnet.
-- Support for sandboxing, which means an empty TezEdge can be initialized with `tezos-client` for "activate protocol" and do "transfer" operation.
+- Support for sandboxing, which means an empty TezEdge can be initialized with `mavryk-client` for "activate protocol" and do "transfer" operation.
 
 ### Changed
 

@@ -20,12 +20,12 @@ use storage::{
     BlockAdditionalData, BlockHeaderWithHash, BlockJsonData, BlockStorageReader, OperationsStorage,
     OperationsStorageReader,
 };
-use tezos_api::ffi::{ApplyBlockRequest, RpcMethod, RpcRequest};
-use tezos_messages::{
+use mavryk_api::ffi::{ApplyBlockRequest, RpcMethod, RpcRequest};
+use mavryk_messages::{
     p2p::encoding::{operation::Operation, operations_for_blocks::OperationsForBlocksMessage},
     protocol::{SupportedProtocol, UnsupportedProtocolError},
 };
-use tezos_protocol_ipc_client::ProtocolRunnerConnection;
+use mavryk_protocol_ipc_client::ProtocolRunnerConnection;
 
 use super::{base_services::get_additional_data_or_fail, protocol};
 
@@ -81,7 +81,7 @@ pub struct FreezerKind {
 }
 
 // TODO: include legacy stuff?
-// Note: We need to rename the variants because of "tezos case" variants.....
+// Note: We need to rename the variants because of "mavryk case" variants.....
 #[derive(Clone, Debug, Deserialize)]
 pub enum BalanceUpdateCategory {
     #[serde(rename = "block fees")]
@@ -534,7 +534,7 @@ impl SnapshotCycleInfo {
             )?;
             let converted_ops = ApplyBlockRequest::convert_operations(ops);
 
-            let mut connection = env.tezos_protocol_api().readable_connection().await?;
+            let mut connection = env.mavryk_protocol_api().readable_connection().await?;
             let deserialized_operations = deserialize_operations(
                 &json_data,
                 &additional_data,
@@ -1078,7 +1078,7 @@ async fn collect_cycle_rewards(
         }
     }
 
-    let mut connection = env.tezos_protocol_api().readable_connection().await?;
+    let mut connection = env.mavryk_protocol_api().readable_connection().await?;
     for (block_header, block_json_data, block_additional_data, operations_data) in blocks {
         let response = connection
             .apply_block_result_metadata(

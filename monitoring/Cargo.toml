@@ -17,7 +17,7 @@ json-rpc-types = "1.0"
 crypto = { path = "../crypto" }
 networking = { path = "../networking" }
 shell = { path = "../shell" }
-tezos_messages = { path = "../tezos/messages" }
+mavryk_messages = { path = "../mavryk/messages" }
 tokio = { version = "1.19", features = ["full"] }
 tokio-stream = "0.1.2"
 futures = { version = "0.3", default-features = false }
@@ -26,7 +26,7 @@ http = "0.2"
 uuid = { git = "https://github.com/tezedge/uuid", tag = "v0.8.2-cleanup-unsafe-1", default-features = false, features = ["v4"] }
 storage = { path = "../storage" }
 rpc = { path = "../rpc" }
-tezos_api = { path = "../tezos/api" }
+mavryk_api = { path = "../mavryk/api" }
 
 [dev-dependencies]
 rand = "0.7.3"

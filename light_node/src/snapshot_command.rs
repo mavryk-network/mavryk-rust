@@ -11,7 +11,7 @@
 //! ```
 //! ./target/release/light-node \
 //!     --config-file ./light_node/etc/tezedge/tezedge.config \
-//!     --tezos-data-dir /path/to/source \
+//!     --mavryk-data-dir /path/to/source \
 //!     snapshot \
 //!     --target-path /path/to/target \
 //!     --block 434223 # optional block hash, level or negative offset from head
@@ -45,9 +45,9 @@ use nix::{
     sys::signal::{self, Signal},
     unistd::Pid,
 };
-use tezos_api::ffi::CommitGenesisResult;
-use tezos_messages::Head;
-use tezos_protocol_ipc_client::{ProtocolRunnerApi, ProtocolRunnerError};
+use mavryk_api::ffi::CommitGenesisResult;
+use mavryk_messages::Head;
+use mavryk_protocol_ipc_client::{ProtocolRunnerApi, ProtocolRunnerError};
 use tokio::process::Child;
 
 use crate::{
@@ -69,7 +69,7 @@ pub fn snapshot_storage(
 
     // We don't try to figure a savepoint way back on history, so if no block is specified,
     // we default to going back just a few blocks based on the information here:
-    // https://tezos.stackexchange.com/questions/3539/how-often-do-blockchain-reorgs-happen
+    // https://mavryk.stackexchange.com/questions/3539/how-often-do-blockchain-reorgs-happen
     let target_block = target_block.unwrap_or(BlockReference::OffsetFromHead(10));
 
     info!(log, "Fetching data from source main storage...");
@@ -167,7 +167,7 @@ pub fn snapshot_storage(
         &new_block_storage,
         &new_block_meta_storage,
         &init_storage_data,
-        &env.tezos_network_config,
+        &env.mavryk_network_config,
         &genesis_commit_hash,
         &log,
     )
@@ -347,7 +347,7 @@ fn initialize_protocol_runner_and_snapshot_context(
     let (_context_init_status_sender, context_init_status_receiver) =
         tokio::sync::watch::channel(false);
     let protocol_runner_configuration = create_protocol_runner_configuration(env);
-    let mut tezos_protocol_api = ProtocolRunnerApi::new(
+    let mut mavryk_protocol_api = ProtocolRunnerApi::new(
         protocol_runner_configuration,
         context_init_status_receiver,
         tokio_runtime.handle(),
@@ -357,11 +357,11 @@ fn initialize_protocol_runner_and_snapshot_context(
     tokio_runtime.block_on(async {
         info!(log, "Initializing protocol runner...");
 
-        let mut child = tezos_protocol_api
+        let mut child = mavryk_protocol_api
             .start(None)
             .await
             .expect("Failed to launch protocol runner");
-        let mut conn = tezos_protocol_api.connect().await.expect("Failed to connect to protocol runner");
+        let mut conn = mavryk_protocol_api.connect().await.expect("Failed to connect to protocol runner");
 
         let _result = conn
             .init_protocol_for_write(false, &env.storage.patch_context, None)
@@ -443,7 +443,7 @@ fn resolve_block_reference(
 }
 
 /// Import a snapshot
-pub fn import_snapshot(from: &Path, tezos_data_dir: &Path) {
+pub fn import_snapshot(from: &Path, mavryk_data_dir: &Path) {
     let tar_gz = File::open(from)
         .unwrap_or_else(|_| panic!("Failed to open snapshot file {}", from.display()));
 
@@ -453,7 +453,7 @@ pub fn import_snapshot(from: &Path, tezos_data_dir: &Path) {
     let mut archive = Archive::new(tar);
 
     archive
-        .unpack(tezos_data_dir)
+        .unpack(mavryk_data_dir)
         .expect("Failed to unpack snapshot tarball");
 }
 
@@ -496,22 +496,22 @@ pub async fn download_file(client: &Client, url: &str, path: &Path) -> Result<()
 }
 
 /// Verifies whether the snasphot can be imported to the supplied path
-pub fn verify_snapshot_target_directory(tezos_data_dir: &Path) {
+pub fn verify_snapshot_target_directory(mavryk_data_dir: &Path) {
     // Verify that the direcotry exists and is empty, create the directory if it does not exist
-    if tezos_data_dir.exists() {
-        match tezos_data_dir.read_dir() {
+    if mavryk_data_dir.exists() {
+        match mavryk_data_dir.read_dir() {
             Ok(mut entries) => {
                 if entries.next().is_some() {
-                    panic!("It seems a tezedge database already exists at {}. If you wish to continue please move/remove the directory contenst and restart the command.", tezos_data_dir.display())
+                    panic!("It seems a tezedge database already exists at {}. If you wish to continue please move/remove the directory contenst and restart the command.", mavryk_data_dir.display())
                 }
             }
             Err(e) => panic!("Failed to read directory: {}", e),
         }
     } else {
-        fs_extra::dir::create_all(tezos_data_dir, false).unwrap_or_else(|_| {
+        fs_extra::dir::create_all(mavryk_data_dir, false).unwrap_or_else(|_| {
             panic!(
                 "Faled to create direcotry at path {}",
-                tezos_data_dir.display()
+                mavryk_data_dir.display()
             )
         });
     }

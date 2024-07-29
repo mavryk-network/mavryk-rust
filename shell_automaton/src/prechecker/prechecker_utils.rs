@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 use super::CycleEra;
-use tezos_messages::p2p::encoding::block_header::Level;
+use mavryk_messages::p2p::encoding::block_header::Level;
 
 pub fn get_cycle_level(level: Level, cycle_eras: &[CycleEra]) -> Option<(i32, i32)> {
     cycle_eras.iter().find_map(|era| {

@@ -40,7 +40,7 @@ curl --location --request POST 'http://localhost:3030/start' \
     "sandbox_patch_context_json": {
         "genesis_pubkey": "edpkuSLWfVU1Vq7Jg9FucPyKmma6otcMHac9zG4oU1KMHSTBpJuGQ2"
     },
-    "tezos_data_dir": "/tmp/tezedge/tezos-node",
+    "mavryk_data_dir": "/tmp/tezedge/mavryk-node",
     "identity_file": "/tmp/tezedge/identity.json",
     "bootstrap_db_path": "/tmp/tezedge/light-node",
     "db_cfg_max_threads": "4",
@@ -57,7 +57,7 @@ curl --location --request POST 'http://localhost:3030/start' \
 
 ### **3. call the init_client RPC**
 
-Initializes the tezos-client with the provided accounts. In this example, we provide 2 accounts.
+Initializes the mavryk-client with the provided accounts. In this example, we provide 2 accounts.
 
 ```
 curl --location --request POST 'http://localhost:3030/init_client' \
@@ -349,7 +349,7 @@ curl --location --request GET 'http://127.0.0.1:3030/list_nodes'
 
 ### **8. call the stop RPC**
 
-Stopping the node. Also cleans the nodes DB and the the tezos-client directory.
+Stopping the node. Also cleans the nodes DB and the the mavryk-client directory.
 
 ```
 curl --location --request GET 'http://127.0.0.1:3030/stop'

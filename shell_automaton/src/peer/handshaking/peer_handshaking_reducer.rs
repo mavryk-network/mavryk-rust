@@ -4,7 +4,7 @@
 use std::collections::VecDeque;
 
 use crypto::crypto_box::{CryptoKey, PublicKey};
-use tezos_messages::p2p::encoding::ack::{AckMessage, NackMotive};
+use mavryk_messages::p2p::encoding::ack::{AckMessage, NackMotive};
 
 use crate::peer::binary_message::read::PeerBinaryMessageReadState;
 use crate::peer::binary_message::write::PeerBinaryMessageWriteState;

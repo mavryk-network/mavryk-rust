@@ -9,8 +9,8 @@ use crypto::hash::{
     BlockHash, BlockMetadataHash, BlockPayloadHash, OperationHash, OperationMetadataListListHash,
 };
 use storage::BlockHeaderWithHash;
-use tezos_messages::p2p::encoding::block_header::{BlockHeader, Level};
-use tezos_messages::p2p::encoding::operation::Operation;
+use mavryk_messages::p2p::encoding::block_header::{BlockHeader, Level};
+use mavryk_messages::p2p::encoding::operation::Operation;
 
 use super::block_baker::{BakerBlockBakerState, LiquidityBakingToggleVote};
 use super::block_endorser::BakerBlockEndorserState;

@@ -35,6 +35,6 @@ warp = "0.3"
 procfs = { version = "0.9", features = [], default-features = false }
 netinfo = { git = "https://github.com/tezedge/netinfo.git", tag = "tezedge-v0.5.1-1" }
 crypto = { path = "../../crypto" }
-tezos_messages = { path = "../../tezos/messages" }
+mavryk_messages = { path = "../../mavryk/messages" }
 
 [workspace]

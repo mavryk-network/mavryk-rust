@@ -22,12 +22,12 @@ use shell::PeerConnectionThreshold;
 use storage::database::tezedge_database::TezedgeDatabaseBackendConfiguration;
 use storage::initializer::{DbsRocksDbTableInitializer, RocksDbConfig};
 use storage::{BlockReference, Replay, StorageSnapshot};
-use tezos_api::environment::{self, TezosEnvironmentConfiguration};
-use tezos_api::environment::{TezosEnvironment, ZcashParams};
-use tezos_context_api::{
+use mavryk_api::environment::{self, MavrykEnvironmentConfiguration};
+use mavryk_api::environment::{MavrykEnvironment, ZcashParams};
+use mavryk_context_api::{
     ContextKvStoreConfiguration, PatchContext, SupportedContextKeyValueStore,
-    TezosContextIrminStorageConfiguration, TezosContextStorageConfiguration,
-    TezosContextTezEdgeStorageConfiguration, TezosContextTezedgeOnDiskBackendOptions,
+    MavrykContextIrminStorageConfiguration, MavrykContextStorageConfiguration,
+    MavrykContextTezEdgeStorageConfiguration, MavrykContextTezedgeOnDiskBackendOptions,
 };
 
 #[derive(Debug, Clone)]
@@ -57,23 +57,23 @@ impl Logging {
 }
 
 #[derive(Debug, Clone)]
-pub struct ParseTezosContextStorageChoiceError(String);
+pub struct ParseMavrykContextStorageChoiceError(String);
 
-enum TezosContextStorageChoice {
+enum MavrykContextStorageChoice {
     Irmin,
     TezEdge,
     Both,
 }
 
-impl FromStr for TezosContextStorageChoice {
-    type Err = ParseTezosContextStorageChoiceError;
+impl FromStr for MavrykContextStorageChoice {
+    type Err = ParseMavrykContextStorageChoiceError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s.to_ascii_lowercase().as_ref() {
-            "both" => Ok(TezosContextStorageChoice::Both),
-            "irmin" => Ok(TezosContextStorageChoice::Irmin),
-            "tezedge" => Ok(TezosContextStorageChoice::TezEdge),
-            _ => Err(ParseTezosContextStorageChoiceError(format!(
+            "both" => Ok(MavrykContextStorageChoice::Both),
+            "irmin" => Ok(MavrykContextStorageChoice::Irmin),
+            "tezedge" => Ok(MavrykContextStorageChoice::TezEdge),
+            _ => Err(ParseMavrykContextStorageChoiceError(format!(
                 "Invalid context storage name: {}",
                 s
             ))),
@@ -86,7 +86,7 @@ pub struct Storage {
     pub db: RocksDbConfig<DbsRocksDbTableInitializer>,
     pub db_path: PathBuf,
     pub context_stats_db_path: Option<PathBuf>,
-    pub context_storage_configuration: TezosContextStorageConfiguration,
+    pub context_storage_configuration: MavrykContextStorageConfiguration,
     pub compute_context_action_tree_hashes: bool,
     pub patch_context: Option<PatchContext>,
     pub main_db: TezedgeDatabaseBackendConfiguration,
@@ -101,7 +101,7 @@ impl Storage {
 
     const LRU_CACHE_SIZE_96MB: usize = 96 * 1024 * 1024;
 
-    const DEFAULT_CONTEXT_KV_STORE_BACKEND: &'static str = tezos_context_api::ONDISK;
+    const DEFAULT_CONTEXT_KV_STORE_BACKEND: &'static str = mavryk_context_api::ONDISK;
 
     const DEFAULT_MAINDB: &'static str = "rocksdb";
 
@@ -122,9 +122,9 @@ pub struct Ffi {
 
 impl Ffi {
     pub const DEFAULT_ZCASH_PARAM_SAPLING_SPEND_FILE_PATH: &'static str =
-        "tezos/sys/lib_tezos/artifacts/sapling-spend.params";
+        "mavryk/sys/lib_mavryk/artifacts/sapling-spend.params";
     pub const DEFAULT_ZCASH_PARAM_SAPLING_OUTPUT_FILE_PATH: &'static str =
-        "tezos/sys/lib_tezos/artifacts/sapling-output.params";
+        "mavryk/sys/lib_mavryk/artifacts/sapling-output.params";
 }
 
 #[derive(Debug, Clone)]
@@ -138,8 +138,8 @@ pub struct Environment {
     pub replay: Option<Replay>,
     pub snapshot: Option<StorageSnapshot>,
 
-    pub tezos_network: TezosEnvironment,
-    pub tezos_network_config: TezosEnvironmentConfiguration,
+    pub mavryk_network: MavrykEnvironment,
+    pub mavryk_network_config: MavrykEnvironmentConfiguration,
 
     pub enable_testchain: bool,
     pub tokio_threads: usize,
@@ -185,10 +185,10 @@ impl slog::Value for Environment {
             &format_args!("{:?}", self.validate_cfg_identity_and_stop),
         )?;
         serializer.emit_arguments(
-            "tezos_network_config",
-            &format_args!("{:?}", self.tezos_network_config),
+            "mavryk_network_config",
+            &format_args!("{:?}", self.mavryk_network_config),
         )?;
-        serializer.emit_arguments("tezos_network", &format_args!("{:?}", self.tezos_network))
+        serializer.emit_arguments("mavryk_network", &format_args!("{:?}", self.mavryk_network))
     }
 }
 
@@ -204,8 +204,8 @@ macro_rules! parse_validator_fn {
     };
 }
 
-// Creates tezos app
-pub fn tezos_app() -> App<'static, 'static> {
+// Creates mavryk app
+pub fn mavryk_app() -> App<'static, 'static> {
     // Default values for arguments are specidied in default configuration file
     //
     // Flag Required=true must be handled separately as we parse args twice,
@@ -216,7 +216,7 @@ pub fn tezos_app() -> App<'static, 'static> {
     let app = App::new("TezEdge Light Node")
         .version(env!("CARGO_PKG_VERSION"))
         .author("TezEdge and the project contributors")
-        .about("Rust implementation of the Tezos node")
+        .about("Rust implementation of the Mavryk node")
         .setting(clap::AppSettings::AllArgsOverrideSelf)
         .arg(Arg::with_name("validate-cfg-identity-and-stop")
             .long("validate-cfg-identity-and-stop")
@@ -230,30 +230,30 @@ pub fn tezos_app() -> App<'static, 'static> {
             .value_name("PATH")
             .help("Configuration file with start-up arguments (same format as cli arguments)")
             .validator(|v| if Path::new(&v).exists() { Ok(()) } else { Err(format!("Configuration file not found at '{}'", v)) }))
-        .arg(Arg::with_name("tezos-context-storage")
-            .long("tezos-context-storage")
+        .arg(Arg::with_name("mavryk-context-storage")
+            .long("mavryk-context-storage")
             .global(true)
             .takes_value(true)
             .value_name("NAME")
             .help("Context storage to use (irmin/tezedge/both)"))
-        .arg(Arg::with_name("tezos-data-dir")
-            .long("tezos-data-dir")
+        .arg(Arg::with_name("mavryk-data-dir")
+            .long("mavryk-data-dir")
             .global(true)
             .takes_value(true)
             .value_name("PATH")
-            .help("A directory for Tezos OCaml runtime storage (context/store)")
+            .help("A directory for Mavryk OCaml runtime storage (context/store)")
             .validator(|v| {
                 let dir = Path::new(&v);
                 if dir.exists() {
                     if dir.is_dir() {
                         Ok(())
                     } else {
-                        Err(format!("Required tezos data dir '{}' exists, but is not a directory!", v))
+                        Err(format!("Required mavryk data dir '{}' exists, but is not a directory!", v))
                     }
                 } else {
-                    // Tezos data dir does not exists, try to create it
+                    // Mavryk data dir does not exists, try to create it
                     if let Err(e) = fs::create_dir_all(dir) {
-                        Err(format!("Unable to create required tezos data dir '{}': {} ", v, e))
+                        Err(format!("Unable to create required mavryk data dir '{}': {} ", v, e))
                     } else {
                         Ok(())
                     }
@@ -271,7 +271,7 @@ pub fn tezos_app() -> App<'static, 'static> {
             .takes_value(true)
             .value_name("PATH")
             .help("Path to the json identity file with peer-id, public-key, secret-key and pow-stamp.
-                       In case it starts with ./ or ../, it is relative path to the current dir, otherwise to the --tezos-data-dir"))
+                       In case it starts with ./ or ../, it is relative path to the current dir, otherwise to the --mavryk-data-dir"))
         .arg(Arg::with_name("identity-expected-pow")
             .long("identity-expected-pow")
             .global(true)
@@ -285,14 +285,14 @@ pub fn tezos_app() -> App<'static, 'static> {
             .takes_value(true)
             .value_name("PATH")
             .help("Path to bootstrap database directory.
-                       In case it starts with ./ or ../, it is relative path to the current dir, otherwise to the --tezos-data-dir"))
+                       In case it starts with ./ or ../, it is relative path to the current dir, otherwise to the --mavryk-data-dir"))
         .arg(Arg::with_name("context-stats-db-path")
             .long("context-stats-db-path")
             .global(true)
             .takes_value(true)
             .value_name("PATH")
             .help("Path to context-stats database directory.
-                       In case it starts with ./ or ../, it is relative path to the current dir, otherwise to the --tezos-data-dir"))
+                       In case it starts with ./ or ../, it is relative path to the current dir, otherwise to the --mavryk-data-dir"))
         .arg(Arg::with_name("initialize-context-timeout-in-secs")
             .long("initialize-context-timeout-in-secs")
             .takes_value(true)
@@ -322,7 +322,7 @@ pub fn tezos_app() -> App<'static, 'static> {
             .takes_value(true)
             .conflicts_with("peers")
             .conflicts_with("private-node")
-            .help("A peers for dns lookup to get the peers to bootstrap the network from. Peers are delimited by a colon. Default: used according to --network parameter see TezosEnvironment"))
+            .help("A peers for dns lookup to get the peers to bootstrap the network from. Peers are delimited by a colon. Default: used according to --network parameter see MavrykEnvironment"))
         .arg(Arg::with_name("disable-bootstrap-lookup")
             .long("disable-bootstrap-lookup")
             .global(true)
@@ -349,7 +349,7 @@ pub fn tezos_app() -> App<'static, 'static> {
             .takes_value(true)
             .value_name("PATH")
             .help("Path to the log file. If provided, logs are displayed the log file, otherwise in terminal.
-                       In case it starts with ./ or ../, it is relative path to the current dir, otherwise to the --tezos-data-dir"))
+                       In case it starts with ./ or ../, it is relative path to the current dir, otherwise to the --mavryk-data-dir"))
         .arg(Arg::with_name("log-rotate-if-size-in-bytes")
             .long("log-rotate-if-size-in-bytes")
             .global(true)
@@ -382,7 +382,7 @@ pub fn tezos_app() -> App<'static, 'static> {
             .global(true)
             .takes_value(true)
             .value_name("BOOL")
-            .help("Flag for turn on/off logging in Tezos OCaml runtime"))
+            .help("Flag for turn on/off logging in Mavryk OCaml runtime"))
         .arg(Arg::with_name("disable-mempool")
             .long("disable-mempool")
             .global(true)
@@ -437,8 +437,8 @@ pub fn tezos_app() -> App<'static, 'static> {
             .long("network")
             .global(true)
             .takes_value(true)
-            .possible_values(&TezosEnvironment::possible_values())
-            .help("Choose the Tezos environment")
+            .possible_values(&MavrykEnvironment::possible_values())
+            .help("Choose the Mavryk environment")
         )
         .arg(Arg::with_name("custom-network-file")
             .long("custom-network-file")
@@ -446,14 +446,14 @@ pub fn tezos_app() -> App<'static, 'static> {
             .takes_value(true)
             .required_if("network", "custom")
             .value_name("PATH")
-            .help("Path to a JSON file defining a custom network using the same format used by Octez")
+            .help("Path to a JSON file defining a custom network using the same format used by Mavkit")
         )
         .arg(Arg::with_name("p2p-port")
             .long("p2p-port")
             .global(true)
             .takes_value(true)
             .value_name("PORT")
-            .help("Socket listening port for p2p for communication with tezos world")
+            .help("Socket listening port for p2p for communication with mavryk world")
             .validator(parse_validator_fn!(u16, "Value must be a valid port number")))
         .arg(Arg::with_name("rpc-port")
             .long("rpc-port")
@@ -529,7 +529,7 @@ pub fn tezos_app() -> App<'static, 'static> {
             .global(true)
             .takes_value(true)
             .value_name("PATH")
-            .help("Path to a tezos protocol runner executable"))
+            .help("Path to a mavryk protocol runner executable"))
         .arg(Arg::with_name("init-sapling-spend-params-file")
             .long("init-sapling-spend-params-file")
             .global(true)
@@ -605,14 +605,14 @@ pub fn tezos_app() -> App<'static, 'static> {
             .takes_value(true)
             .value_name("PATH")
             .help("Path to bakers' base dir.
-                       In case it starts with ./ or ../, it is relative path to the current dir, otherwise to the --tezos-data-dir"))
+                       In case it starts with ./ or ../, it is relative path to the current dir, otherwise to the --mavryk-data-dir"))
         .arg(Arg::with_name("baker-name")
             .long("baker-name")
             .global(true)
             .takes_value(true)
             .help("Baker name.
                        Can accept multiple comma(,) separated names in order to run multiple bakers.
-                       If local keys are used, must match the name in key files(.tezos-client/secret_keys) which are in --baker-data-dir"))
+                       If local keys are used, must match the name in key files(.mavryk-client/secret_keys) which are in --baker-data-dir"))
         .arg(Arg::with_name("liquidity-baking-escape-vote")
             .long("liquidity-baking-escape-vote")
             .global(true)
@@ -665,7 +665,7 @@ pub fn tezos_app() -> App<'static, 'static> {
                                  Err(format!("Required replay data dir '{}' exists, but is not a directory!", v))
                              }
                          } else {
-                             // Tezos data dir does not exists, try to create it
+                             // Mavryk data dir does not exists, try to create it
                              if let Err(e) = fs::create_dir_all(dir) {
                                  Err(format!("Unable to create required replay data dir '{}': {} ", v, e))
                              } else {
@@ -715,7 +715,7 @@ pub fn tezos_app() -> App<'static, 'static> {
                                  Err(format!("Required snapshot data dir '{}' exists, but is not a directory!", v))
                              }
                          } else {
-                             // Tezos data dir does not exists, try to create it
+                             // Mavryk data dir does not exists, try to create it
                              if let Err(e) = fs::create_dir_all(dir) {
                                  Err(format!("Unable to create required snapshot data dir '{}': {} ", v, e))
                              } else {
@@ -727,34 +727,34 @@ pub fn tezos_app() -> App<'static, 'static> {
     app
 }
 
-fn resolve_tezos_network_config(
+fn resolve_mavryk_network_config(
     args: &clap::ArgMatches,
-) -> (TezosEnvironment, TezosEnvironmentConfiguration) {
-    let tezos_network: TezosEnvironment = args
+) -> (MavrykEnvironment, MavrykEnvironmentConfiguration) {
+    let mavryk_network: MavrykEnvironment = args
         .value_of("network")
         .expect("Network is required")
-        .parse::<TezosEnvironment>()
-        .expect("Was expecting one value from TezosEnvironment");
+        .parse::<MavrykEnvironment>()
+        .expect("Was expecting one value from MavrykEnvironment");
 
-    if matches!(tezos_network, TezosEnvironment::Custom) {
+    if matches!(mavryk_network, MavrykEnvironment::Custom) {
         // If a custom network file has been provided, parse it and set the custom network
         if let Some(custom_network_file) = args.value_of("custom-network-file") {
             (
-                tezos_network,
-                TezosEnvironmentConfiguration::try_from_config_file(custom_network_file)
-                    .expect("Failed to parse tezos network configuration"),
+                mavryk_network,
+                MavrykEnvironmentConfiguration::try_from_config_file(custom_network_file)
+                    .expect("Failed to parse mavryk network configuration"),
             )
         } else {
-            panic!("Missing `--custom-network-file` argument with custom network configuration for selected network `{:?}`", tezos_network)
+            panic!("Missing `--custom-network-file` argument with custom network configuration for selected network `{:?}`", mavryk_network)
         }
     } else {
         // check in defaults
-        if let Some(tezos_network_config) = environment::default_networks().get(&tezos_network) {
-            (tezos_network, tezos_network_config.clone())
+        if let Some(mavryk_network_config) = environment::default_networks().get(&mavryk_network) {
+            (mavryk_network, mavryk_network_config.clone())
         } else {
             panic!(
                 "Missing default configuration for selected network `{:?}`",
-                tezos_network
+                mavryk_network
             )
         }
     }
@@ -766,13 +766,13 @@ fn resolve_tezos_network_config(
 // In case some args are required=true and user provides only config-file,
 // first round of parsing would always fail then
 fn validate_required_args(args: &clap::ArgMatches) {
-    validate_required_arg(args, "tezos-data-dir", None);
+    validate_required_arg(args, "mavryk-data-dir", None);
     validate_required_arg(
         args,
         "network",
         Some(format!(
             "possible_values: {:?}",
-            TezosEnvironment::possible_values()
+            MavrykEnvironment::possible_values()
         )),
     );
     validate_required_arg(args, "bootstrap-db-path", None);
@@ -797,18 +797,18 @@ pub fn validate_required_arg(args: &clap::ArgMatches, arg_name: &str, help: Opti
 }
 
 // Returns final path. In case:
-//      1. path is relative -> final_path = tezos_data_dir / path
+//      1. path is relative -> final_path = mavryk_data_dir / path
 //      2. path is absolute -> final_path = path
-pub fn get_final_path(tezos_data_dir: &Path, path: PathBuf) -> PathBuf {
+pub fn get_final_path(mavryk_data_dir: &Path, path: PathBuf) -> PathBuf {
     let mut final_path: PathBuf;
 
     // path is absolute or relative to the current dir -> start with ./ or ../
     if path.is_absolute() || path.starts_with(".") {
         final_path = path
     }
-    // otherwise path is relative to the tezos-data-dir
+    // otherwise path is relative to the mavryk-data-dir
     else {
-        final_path = tezos_data_dir.to_path_buf();
+        final_path = mavryk_data_dir.to_path_buf();
         final_path.push(path);
     }
 
@@ -868,15 +868,15 @@ fn import_snapshot_app() -> App<'static, 'static> {
     let app = App::new("TezEdge Light Node")
         .version(env!("CARGO_PKG_VERSION"))
         .author("TezEdge and the project contributors")
-        .about("Rust implementation of the Tezos node")
+        .about("Rust implementation of the Mavryk node")
         .setting(clap::AppSettings::AllArgsOverrideSelf)
         .arg(
-            Arg::with_name("tezos-data-dir")
-                .long("tezos-data-dir")
+            Arg::with_name("mavryk-data-dir")
+                .long("mavryk-data-dir")
                 .global(true)
                 .takes_value(true)
                 .value_name("PATH")
-                .help("A directory for Tezos OCaml runtime storage (context/store)")
+                .help("A directory for Mavryk OCaml runtime storage (context/store)")
                 .validator(|v| {
                     let dir = Path::new(&v);
                     if dir.exists() {
@@ -884,15 +884,15 @@ fn import_snapshot_app() -> App<'static, 'static> {
                             Ok(())
                         } else {
                             Err(format!(
-                                "Required tezos data dir '{}' exists, but is not a directory!",
+                                "Required mavryk data dir '{}' exists, but is not a directory!",
                                 v
                             ))
                         }
                     } else {
-                        // Tezos data dir does not exists, try to create it
+                        // Mavryk data dir does not exists, try to create it
                         if let Err(e) = fs::create_dir_all(dir) {
                             Err(format!(
-                                "Unable to create required tezos data dir '{}': {} ",
+                                "Unable to create required mavryk data dir '{}': {} ",
                                 v, e
                             ))
                         } else {
@@ -944,7 +944,7 @@ impl ImportSnapshot {
                 .expect("Provided value cannot be converted to URL");
 
             let to = args
-                .value_of("tezos-data-dir")
+                .value_of("mavryk-data-dir")
                 .unwrap_or("/tmp/tezedge")
                 .parse::<PathBuf>()
                 .expect("Provided value cannot be converted to path");
@@ -961,7 +961,7 @@ pub enum TezedgeEnv {
 
 impl Environment {
     pub fn from_args() -> Self {
-        let app = tezos_app();
+        let app = mavryk_app();
         let args: clap::ArgMatches;
 
         // First, get cli arguments and find out only if config-file arg is provided
@@ -994,18 +994,18 @@ impl Environment {
         // Validates required flags of args
         validate_required_args(&args);
 
-        let (tezos_network, tezos_network_config): (
-            TezosEnvironment,
-            TezosEnvironmentConfiguration,
-        ) = resolve_tezos_network_config(&args);
+        let (mavryk_network, mavryk_network_config): (
+            MavrykEnvironment,
+            MavrykEnvironmentConfiguration,
+        ) = resolve_mavryk_network_config(&args);
 
-        let context_storage: TezosContextStorageChoice = args
-            .value_of("tezos-context-storage")
+        let context_storage: MavrykContextStorageChoice = args
+            .value_of("mavryk-context-storage")
             .unwrap_or("irmin")
-            .parse::<TezosContextStorageChoice>()
+            .parse::<MavrykContextStorageChoice>()
             .expect("Provided value cannot be converted to a context storage option");
-        let mut tezos_data_dir: PathBuf = args
-            .value_of("tezos-data-dir")
+        let mut mavryk_data_dir: PathBuf = args
+            .value_of("mavryk-data-dir")
             .unwrap_or("")
             .parse::<PathBuf>()
             .expect("Provided value cannot be converted to path");
@@ -1041,9 +1041,9 @@ impl Environment {
                 ..fs_extra::dir::CopyOptions::default()
             };
 
-            fs_extra::dir::copy(tezos_data_dir.as_path(), target_path.as_path(), &options).unwrap();
+            fs_extra::dir::copy(mavryk_data_dir.as_path(), target_path.as_path(), &options).unwrap();
 
-            tezos_data_dir = target_path;
+            mavryk_data_dir = target_path;
 
             Replay {
                 from_block,
@@ -1117,7 +1117,7 @@ impl Environment {
                         .unwrap_or(Logging::DEFAULT_FILE_LOGGER_KEEP_NUMBER_OF_ROTATED_FILE);
 
                     LoggerType::FileLogger(FileLoggerConfig::new(
-                        get_final_path(&tezos_data_dir, log_file_path),
+                        get_final_path(&mavryk_data_dir, log_file_path),
                         rotate_log_if_size_in_bytes,
                         keep_number_of_rotated_files,
                     ))
@@ -1147,7 +1147,7 @@ impl Environment {
         // Validate that protocol runner binary is correct before starting
         if !Path::new(&protocol_runner).exists() {
             panic!(
-                "Tezos protocol runner executable not found at '{}'",
+                "Mavryk protocol runner executable not found at '{}'",
                 protocol_runner.to_string_lossy(),
             )
         }
@@ -1170,7 +1170,7 @@ impl Environment {
                     })
                     .unwrap_or_else(|| {
                         if !args.is_present("peers") && !args.is_present("private-node") {
-                            tezos_network_config.bootstrap_lookup_addresses.clone()
+                            mavryk_network_config.bootstrap_lookup_addresses.clone()
                         } else {
                             Vec::with_capacity(0)
                         }
@@ -1248,7 +1248,7 @@ impl Environment {
                     .value_of("baker-data-dir")
                     .unwrap_or("")
                     .parse::<PathBuf>()
-                    .map(|p| get_final_path(&tezos_data_dir, p))
+                    .map(|p| get_final_path(&mavryk_data_dir, p))
                     .expect("Provided value cannot be converted to path"),
                 baker_names: args
                     .value_of("baker-name")
@@ -1304,13 +1304,13 @@ impl Environment {
                     .unwrap_or("")
                     .parse::<PathBuf>()
                     .expect("Provided value cannot be converted to path");
-                let db_path = get_final_path(&tezos_data_dir, path);
+                let db_path = get_final_path(&mavryk_data_dir, path);
 
                 let context_stats_db_path = args.value_of("context-stats-db-path").map(|value| {
                     let path = value
                         .parse::<PathBuf>()
                         .expect("Provided value cannot be converted to path");
-                    get_final_path(&tezos_data_dir, path)
+                    get_final_path(&mavryk_data_dir, path)
                 });
 
                 let db_threads_count = args.value_of("db-cfg-max-threads").map(|value| {
@@ -1356,8 +1356,8 @@ impl Environment {
                     .parse::<SupportedContextKeyValueStore>()
                     .map(|v| match v {
                         SupportedContextKeyValueStore::InMem => ContextKvStoreConfiguration::InMem(
-                            TezosContextTezedgeOnDiskBackendOptions {
-                                base_path: get_final_path(&tezos_data_dir, "context".into())
+                            MavrykContextTezedgeOnDiskBackendOptions {
+                                base_path: get_final_path(&mavryk_data_dir, "context".into())
                                     .into_os_string()
                                     .into_string()
                                     .unwrap(),
@@ -1366,8 +1366,8 @@ impl Environment {
                         ),
                         SupportedContextKeyValueStore::OnDisk => {
                             ContextKvStoreConfiguration::OnDisk(
-                                TezosContextTezedgeOnDiskBackendOptions {
-                                    base_path: get_final_path(&tezos_data_dir, "context".into())
+                                MavrykContextTezedgeOnDiskBackendOptions {
+                                    base_path: get_final_path(&mavryk_data_dir, "context".into())
                                         .into_os_string()
                                         .into_string()
                                         .unwrap(),
@@ -1396,32 +1396,32 @@ impl Environment {
                     async_ipc::temp_sock().to_string_lossy().as_ref().to_owned();
 
                 let context_storage_configuration = match context_storage {
-                    TezosContextStorageChoice::TezEdge => {
-                        TezosContextStorageConfiguration::TezEdgeOnly(
-                            TezosContextTezEdgeStorageConfiguration {
+                    MavrykContextStorageChoice::TezEdge => {
+                        MavrykContextStorageConfiguration::TezEdgeOnly(
+                            MavrykContextTezEdgeStorageConfiguration {
                                 backend: context_kv_store,
                                 ipc_socket_path: Some(context_ipc_socket_path),
                             },
                         )
                     }
-                    TezosContextStorageChoice::Irmin => {
-                        TezosContextStorageConfiguration::IrminOnly(
-                            TezosContextIrminStorageConfiguration {
-                                data_dir: tezos_data_dir
+                    MavrykContextStorageChoice::Irmin => {
+                        MavrykContextStorageConfiguration::IrminOnly(
+                            MavrykContextIrminStorageConfiguration {
+                                data_dir: mavryk_data_dir
                                     .to_str()
-                                    .expect("Invalid tezos_data_dir value")
+                                    .expect("Invalid mavryk_data_dir value")
                                     .to_string(),
                             },
                         )
                     }
-                    TezosContextStorageChoice::Both => TezosContextStorageConfiguration::Both(
-                        TezosContextIrminStorageConfiguration {
-                            data_dir: tezos_data_dir
+                    MavrykContextStorageChoice::Both => MavrykContextStorageConfiguration::Both(
+                        MavrykContextIrminStorageConfiguration {
+                            data_dir: mavryk_data_dir
                                 .to_str()
-                                .expect("Invalid tezos_data_dir value")
+                                .expect("Invalid mavryk_data_dir value")
                                 .to_string(),
                         },
-                        TezosContextTezEdgeStorageConfiguration {
+                        MavrykContextTezEdgeStorageConfiguration {
                             backend: context_kv_store,
                             ipc_socket_path: Some(context_ipc_socket_path),
                         },
@@ -1441,7 +1441,7 @@ impl Environment {
                                 let path = path
                                     .parse::<PathBuf>()
                                     .expect("Provided value cannot be converted to path");
-                                let path = get_final_path(&tezos_data_dir, path);
+                                let path = get_final_path(&mavryk_data_dir, path);
                                 match fs::read_to_string(&path) {
                                     Ok(content) => {
                                         // validate valid json
@@ -1466,7 +1466,7 @@ impl Environment {
                             }
                             None => {
                                 // check default configuration, if any
-                                tezos_network_config
+                                mavryk_network_config
                                     .patch_context_genesis_parameters
                                     .clone()
                             }
@@ -1490,7 +1490,7 @@ impl Environment {
                         .unwrap_or("")
                         .parse::<PathBuf>()
                         .expect("Provided value cannot be converted to path");
-                    get_final_path(&tezos_data_dir, identity_path)
+                    get_final_path(&mavryk_data_dir, identity_path)
                 },
                 expected_pow: args
                     .value_of("identity-expected-pow")
@@ -1525,8 +1525,8 @@ impl Environment {
                 .unwrap_or("0")
                 .parse::<usize>()
                 .expect("Provided value cannot be converted to number"),
-            tezos_network,
-            tezos_network_config,
+            mavryk_network,
+            mavryk_network_config,
             enable_testchain: args
                 .value_of("enable-testchain")
                 .unwrap_or("false")

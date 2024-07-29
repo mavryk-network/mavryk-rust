@@ -9,9 +9,9 @@ use crypto::hash::{
     BlockHash, BlockMetadataHash, BlockPayloadHash, OperationMetadataListListHash, ProtocolHash,
 };
 use storage::BlockHeaderWithHash;
-use tezos_messages::p2p::encoding::block_header::Level;
-use tezos_messages::p2p::encoding::operation::Operation;
-use tezos_messages::protocol::SupportedProtocol;
+use mavryk_messages::p2p::encoding::block_header::Level;
+use mavryk_messages::p2p::encoding::operation::Operation;
+use mavryk_messages::protocol::SupportedProtocol;
 
 use crate::protocol_runner::ProtocolRunnerState;
 use crate::request::RequestId;

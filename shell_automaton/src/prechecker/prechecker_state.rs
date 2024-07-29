@@ -10,8 +10,8 @@ use crypto::{
     blake2b::Blake2bError,
     hash::{BlockHash, BlockPayloadHash, FromBytesError, OperationHash},
 };
-use tezos_encoding::{binary_reader::BinaryReaderError, binary_writer::BinaryWriterError};
-use tezos_messages::{
+use mavryk_encoding::{binary_reader::BinaryReaderError, binary_writer::BinaryWriterError};
+use mavryk_messages::{
     p2p::encoding::{block_header::Level, operation::Operation},
     protocol::{
         proto_010, proto_011,

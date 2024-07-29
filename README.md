@@ -138,9 +138,9 @@ for most of the more popular Linux distributions:
 | CentOS |  8 |
 | MacOS |  *experimental* - newer or equal to 10.13 should work, Intel and M1 cpus |
 
-If you are missing support for your favorite Linux distribution, please submit a request with the [tezos-opam-builder](https://github.com/tezedge/tezos-opam-builder) project.
+If you are missing support for your favorite Linux distribution, please submit a request with the [mavryk-opam-builder](https://github.com/tezedge/mavryk-opam-builder) project.
 
-To build from source please follow [these instructions](tezos/interop/README.md).
+To build from source please follow [these instructions](mavryk/interop/README.md).
 
 ### Prerequisites installation
 If you want to build from source code, you need to install this before:
@@ -200,7 +200,7 @@ If you want to build from source code, you need to install this before:
 
     ```
     export SODIUM_USE_PKG_CONFIG=1
-    export DYLD_LIBRARY_PATH=$(pwd)/tezos/sys/lib_tezos/artifacts # currently needed for macOS
+    export DYLD_LIBRARY_PATH=$(pwd)/mavryk/sys/lib_tezos/artifacts # currently needed for macOS
     cargo test --release
     ```
 
@@ -275,20 +275,20 @@ _Full description of all arguments is in the light_node [README](light_node/READ
 
 _Note: This cmd runs from the main git sources directory_
 ```
-LD_LIBRARY_PATH=./tezos/sys/lib_tezos/artifacts ./target/release/light-node \
+LD_LIBRARY_PATH=./mavryk/sys/lib_tezos/artifacts ./target/release/light-node \
     --network "mainnet" \
     --identity-file "/tmp/data-dir-mainnet/identity.json" \
     --identity-expected-pow 26.0 \
-    --tezos-data-dir "/tmp/data-dir-mainnet/context_data" \
+    --mavryk-data-dir "/tmp/data-dir-mainnet/context_data" \
     --bootstrap-db-path "/tmp/data-dir-mainnet/tezedge_data" \
     --peer-thresh-low 30 --peer-thresh-high 45 \
     --protocol-runner "./target/release/protocol-runner" \
-    --init-sapling-spend-params-file "./tezos/sys/lib_tezos/artifacts/sapling-spend.params" \
-    --init-sapling-output-params-file "./tezos/sys/lib_tezos/artifacts/sapling-output.params" \
+    --init-sapling-spend-params-file "./mavryk/sys/lib_tezos/artifacts/sapling-spend.params" \
+    --init-sapling-output-params-file "./mavryk/sys/lib_tezos/artifacts/sapling-output.params" \
     --p2p-port 9732 --rpc-port 18732 \
     --tokio-threads 0 \
     --ocaml-log-enabled false \
-    --tezos-context-storage=irmin \
+    --mavryk-context-storage=irmin \
     --log terminal \
     --log file \
     --log-level info \
@@ -361,13 +361,13 @@ docker-compose -f docker-compose.yml up
 
 ```
 # (default: irmin) - choose context implementation, possible values: [irmin, tezedge, both]
-TEZOS_CONTEXT_STORAGE=<possible-value>
+MAVRYK_CONTEXT_STORAGE=<possible-value>
 
 # explorer accesses node/debugger on 'localhost' by default, you can change it like,
 NODE_HOSTNAME_OR_IP=<hostname-or-ip>
 
 e.g.:
-TEZOS_CONTEXT_STORAGE=irmin NODE_HOSTNAME_OR_IP=123.123.123.123 docker-compose -f docker-compose.yml up
+MAVRYK_CONTEXT_STORAGE=irmin NODE_HOSTNAME_OR_IP=123.123.123.123 docker-compose -f docker-compose.yml up
 ```
 
 #### Mainnet - light-node + tezedge explorer + tezedge debugger
@@ -384,13 +384,13 @@ docker-compose -f docker-compose.debug.yml up
 
 ```
 # (default: irmin) - choose context implementation, possible values: [irmin, tezedge, both]
-TEZOS_CONTEXT_STORAGE=<possible-value>
+MAVRYK_CONTEXT_STORAGE=<possible-value>
 
 # explorer accesses node/debugger on 'localhost' by default, you can change it like,
 NODE_HOSTNAME_OR_IP=<hostname-or-ip>
 
 e.g.:
-TEZOS_CONTEXT_STORAGE=irmin NODE_HOSTNAME_OR_IP=123.123.123.123 docker-compose -f docker-compose.debug.yml up
+MAVRYK_CONTEXT_STORAGE=irmin NODE_HOSTNAME_OR_IP=123.123.123.123 docker-compose -f docker-compose.debug.yml up
 ```
 
 #### Mainnet - light-node with irmin context + light-node with memory context + light-node with persistent context + tezedge-explorer

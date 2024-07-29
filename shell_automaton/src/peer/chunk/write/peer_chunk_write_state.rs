@@ -6,7 +6,7 @@ use std::io;
 use serde::{Deserialize, Serialize};
 
 use crypto::{crypto_box::PrecomputedKey, nonce::Nonce, CryptoError};
-use tezos_messages::p2p::binary_message::{BinaryChunk, BinaryChunkError};
+use mavryk_messages::p2p::binary_message::{BinaryChunk, BinaryChunkError};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub enum PeerConnectionChunkWriteState {

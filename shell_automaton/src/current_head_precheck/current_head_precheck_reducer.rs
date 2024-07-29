@@ -4,7 +4,7 @@
 use std::convert::{TryFrom, TryInto};
 
 use crypto::hash::{ChainId, HashTrait, Signature};
-use tezos_messages::{
+use mavryk_messages::{
     base::signature_public_key::{SignaturePublicKey, SignatureWatermark},
     p2p::{binary_message::BinaryWrite, encoding::block_header::BlockHeader},
 };

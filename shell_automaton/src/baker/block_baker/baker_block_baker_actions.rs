@@ -5,9 +5,9 @@ use serde::{Deserialize, Serialize};
 
 use crypto::hash::{NonceHash, Signature};
 use storage::BlockHeaderWithHash;
-use tezos_encoding::types::SizedBytes;
-use tezos_messages::base::signature_public_key::SignaturePublicKeyHash;
-use tezos_messages::p2p::encoding::operations_for_blocks::Path;
+use mavryk_encoding::types::SizedBytes;
+use mavryk_messages::base::signature_public_key::SignaturePublicKeyHash;
+use mavryk_messages::p2p::encoding::operations_for_blocks::Path;
 
 use crate::baker::BakerState;
 use crate::protocol_runner::ProtocolRunnerToken;
@@ -17,7 +17,7 @@ use crate::{EnablingCondition, State};
 use super::{BakerBlockBakerState, BlockPreapplyRequest, BlockPreapplyResponse};
 
 #[cfg(feature = "fuzzing")]
-use tezos_encoding::fuzzing::sizedbytes::SizedBytesMutator;
+use mavryk_encoding::fuzzing::sizedbytes::SizedBytesMutator;
 
 fn should_start(state: &State, baker: &BakerState) -> bool {
     fn _should_start(state: &State, baker: &BakerState) -> Option<bool> {

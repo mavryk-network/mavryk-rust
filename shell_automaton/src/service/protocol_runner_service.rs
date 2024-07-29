@@ -11,19 +11,19 @@ use crypto::PublicKeyWithHash;
 use serde::{Deserialize, Serialize};
 
 use slog::Logger;
-use tezos_api::environment::TezosEnvironmentConfiguration;
-use tezos_api::ffi::{
+use mavryk_api::environment::MavrykEnvironmentConfiguration;
+use mavryk_api::ffi::{
     ApplyBlockRequest, ApplyBlockResponse, BeginConstructionRequest, CommitGenesisResult,
     ComputePathRequest, ComputePathResponse, InitProtocolContextResult, PreapplyBlockRequest,
     PreapplyBlockResponse, PrevalidatorWrapper, ProtocolRpcRequest, ProtocolRpcResponse,
-    TezosRuntimeConfiguration, ValidateOperationRequest, ValidateOperationResponse,
+    MavrykRuntimeConfiguration, ValidateOperationRequest, ValidateOperationResponse,
 };
-use tezos_context_api::{PatchContext, TezosContextStorageConfiguration};
-use tezos_messages::base::signature_public_key::{SignaturePublicKey, SignaturePublicKeyHash};
-use tezos_messages::base::ConversionError;
-use tezos_messages::p2p::encoding::block_header::{BlockHeader, Level};
-use tezos_protocol_ipc_client::{ProtocolRunnerApi, ProtocolRunnerError, ProtocolServiceError};
-use tezos_protocol_ipc_messages::{
+use mavryk_context_api::{PatchContext, MavrykContextStorageConfiguration};
+use mavryk_messages::base::signature_public_key::{SignaturePublicKey, SignaturePublicKeyHash};
+use mavryk_messages::base::ConversionError;
+use mavryk_messages::p2p::encoding::block_header::{BlockHeader, Level};
+use mavryk_protocol_ipc_client::{ProtocolRunnerApi, ProtocolRunnerError, ProtocolServiceError};
+use mavryk_protocol_ipc_messages::{
     GenesisResultDataParams, InitProtocolContextParams, ProtocolMessage,
 };
 
@@ -170,12 +170,12 @@ pub trait ProtocolRunnerService {
 
     fn spawn_server(&mut self);
 
-    fn init_runtime(&mut self, config: TezosRuntimeConfiguration) -> ProtocolRunnerToken;
+    fn init_runtime(&mut self, config: MavrykRuntimeConfiguration) -> ProtocolRunnerToken;
 
     fn init_context(
         &mut self,
-        storage: TezosContextStorageConfiguration,
-        tezos_environment: &TezosEnvironmentConfiguration,
+        storage: MavrykContextStorageConfiguration,
+        mavryk_environment: &MavrykEnvironmentConfiguration,
         commit_genesis: bool,
         enable_testchain: bool,
         readonly: bool,
@@ -185,7 +185,7 @@ pub trait ProtocolRunnerService {
 
     fn init_context_ipc_server(
         &mut self,
-        cfg: TezosContextStorageConfiguration,
+        cfg: MavrykContextStorageConfiguration,
     ) -> ProtocolRunnerToken;
 
     fn genesis_commit_result_get_init(
@@ -272,7 +272,7 @@ impl ProtocolRunnerService for ProtocolRunnerServiceDefault {
         self.channel.blocking_send(message).unwrap();
     }
 
-    fn init_runtime(&mut self, config: TezosRuntimeConfiguration) -> ProtocolRunnerToken {
+    fn init_runtime(&mut self, config: MavrykRuntimeConfiguration) -> ProtocolRunnerToken {
         let token = self.new_token();
         let message = ProtocolMessage::ChangeRuntimeConfigurationCall(config);
         self.channel
@@ -283,8 +283,8 @@ impl ProtocolRunnerService for ProtocolRunnerServiceDefault {
 
     fn init_context(
         &mut self,
-        storage: TezosContextStorageConfiguration,
-        tezos_environment: &TezosEnvironmentConfiguration,
+        storage: MavrykContextStorageConfiguration,
+        mavryk_environment: &MavrykEnvironmentConfiguration,
         commit_genesis: bool,
         enable_testchain: bool,
         readonly: bool,
@@ -293,14 +293,14 @@ impl ProtocolRunnerService for ProtocolRunnerServiceDefault {
     ) -> Result<ProtocolRunnerToken, ProtocolServiceError> {
         let params = InitProtocolContextParams {
             storage,
-            genesis: tezos_environment.genesis.clone(),
-            genesis_max_operations_ttl: tezos_environment
+            genesis: mavryk_environment.genesis.clone(),
+            genesis_max_operations_ttl: mavryk_environment
                 .genesis_additional_data()
                 .map_err(|error| ProtocolServiceError::InvalidDataError {
                     message: format!("{:?}", error),
                 })?
                 .max_operations_ttl,
-            protocol_overrides: tezos_environment.protocol_overrides.clone(),
+            protocol_overrides: mavryk_environment.protocol_overrides.clone(),
             commit_genesis,
             enable_testchain,
             readonly,
@@ -320,7 +320,7 @@ impl ProtocolRunnerService for ProtocolRunnerServiceDefault {
 
     fn init_context_ipc_server(
         &mut self,
-        cfg: TezosContextStorageConfiguration,
+        cfg: MavrykContextStorageConfiguration,
     ) -> ProtocolRunnerToken {
         let token = self.new_token();
 
@@ -417,12 +417,12 @@ impl ProtocolRunnerService for ProtocolRunnerServiceDefault {
             block_header,
             chain_arg: "main".to_string(),
             chain_id,
-            request: tezos_api::ffi::RpcRequest {
+            request: mavryk_api::ffi::RpcRequest {
                 body: String::new(),
                 accept: None,
                 content_type: None,
                 context_path: format!("/chains/main/blocks/head/helpers/validators?level={level}"),
-                meth: tezos_api::ffi::RpcMethod::GET,
+                meth: mavryk_api::ffi::RpcMethod::GET,
             },
         };
         let token = self.new_token();

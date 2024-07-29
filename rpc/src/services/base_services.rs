@@ -10,8 +10,8 @@ use storage::{
     BlockJsonData, BlockMetaStorage, BlockMetaStorageReader, BlockStorage, BlockStorageReader,
     OperationsStorage, OperationsStorageReader,
 };
-use tezos_context_api::{context_key_owned, StringTreeObject};
-use tezos_messages::p2p::encoding::version::NetworkVersion;
+use mavryk_context_api::{context_key_owned, StringTreeObject};
+use mavryk_messages::p2p::encoding::version::NetworkVersion;
 
 use crate::helpers::{
     BlockHeaderInfo, BlockHeaderShellInfo, BlockInfo, BlockMetadata, BlockOperation,
@@ -19,8 +19,8 @@ use crate::helpers::{
     RpcServiceError,
 };
 use crate::server::RpcServiceEnvironment;
-use tezos_api::ffi::ApplyBlockRequest;
-use tezos_messages::p2p::encoding::prelude::OperationsForBlocksMessage;
+use mavryk_api::ffi::ApplyBlockRequest;
+use mavryk_messages::p2p::encoding::prelude::OperationsForBlocksMessage;
 
 pub type BlockOperationsHashes = Vec<String>;
 
@@ -138,7 +138,7 @@ async fn convert_block_metadata(
 ) -> Result<BlockMetadata, RpcServiceError> {
     // TODO: TE-521 - rewrite encoding part to rust
     let response = env
-        .tezos_protocol_api()
+        .mavryk_protocol_api()
         .readable_connection()
         .await?
         .apply_block_result_metadata(
@@ -453,7 +453,7 @@ async fn convert_block_operations_metadata(
 ) -> Result<BlockOperations, RpcServiceError> {
     // TODO: TE-521 - rewrite encoding part to rust
     let response = env
-        .tezos_protocol_api()
+        .mavryk_protocol_api()
         .readable_connection()
         .await?
         .apply_block_operations_metadata(

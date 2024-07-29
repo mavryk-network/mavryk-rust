@@ -7,7 +7,7 @@ use std::sync::Arc;
 use rocksdb::{Cache, ColumnFamilyDescriptor, MergeOperands};
 
 use crypto::hash::BlockHash;
-use tezos_messages::p2p::encoding::prelude::*;
+use mavryk_messages::p2p::encoding::prelude::*;
 
 use crate::database::tezedge_database::{KVStoreKeyValueSchema, TezedgeDatabaseWithIterator};
 use crate::persistent::database::{default_table_options, RocksDbKeyValueSchema};

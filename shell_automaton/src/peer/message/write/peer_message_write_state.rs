@@ -7,8 +7,8 @@ use std::sync::Arc;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
-use tezos_encoding::binary_writer::BinaryWriterError;
-use tezos_messages::p2p::encoding::peer::PeerMessageResponse;
+use mavryk_encoding::binary_writer::BinaryWriterError;
+use mavryk_messages::p2p::encoding::peer::PeerMessageResponse;
 
 use crate::peer::binary_message::write::PeerBinaryMessageWriteState;
 

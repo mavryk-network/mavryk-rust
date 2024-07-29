@@ -6,10 +6,10 @@ use crypto::nonce::generate_nonces;
 use crypto::proof_of_work::{PowError, PowResult};
 use networking::PeerId;
 use std::sync::Arc;
-use tezos_messages::p2p::binary_message::{BinaryChunk, BinaryRead, BinaryWrite};
-use tezos_messages::p2p::encoding::ack::{AckMessage, NackInfo, NackMotive};
-use tezos_messages::p2p::encoding::connection::ConnectionMessage;
-use tezos_messages::p2p::encoding::metadata::MetadataMessage;
+use mavryk_messages::p2p::binary_message::{BinaryChunk, BinaryRead, BinaryWrite};
+use mavryk_messages::p2p::encoding::ack::{AckMessage, NackInfo, NackMotive};
+use mavryk_messages::p2p::encoding::connection::ConnectionMessage;
+use mavryk_messages::p2p::encoding::metadata::MetadataMessage;
 
 use crate::action::Action;
 use crate::peer::binary_message::read::PeerBinaryMessageReadInitAction;

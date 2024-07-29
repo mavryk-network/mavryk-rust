@@ -6,8 +6,8 @@ use std::net::SocketAddr;
 use crypto::hash::BlockHash;
 use serde::{Deserialize, Serialize};
 use storage::BlockHeaderWithHash;
-use tezos_messages::p2p::encoding::block_header::Level;
-use tezos_messages::p2p::encoding::operations_for_blocks::OperationsForBlocksMessage;
+use mavryk_messages::p2p::encoding::block_header::Level;
+use mavryk_messages::p2p::encoding::operations_for_blocks::OperationsForBlocksMessage;
 
 use crate::bootstrap::BootstrapState;
 use crate::current_head::CurrentHeadState;

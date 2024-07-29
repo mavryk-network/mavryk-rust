@@ -4,8 +4,8 @@
 use serde::{Deserialize, Serialize};
 
 use crypto::hash::{BlockHash, OperationHash};
-use tezos_api::ffi::{Errored, PrevalidatorWrapper, Validated};
-use tezos_messages::p2p::encoding::prelude::Operation;
+use mavryk_api::ffi::{Errored, PrevalidatorWrapper, Validated};
+use mavryk_messages::p2p::encoding::prelude::Operation;
 
 #[cfg_attr(feature = "fuzzing", derive(fuzzcheck::DefaultMutator))]
 #[derive(Serialize, Deserialize, Debug, Clone)]

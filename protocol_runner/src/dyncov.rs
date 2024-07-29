@@ -3,7 +3,7 @@
 
 use ocaml_interop::{ocaml_export, OCaml, OCamlRef, OCamlRuntime};
 
-#[link(name = "tezos")]
+#[link(name = "mavryk")]
 extern "C" {
     pub fn initialize_tezedge_gcov_callbacks(
         protocol_runner_dump_gcov: unsafe extern "C" fn(isize) -> isize,

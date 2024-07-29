@@ -11,7 +11,7 @@ pub use rights_cycle_eras_reducer::*;
 
 mod rights_cycle_eras_effects;
 pub use rights_cycle_eras_effects::*;
-use tezos_encoding::nom::NomReader;
+use mavryk_encoding::nom::NomReader;
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, NomReader)]
 #[cfg_attr(feature = "fuzzing", derive(fuzzcheck::DefaultMutator))]

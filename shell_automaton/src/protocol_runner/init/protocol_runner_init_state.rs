@@ -5,7 +5,7 @@ use crypto::hash::ContextHash;
 use derive_more::From;
 use serde::{Deserialize, Serialize};
 
-use tezos_api::ffi::InitProtocolContextResult;
+use mavryk_api::ffi::InitProtocolContextResult;
 
 use super::context::ProtocolRunnerInitContextState;
 use super::context_ipc_server::ProtocolRunnerInitContextIpcServerState;

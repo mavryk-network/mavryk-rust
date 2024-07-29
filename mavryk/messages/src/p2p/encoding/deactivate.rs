@@ -1,0 +1,25 @@
+// Copyright (c) SimpleStaking, Viable Systems and Tezedge Contributors
+// SPDX-License-Identifier: MIT
+
+use getset::Getters;
+use serde::{Deserialize, Serialize};
+
+use crypto::hash::ChainId;
+use mavryk_encoding::enc::BinWriter;
+use mavryk_encoding::encoding::HasEncoding;
+use mavryk_encoding::nom::NomReader;
+
+#[cfg_attr(feature = "fuzzing", derive(fuzzcheck::DefaultMutator))]
+#[derive(
+    Serialize, Deserialize, Debug, Getters, Eq, PartialEq, Clone, HasEncoding, NomReader, BinWriter,
+)]
+pub struct DeactivateMessage {
+    #[get = "pub"]
+    deactivate: ChainId,
+}
+
+impl DeactivateMessage {
+    pub fn new(deactivate: ChainId) -> Self {
+        Self { deactivate }
+    }
+}

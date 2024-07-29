@@ -4,8 +4,8 @@
 use serde::{Deserialize, Serialize};
 
 use crypto::hash::{BlockHash, HashType, OperationHash, Signature};
-use tezos_encoding::enc::{BinError, BinWriter};
-use tezos_messages::protocol::proto_012::operation::{
+use mavryk_encoding::enc::{BinError, BinWriter};
+use mavryk_messages::protocol::proto_012::operation::{
     InlinedEndorsementMempoolContents, InlinedPreendorsementContents,
 };
 

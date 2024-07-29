@@ -10,7 +10,7 @@ use std::{
 
 use slog::{error, trace, warn, FnValue};
 use storage::cycle_storage::CycleData;
-use tezos_messages::{
+use mavryk_messages::{
     base::{
         signature_public_key::{SignaturePublicKey, SignaturePublicKeyHash},
         ConversionError,
@@ -35,7 +35,7 @@ use super::{
     cycle_delegates::rights_cycle_delegates_actions::*,
     cycle_eras::rights_cycle_eras_actions::*,
     rights_actions::*,
-    utils::{baking_rights_owner, endorser_rights_owner, get_cycle, Position, TezosPRNGError},
+    utils::{baking_rights_owner, endorser_rights_owner, get_cycle, Position, MavrykPRNGError},
     EndorsingRightsOld, ProtocolConstants, RightsInput, RightsRequest, RightsRpcError, Slot,
 };
 
@@ -765,7 +765,7 @@ pub enum RightsCalculationError {
     #[error("Signature conversion error: {0}")]
     Conversion(#[from] ConversionError),
     #[error("Error calculating pseudo-random number: `{0}`")]
-    Prng(#[from] TezosPRNGError),
+    Prng(#[from] MavrykPRNGError),
     #[error("Missing protocol constant: `{0}`")]
     MissingProtocolConstant(String),
 }

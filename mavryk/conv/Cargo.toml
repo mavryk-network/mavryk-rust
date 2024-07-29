@@ -1,0 +1,17 @@
+[package]
+name = "mavryk_conv"
+version = "3.1.1"
+authors = ["Bruno Deferrari <bruno.deferrari@viablesystems.io>"]
+edition = "2021"
+rust-version = "1.58"
+
+[dependencies]
+ocaml-interop = { version = "0.8.4", features = ["without-ocamlopt", "caml-state"] }
+num-bigint = "0.3"
+# local dependencies
+mavryk_api = { path = "../api" }
+mavryk_context_api = { path = "../context-api" }
+mavryk_messages = { path = "../messages" }
+mavryk_protocol_ipc_messages = { path = "../protocol-ipc-messages" }
+crypto = { path = "../../crypto" }
+mavryk-sys = { path = "../sys" }

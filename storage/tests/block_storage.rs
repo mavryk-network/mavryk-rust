@@ -5,8 +5,8 @@ use anyhow::Error;
 
 use storage::tests_common::TmpStorage;
 use storage::*;
-use tezos_messages::p2p::binary_message::BinaryRead;
-use tezos_messages::p2p::encoding::prelude::*;
+use mavryk_messages::p2p::binary_message::BinaryRead;
+use mavryk_messages::p2p::encoding::prelude::*;
 
 #[test]
 fn block_storage_read_write() -> Result<(), Error> {

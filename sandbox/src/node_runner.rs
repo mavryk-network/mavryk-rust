@@ -59,7 +59,7 @@ pub type LightNodeRunnerRef = Arc<RwLock<LightNodeRunner>>;
 
 const SANDBOX_NODE_IP: &str = "localhost";
 const NODE_CONFIG_RPC_PORT: &str = "rpc_port";
-const NODE_CONFIG_TEZOS_DATA_DIR: &str = "tezos_data_dir";
+const NODE_CONFIG_MAVRYK_DATA_DIR: &str = "mavryk_data_dir";
 const NODE_CONFIG_TEZEDGE_DATA_DIR: &str = "bootstrap_db_path";
 const NODE_CONFIG_IDENTITY_FILE: &str = "identity_file";
 const NODE_CONFIG_PATCH_CONTEXT_JSON_FILE_PATH: &str = "sandbox_patch_context_json_file";
@@ -140,7 +140,7 @@ impl LightNodeRunner {
     /// Returns:
     /// `node_ref` - port/ip where is running sandbox node
     /// `data_dir` - one node will have its own temp folder for data (identity, dbs, temp files,...)
-    ///            - so we need to filter and modify input cfg properties: [NODE_CONFIG_TEZOS_DATA_DIR][NODE_CONFIG_TEZEDGE_DATA_DIR][NODE_CONFIG_IDENTITY_FILE]
+    ///            - so we need to filter and modify input cfg properties: [NODE_CONFIG_MAVRYK_DATA_DIR][NODE_CONFIG_TEZEDGE_DATA_DIR][NODE_CONFIG_IDENTITY_FILE]
     pub fn spawn(
         &mut self,
         cfg: serde_json::Value,
@@ -258,7 +258,7 @@ impl LightNodeRunner {
             }
 
             // the process started up OK, but we restart it to enable normal logging (stderr won't be piped)
-            // start the process again without piped stdout/stderr, e.g. to have ability log to syslog in docker to tezos-debugger
+            // start the process again without piped stdout/stderr, e.g. to have ability log to syslog in docker to mavryk-debugger
             let process = Command::new(&self.executable_path)
                 .args(Self::construct_args(cfg, false)?)
                 .spawn()
@@ -341,7 +341,7 @@ impl LightNodeRunner {
     }
 
     /// This function will filter and modify input cfg properties
-    /// 1. replaces [NODE_CONFIG_TEZOS_DATA_DIR][NODE_CONFIG_TEZEDGE_DATA_DIR][NODE_CONFIG_IDENTITY_FILE] with custom names prefixed [sandbox_data_dir]
+    /// 1. replaces [NODE_CONFIG_MAVRYK_DATA_DIR][NODE_CONFIG_TEZEDGE_DATA_DIR][NODE_CONFIG_IDENTITY_FILE] with custom names prefixed [sandbox_data_dir]
     /// 2. replaces [NODE_CONFIG_PROTOCOL_RUNNER] with own settings
     /// 3. stores [sandbox_patch_context_json] to tempfile and sets it as [NODE_CONFIG_PATCH_CONTEXT_JSON_FILE_PATH] (if present)
     fn ensure_sandbox_cfg(
@@ -353,15 +353,15 @@ impl LightNodeRunner {
         if let Some(map) = cfg.as_object_mut() {
             // 1.
             let sandboxed = sandbox_data_dir
-                .join("sandbox_tezos_db")
+                .join("sandbox_mavryk_db")
                 .as_path()
                 .display()
                 .to_string();
             if let Some(old_value) = map.insert(
-                NODE_CONFIG_TEZOS_DATA_DIR.to_string(),
+                NODE_CONFIG_MAVRYK_DATA_DIR.to_string(),
                 serde_json::Value::String(sandboxed.clone()),
             ) {
-                info!(log, "Changing sandbox node configuration"; "property" => NODE_CONFIG_TEZOS_DATA_DIR.to_string(), "old_value" => old_value.to_string(), "new_value" => sandboxed);
+                info!(log, "Changing sandbox node configuration"; "property" => NODE_CONFIG_MAVRYK_DATA_DIR.to_string(), "old_value" => old_value.to_string(), "new_value" => sandboxed);
             }
             let sandboxed = sandbox_data_dir
                 .join("sandbox_tezedge_db")

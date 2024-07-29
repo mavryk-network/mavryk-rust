@@ -19,16 +19,16 @@ use hyper::server::conn::AddrStream;
 use hyper::service::{make_service_fn, service_fn};
 use hyper::{Body, Method, Request, Response};
 use slog::{error, Logger};
-use tezos_protocol_ipc_client::ProtocolRunnerApi;
+use mavryk_protocol_ipc_client::ProtocolRunnerApi;
 use tokio::runtime::Handle;
 
 use crypto::hash::{ChainId, HashTrait};
 use shell_automaton::service::rpc_service::RpcShellAutomatonSender;
 use shell_integration::{StreamCounter, StreamWakers};
 use storage::{BlockHeaderWithHash, PersistentStorage};
-use tezos_api::environment::TezosEnvironmentConfiguration;
-use tezos_context_ipc_client::TezedgeContextClient;
-use tezos_messages::p2p::encoding::version::NetworkVersion;
+use mavryk_api::environment::MavrykEnvironmentConfiguration;
+use mavryk_context_ipc_client::TezedgeContextClient;
+use mavryk_messages::p2p::encoding::version::NetworkVersion;
 use url::Url;
 
 use crate::{error_with_message, not_found, options};
@@ -79,7 +79,7 @@ pub struct RpcServiceEnvironment {
     #[get = "pub(crate)"]
     shell_automaton_sender: RpcShellAutomatonSender,
     #[get = "pub(crate)"]
-    tezos_environment: TezosEnvironmentConfiguration,
+    mavryk_environment: MavrykEnvironmentConfiguration,
     #[get = "pub(crate)"]
     network_version: Arc<NetworkVersion>,
     #[get = "pub(crate)"]
@@ -93,7 +93,7 @@ pub struct RpcServiceEnvironment {
     #[get = "pub(crate)"]
     tezedge_context: TezedgeContextClient,
     #[get = "pub(crate)"]
-    tezos_protocol_api: Arc<ProtocolRunnerApi>,
+    mavryk_protocol_api: Arc<ProtocolRunnerApi>,
     #[get = "pub(crate)"]
     context_stats_db_path: Option<PathBuf>,
     pub tezedge_is_enabled: bool,
@@ -104,10 +104,10 @@ impl RpcServiceEnvironment {
     pub fn new(
         tokio_executor: Arc<Handle>,
         shell_automaton_sender: RpcShellAutomatonSender,
-        tezos_environment: TezosEnvironmentConfiguration,
+        mavryk_environment: MavrykEnvironmentConfiguration,
         network_version: Arc<NetworkVersion>,
         persistent_storage: &PersistentStorage,
-        tezos_protocol_api: Arc<ProtocolRunnerApi>,
+        mavryk_protocol_api: Arc<ProtocolRunnerApi>,
         main_chain_id: ChainId,
         state: RpcCollectedStateRef,
         context_stats_db_path: Option<PathBuf>,
@@ -115,18 +115,18 @@ impl RpcServiceEnvironment {
         allow_unsafe_rpc: bool,
         log: Logger,
     ) -> Self {
-        let tezedge_context = TezedgeContextClient::new(Arc::clone(&tezos_protocol_api));
+        let tezedge_context = TezedgeContextClient::new(Arc::clone(&mavryk_protocol_api));
         Self {
             tokio_executor,
             shell_automaton_sender,
-            tezos_environment,
+            mavryk_environment,
             network_version,
             persistent_storage: persistent_storage.clone(),
             main_chain_id,
             state,
             log,
             tezedge_context,
-            tezos_protocol_api,
+            mavryk_protocol_api,
             context_stats_db_path,
             tezedge_is_enabled,
             allow_unsafe_rpc,

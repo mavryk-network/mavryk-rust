@@ -18,13 +18,13 @@ use storage::{
     BlockHeaderWithHash, BlockMetaStorage, BlockMetaStorageReader, BlockStorage,
     OperationsMetaStorage, OperationsStorage, StorageError,
 };
-use tezos_messages::p2p::binary_message::{BinaryRead, MessageHash};
-use tezos_messages::p2p::encoding::operation::DecodedOperation;
-use tezos_messages::p2p::encoding::operations_for_blocks::{
+use mavryk_messages::p2p::binary_message::{BinaryRead, MessageHash};
+use mavryk_messages::p2p::encoding::operation::DecodedOperation;
+use mavryk_messages::p2p::encoding::operations_for_blocks::{
     OperationsForBlock, OperationsForBlocksMessage,
 };
-use tezos_messages::p2p::encoding::prelude::Path;
-use tezos_messages::p2p::encoding::prelude::{BlockHeader, Operation};
+use mavryk_messages::p2p::encoding::prelude::Path;
+use mavryk_messages::p2p::encoding::prelude::{BlockHeader, Operation};
 
 use crate::helpers::RpcServiceError;
 use crate::server::RpcServiceEnvironment;
@@ -187,7 +187,7 @@ pub async fn inject_block(
 
         // compute the paths for each validation passes
         let paths = if let Some(vps) = validation_passes.as_ref() {
-            let mut connection = env.tezos_protocol_api().readable_connection().await?;
+            let mut connection = env.mavryk_protocol_api().readable_connection().await?;
 
             let response = connection
                 .compute_path(vps.try_into()?)

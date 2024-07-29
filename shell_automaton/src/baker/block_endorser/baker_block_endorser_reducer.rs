@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: MIT
 
 use crypto::hash::OperationHash;
-use tezos_messages::base::signature_public_key::SignaturePublicKeyHash;
-use tezos_messages::p2p::binary_message::MessageHash;
-use tezos_messages::p2p::encoding::operation::Operation;
+use mavryk_messages::base::signature_public_key::SignaturePublicKeyHash;
+use mavryk_messages::p2p::binary_message::MessageHash;
+use mavryk_messages::p2p::encoding::operation::Operation;
 
 use crate::baker::persisted::LastEndorsement;
 use crate::baker::LockedPayload;

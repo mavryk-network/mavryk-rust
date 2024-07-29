@@ -7,9 +7,9 @@ use serde::{Deserialize, Serialize};
 
 use crypto::hash::ProtocolHash;
 use storage::cycle_storage::CycleData;
-use tezos_messages::base::signature_public_key::SignaturePublicKeyHash;
-use tezos_messages::p2p::encoding::block_header::BlockHeader;
-use tezos_messages::protocol::SupportedProtocol;
+use mavryk_messages::base::signature_public_key::SignaturePublicKeyHash;
+use mavryk_messages::p2p::encoding::block_header::BlockHeader;
+use mavryk_messages::protocol::SupportedProtocol;
 
 use crate::protocol_runner::ProtocolRunnerToken;
 use crate::service::rpc_service::RpcId;

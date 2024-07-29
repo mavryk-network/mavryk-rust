@@ -6,7 +6,7 @@ use std::net::SocketAddr;
 use serde::{Deserialize, Serialize};
 
 use storage::OperationKey;
-use tezos_messages::p2p::encoding::operations_for_blocks::OperationsForBlocksMessage;
+use mavryk_messages::p2p::encoding::operations_for_blocks::OperationsForBlocksMessage;
 
 use crate::request::RequestId;
 use crate::service::storage_service::StorageError;

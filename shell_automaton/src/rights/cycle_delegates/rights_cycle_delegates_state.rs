@@ -3,8 +3,8 @@
 
 use std::collections::BTreeMap;
 
-use tezos_messages::base::signature_public_key::{SignaturePublicKey, SignaturePublicKeyHash};
-use tezos_protocol_ipc_client::ProtocolServiceError;
+use mavryk_messages::base::signature_public_key::{SignaturePublicKey, SignaturePublicKeyHash};
+use mavryk_protocol_ipc_client::ProtocolServiceError;
 
 use crate::{
     protocol_runner::ProtocolRunnerToken, service::protocol_runner_service::CycleDelegatesError,

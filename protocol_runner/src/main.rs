@@ -1,13 +1,13 @@
 // Copyright (c) SimpleStaking, Viable Systems and Tezedge Contributors
 // SPDX-License-Identifier: MIT
 
-//! Separate Tezos protocol runner, as we used OCaml protocol more and more, we noticed increasing
+//! Separate Mavryk protocol runner, as we used OCaml protocol more and more, we noticed increasing
 //! problems, from panics to high memory usage, for better stability, we separated protocol into
 //! self-contained process communicating through Unix Socket.
 
 use clap::{App, Arg};
 use slog::*;
-use tezos_interop::runtime::OCamlBlockPanic;
+use mavryk_interop::runtime::OCamlBlockPanic;
 
 #[cfg(not(target_env = "msvc"))]
 use tikv_jemallocator::Jemalloc;
@@ -36,7 +36,7 @@ fn main() {
     let matches = App::new("TezEdge Protocol Runner")
         .version(env!("CARGO_PKG_VERSION"))
         .author("TezEdge and the project contributors")
-        .about("Tezos Protocol Runner")
+        .about("Mavryk Protocol Runner")
         .arg(
             Arg::with_name("socket-path")
                 .short("c")
@@ -84,7 +84,7 @@ fn main() {
     let shutdown_callback = |log: &Logger| {
         debug!(log, "Shutting down OCaml runtime");
         match std::panic::catch_unwind(|| {
-            tezos_interop::shutdown();
+            mavryk_interop::shutdown();
         }) {
             Ok(_) => debug!(log, "OCaml runtime shutdown was successful"),
             Err(e) => {
@@ -106,7 +106,7 @@ fn main() {
     #[cfg(dyncov)]
     dyncov::initialize_callbacks();
 
-    match tezos_interop::start_ipc_loop(cmd_socket_path.into()) {
+    match mavryk_interop::start_ipc_loop(cmd_socket_path.into()) {
         Err(OCamlBlockPanic) => warn!(log, "Protocol runner loop exited with a panic"),
         Ok(Err(trace)) => warn!(log, "Protocol runner loop exited with error: {:?}", trace),
         Ok(Ok(code)) => info!(

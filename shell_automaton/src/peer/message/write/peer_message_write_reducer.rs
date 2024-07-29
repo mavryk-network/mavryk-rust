@@ -1,7 +1,7 @@
 // Copyright (c) SimpleStaking, Viable Systems and Tezedge Contributors
 // SPDX-License-Identifier: MIT
 
-use tezos_messages::p2p::encoding::peer::PeerMessage;
+use mavryk_messages::p2p::encoding::peer::PeerMessage;
 
 use crate::peer::binary_message::write::PeerBinaryMessageWriteState;
 use crate::peer::{PeerCrypto, PeerHandshaked, PeerStatus};

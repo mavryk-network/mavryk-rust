@@ -7,7 +7,7 @@ use crypto::blake2b::Blake2bError;
 use crypto::crypto_box::{PrecomputedKey, PublicKey, SecretKey};
 use crypto::nonce::{generate_nonces, Nonce, NoncePair};
 use crypto::CryptoError;
-use tezos_messages::p2p::binary_message::BinaryChunk;
+use mavryk_messages::p2p::binary_message::BinaryChunk;
 
 use super::chunk::read::ReadCrypto;
 use super::chunk::write::WriteCrypto;

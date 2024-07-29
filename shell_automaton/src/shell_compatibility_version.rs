@@ -3,8 +3,8 @@
 
 use serde::{Deserialize, Serialize};
 
-use tezos_messages::p2p::encoding::ack::NackMotive;
-use tezos_messages::p2p::encoding::prelude::NetworkVersion;
+use mavryk_messages::p2p::encoding::ack::NackMotive;
+use mavryk_messages::p2p::encoding::prelude::NetworkVersion;
 
 /// Holds informations about supported versions:
 /// - all distributed_db_versions
@@ -100,8 +100,8 @@ impl ShellCompatibilityVersion {
 
 #[cfg(test)]
 mod tests {
-    use tezos_messages::p2p::encoding::ack::NackMotive;
-    use tezos_messages::p2p::encoding::version::NetworkVersion;
+    use mavryk_messages::p2p::encoding::ack::NackMotive;
+    use mavryk_messages::p2p::encoding::version::NetworkVersion;
 
     use super::*;
 

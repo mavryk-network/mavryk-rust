@@ -1,4 +1,4 @@
-FROM tezedge/tezos-opam-builder:debian10 as build-env
+FROM tezedge/mavryk-opam-builder:debian10 as build-env
 
 # Checkout and compile tezedge source code
 USER root

@@ -202,7 +202,7 @@ impl RightsParams {
                 // endorsing rights: to compute timestamp for level parameter there need to be taken timestamp of previous block
                 timestamp_level = level - 1;
                 // there can be requested also negative level, this is not an error but it is handled same as level 1 would be requested
-                // In Ocaml Tezos node there can be negative level provided as query parameter, it is not handled as error but it will instead return endorsing/baking rights for level 1
+                // In Ocaml Mavryk node there can be negative level provided as query parameter, it is not handled as error but it will instead return endorsing/baking rights for level 1
                 // for all reuqested negative levels use level 1
                 if level < 1 {
                     1
@@ -298,7 +298,7 @@ impl RightsParams {
             Ok(requested_cycle)
         } else {
             // TODO: proper json response is needed for this
-            // Octez is:
+            // Mavkit is:
             //    [{ "kind": "permanent", "id": "proto.008-PtEdo2Zk.seed.unknown_seed",
             //        "oldest": 330, "requested": 200, "latest": 340 }]
             bail!("Requested cycle out of bounds") //TODO: prepare cycle error
@@ -309,7 +309,7 @@ impl RightsParams {
 /// Struct used in endorsing rights to map endorsers to endorsement slots before they can be ordered and completed
 #[derive(Debug, Clone, Getters)]
 pub struct EndorserSlots {
-    /// endorser contract id in form:tz1.../tz2.../KT1...
+    /// endorser contract id in form:mv1.../mv2.../KT1...
     #[get = "pub(crate)"]
     contract_id: String,
 
@@ -330,31 +330,31 @@ impl EndorserSlots {
     }
 }
 
-/// Enum defining Tezos PRNG possible error
+/// Enum defining Mavryk PRNG possible error
 #[derive(Debug, Error)]
-pub enum TezosPRNGError {
+pub enum MavrykPRNGError {
     #[error("Value of bound(last_roll) not correct: {bound} bytes")]
     BoundNotCorrect { bound: i32 },
     #[error("Public key error: {0}")]
     PublicKeyError(PublicKeyError),
 }
 
-impl From<PublicKeyError> for TezosPRNGError {
+impl From<PublicKeyError> for MavrykPRNGError {
     fn from(source: PublicKeyError) -> Self {
-        TezosPRNGError::PublicKeyError(source)
+        MavrykPRNGError::PublicKeyError(source)
     }
 }
 
-impl From<Blake2bError> for TezosPRNGError {
+impl From<Blake2bError> for MavrykPRNGError {
     fn from(source: Blake2bError) -> Self {
-        TezosPRNGError::PublicKeyError(source.into())
+        MavrykPRNGError::PublicKeyError(source.into())
     }
 }
 
 type RandomSeedState = Vec<u8>;
-pub type TezosPRNGResult = Result<(i32, RandomSeedState), TezosPRNGError>;
+pub type MavrykPRNGResult = Result<(i32, RandomSeedState), MavrykPRNGError>;
 
-/// Initialize Tezos PRNG
+/// Initialize Mavryk PRNG
 ///
 /// # Arguments
 ///
@@ -397,7 +397,7 @@ pub fn init_prng(
     Ok(sequence)
 }
 
-/// Get pseudo random nuber using Tezos PRNG
+/// Get pseudo random nuber using Mavryk PRNG
 ///
 /// # Arguments
 ///
@@ -406,9 +406,9 @@ pub fn init_prng(
 ///
 /// Return pseudo random generated roll number and RandomSeedState for next roll generation if the roll provided is missing from the roll list
 #[inline]
-pub fn get_prng_number(state: RandomSeedState, bound: i32) -> TezosPRNGResult {
+pub fn get_prng_number(state: RandomSeedState, bound: i32) -> MavrykPRNGResult {
     if bound < 1 {
-        return Err(TezosPRNGError::BoundNotCorrect { bound });
+        return Err(MavrykPRNGError::BoundNotCorrect { bound });
     }
     let v: i32;
     // Note: this part aims to be similar

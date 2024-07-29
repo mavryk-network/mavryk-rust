@@ -31,12 +31,12 @@ This is a daemon for creating, signing and injecting endorsements and blocks for
     ```
 4. Install **Tezos Client** and **Tezos Signer**
     ```
-    curl https://gitlab.com/tezos/tezos/-/package_files/36986666/download -o tezos-client
-    chmod +x tezos-client
-    sudo mv tezos-client /usr/local/bin
-    curl https://gitlab.com/tezos/tezos/-/package_files/36986689/download -o tezos-signer
-    chmod +x tezos-signer
-    sudo mv tezos-signer /usr/local/bin
+    curl https://gitlab.com/mavryk/mavryk/-/package_files/36986666/download -o mavryk-client
+    chmod +x mavryk-client
+    sudo mv mavryk-client /usr/local/bin
+    curl https://gitlab.com/mavryk/mavryk/-/package_files/36986689/download -o mavryk-signer
+    chmod +x mavryk-signer
+    sudo mv mavryk-signer /usr/local/bin
     ```
 
 ### Building
@@ -98,11 +98,11 @@ To run the node on testnet use the following commands, replace `...` with the ac
 mkdir -p "$HOME/data-ithacanet/tezedge-data"
 ./target/release/light-node import-snapshot \
     --from ... \
-    --tezos-data-dir "$HOME/data-ithacanet/tezedge-data"
+    --mavryk-data-dir "$HOME/data-ithacanet/tezedge-data"
 KEEP_DATA=1 ./run.sh release \
     --network=ithacanet \
-    --tezos-data-dir "$HOME/data-ithacanet/tezedge-data" \
-    --tezos-context-storage=tezedge
+    --mavryk-data-dir "$HOME/data-ithacanet/tezedge-data" \
+    --mavryk-context-storage=tezedge
 ```
 
 To run the node on mainnet, use the following commands:
@@ -110,11 +110,11 @@ To run the node on mainnet, use the following commands:
 mkdir -p "$HOME/data-mainnet/tezedge-data"
 ./target/release/light-node import-snapshot \
     --from ... \
-    --tezos-data-dir "$HOME/data-mainnet/tezedge-data"
+    --mavryk-data-dir "$HOME/data-mainnet/tezedge-data"
 KEEP_DATA=1 ./run.sh release \
     --network=mainnet \
-    --tezos-data-dir "$HOME/data-mainnet/tezedge-data" \
-    --tezos-context-storage=tezedge
+    --mavryk-data-dir "$HOME/data-mainnet/tezedge-data" \
+    --mavryk-context-storage=tezedge
 ```
 
 The node will be building for some time and then it will run. Keep it running. Continue in another terminal tab.
@@ -123,40 +123,40 @@ The node will be building for some time and then it will run. Keep it running. C
 
 Skip this section if you already have a Tezos account ready for baking.
 
-Pick a new <delegate_alias> and generate a new Tezos account using the Octez client.
+Pick a new <delegate_alias> and generate a new Tezos account using the Mavkit client.
 
 ```
-tezos-client -E "http://localhost:18732" gen keys <delegate_alias>
+mavryk-client -E "http://localhost:18732" gen keys <delegate_alias>
 ```
 
 You need to fund this account with at least 6000 ꜩ. Register the account as a delegate and wait the amount of time equal to between 5 and 6 cycles, depending on the position in the cycle (approximately 15 days).
 
 ```
-tezos-client -E "http://localhost:18732" register key <delegate_alias> as delegate
+mavryk-client -E "http://localhost:18732" register key <delegate_alias> as delegate
 ```
 
-By default, tezos-client stores the secret key for the account in the `$HOME/.tezos-client` directory.
+By default, mavryk-client stores the secret key for the account in the `$HOME/.mavryk-client` directory.
 
 See the [baking documentation](../../baking/mainnet/README.md#initialize-keys-for-bakerendorser) for more details.
 
-See the [Key management](https://tezos.gitlab.io/user/key-management.html) guide for more information.
+See the [Key management](https://protocol.mavryk.org/user/key-management.html) guide for more information.
 
 ### Use ledger
 
 Alternatively, you can use an external ledger.
 
-Install tezos baker app in ledger by using ledger-live gui tool. You also need to open baker app and enable baking.
+Install mavryk baker app in ledger by using ledger-live gui tool. You also need to open baker app and enable baking.
 
 Run signer, it will be running in background:
 ```
-nohup tezos-signer \
+nohup mavryk-signer \
     -E "http://localhost:18732" \
     launch http signer &
 ```
 
 After that, run this in the terminal
 ```
-tezos-signer \
+mavryk-signer \
     -E "http://localhost:18732" \
     list connected ledgers
 ```
@@ -165,29 +165,29 @@ It will print something like this:
 ```
 To use keys at BIP32 path m/44'/1729'/0'/0' (default Tezos key path), use one
 of:
-  tezos-client import secret key ledger0 "ledger://reckless-duck-mysterious-wallaby/bip25519/0h/0h"
-  tezos-client import secret key ledger0 "ledger://reckless-duck-mysterious-wallaby/ed25519/0h/0h"
-  tezos-client import secret key ledger0 "ledger://reckless-duck-mysterious-wallaby/secp256k1/0h/0h"
-  tezos-client import secret key ledger0 "ledger://reckless-duck-mysterious-wallaby/P-256/0h/0h"
+  mavryk-client import secret key ledger0 "ledger://reckless-duck-mysterious-wallaby/bip25519/0h/0h"
+  mavryk-client import secret key ledger0 "ledger://reckless-duck-mysterious-wallaby/ed25519/0h/0h"
+  mavryk-client import secret key ledger0 "ledger://reckless-duck-mysterious-wallaby/secp256k1/0h/0h"
+  mavryk-client import secret key ledger0 "ledger://reckless-duck-mysterious-wallaby/P-256/0h/0h"
 ```
 
 User must choose ed25519 link and run:
 ```
-tezos-signer \
+mavryk-signer \
     -E "http://localhost:18732" \
     import secret key <delegate_alias> "ledger://reckless-duck-mysterious-wallaby/ed25519/0h/0h"
 ```
 
 This will print `added: tz1...`, it is your public key. Run the following command to import it. The command has `secret key` words, but it is working with the link that contains public key hash, the real secret key is still inside the ledger, and isn't exposed.
 ```
-tezos-client
+mavryk-client
     -E "http://localhost:18732" \
     import secret key <delegate_alias> http://localhost:6732/tz1...
 ```
 
 And finally, the Tezos Baking application on the Ledger should be configured for baking:
 ```
-tezos-client \
+mavryk-client \
     -E "http://localhost:18732" \
     setup ledger to bake for <delegate_alias>
 ```
@@ -195,24 +195,24 @@ tezos-client \
 If you did not done it before, you need to fund this account with at least 6000 ꜩ. Register the account as delegate and wait the amount of time equal to between 5 and 6 cycles, depending on the position in the cycle (approximately 15 days).
 
 ```
-tezos-client -E "http://localhost:18732" register key <delegate_alias> as delegate
+mavryk-client -E "http://localhost:18732" register key <delegate_alias> as delegate
 ```
 
 ### Run the baker
 
 _Note: It is recommended to run the baker with nohup_
 
-Assuming that the secret key (or locator for remote signing) is in `$HOME/.tezos-client` and the node is running locally and uses 18732 port for RPC, the command is:
+Assuming that the secret key (or locator for remote signing) is in `$HOME/.mavryk-client` and the node is running locally and uses 18732 port for RPC, the command is:
 
 ```
-nohup tezedge-baker --base-dir "$HOME/.tezos-client" --endpoint "http://localhost:18732" --baker <delegate_alias> &
+nohup tezedge-baker --base-dir "$HOME/.mavryk-client" --endpoint "http://localhost:18732" --baker <delegate_alias> &
 ```
 
 Additionally, you can run `tezedge-baker --help` to get short help.
 
 Options:
 
-- `--base-dir`: The base directory. The path to the directory where the baker can find secret keys, or the remote signer's location. Usually, it is `~/.tezos-client`. Also, this directory is used by baker as a persistent storage of the state. It is crucial, for example, when revealing the seed nonce in a new cycle.
+- `--base-dir`: The base directory. The path to the directory where the baker can find secret keys, or the remote signer's location. Usually, it is `~/.mavryk-client`. Also, this directory is used by baker as a persistent storage of the state. It is crucial, for example, when revealing the seed nonce in a new cycle.
 - `--endpoint`: TezEdge or Tezos node RPC endpoint. Usually the port is `8732` or `18732`. If node is running locally, it will be `http://localhost:8732`.
 - `--baker`: The alias of the baker.
 - `--archive` or `-a`: If this flag is used, the baker will store verbose information for debug in the base directory.
@@ -220,7 +220,7 @@ Options:
 ### Common problems
 
 1. After creating an account and registering it as a delegate, make sure you wait at least 5 cycles (approximately 15 days) before you start to bake.
-1. The executable `tezedge-baker` and `tezos-client` should be in the directory which is in the `$PATH` environment variable. It may be `/usr/local/bin`, you need superuser permission to copy in this directory. Also, it is possible to execute `tezos-client` from any directory, but you need to specify the full path, for example `/home/username/tezos/tezos-client gen keys bob`, instead of `tezos-client gen keys bob`.
+1. The executable `tezedge-baker` and `mavryk-client` should be in the directory which is in the `$PATH` environment variable. It may be `/usr/local/bin`, you need superuser permission to copy in this directory. Also, it is possible to execute `mavryk-client` from any directory, but you need to specify the full path, for example `/home/username/mavryk/mavryk-client gen keys bob`, instead of `mavryk-client gen keys bob`.
 
 ## Tests
 
@@ -250,8 +250,8 @@ cargo +nightly-2021-12-22 fuzzcheck --test action_fuzz test_baker
 Prepare Tezos with mitten.
 
 ```
-git clone https://gitlab.com/nomadic-labs/tezos.git tezos-mitten -b mitten-ithaca
-cd tezos-mitten
+git clone https://gitlab.com/nomadic-labs/mavryk.git mavryk-mitten -b mitten-ithaca
+cd mavryk-mitten
 opam init --disable-sandboxing
 make build-deps
 eval $(opam env)
@@ -259,21 +259,21 @@ make
 make mitten
 ```
 
-Rename the file `tezos-mitten/tezos-baker-012-Psithaca` to `tezos-mitten/tezos-baker-012-Psithaca.octez`
+Rename the file `mavryk-mitten/mavryk-baker-012-Psithaca` to `mavryk-mitten/mavryk-baker-012-Psithaca.mavkit`
 
-Copy the files `tezedge/apps/baker/tezedge.env` and `tezedge/apps/baker/tezos-baker-012-Psithaca` into the `tezos-mitten` directory.
+Copy the files `tezedge/apps/baker/tezedge.env` and `tezedge/apps/baker/mavryk-baker-012-Psithaca` into the `mavryk-mitten` directory.
 
-Build the baker and copy the binary into `tezos-mitten`.
+Build the baker and copy the binary into `mavryk-mitten`.
 
 From the `tezedge` directory:
 ```
 cargo build -p baker --release
-cp target/release/tezedge-baker ../tezos-mitten/tezos-baker-012-Psithaca.tezedge
+cp target/release/tezedge-baker ../mavryk-mitten/mavryk-baker-012-Psithaca.tezedge
 ```
 
 Now you can run the mitten scenario:
 
-From the `tezos-mitten` directory:
+From the `mavryk-mitten` directory:
 ```
 dune exec src/mitten/scenarios/no_eqc_stuck.exe
 ```

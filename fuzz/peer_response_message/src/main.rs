@@ -5,8 +5,8 @@
 use honggfuzz::fuzz;
 use log::debug;
 
-use tezos_messages::p2p::binary_message::BinaryRead;
-use tezos_messages::p2p::encoding::prelude::*;
+use mavryk_messages::p2p::binary_message::BinaryRead;
+use mavryk_messages::p2p::encoding::prelude::*;
 
 fn main() {
     loop {

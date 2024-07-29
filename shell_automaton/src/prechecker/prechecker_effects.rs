@@ -1,7 +1,7 @@
 // Copyright (c) SimpleStaking, Viable Systems and Tezedge Contributors
 // SPDX-License-Identifier: MIT
 
-use tezos_messages::protocol::proto_012::FitnessRepr;
+use mavryk_messages::protocol::proto_012::FitnessRepr;
 
 use crate::{
     mempool::MempoolOperationDecodedAction,

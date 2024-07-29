@@ -3,7 +3,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use tezos_messages::base::signature_public_key::SignaturePublicKeyHash;
+use mavryk_messages::base::signature_public_key::SignaturePublicKeyHash;
 
 use crate::baker::persisted::PersistedState;
 use crate::request::RequestId;

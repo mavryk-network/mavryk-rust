@@ -760,7 +760,7 @@ pub async fn config_user_activated_upgrades(
 ) -> ServiceResult {
     result_to_json_response(
         Ok(env
-            .tezos_environment()
+            .mavryk_environment()
             .protocol_overrides
             .user_activated_upgrades_to_rpc_json()),
         env.log(),
@@ -775,7 +775,7 @@ pub async fn config_user_activated_protocol_overrides(
 ) -> ServiceResult {
     result_to_json_response(
         Ok(env
-            .tezos_environment()
+            .mavryk_environment()
             .protocol_overrides
             .user_activated_protocol_overrides_to_rpc_json()),
         env.log(),
@@ -783,7 +783,7 @@ pub async fn config_user_activated_protocol_overrides(
 }
 
 // TODO: TE-275 - implement correctly - at least for protocol rpcs. This is a 'fake it till you make it' handler
-/// Handler mockin the describe routes in ocaml to be compatible with tezoses python test framework
+/// Handler mockin the describe routes in ocaml to be compatible with mavrykes python test framework
 pub async fn describe(
     allowed_methods: Arc<HashSet<Method>>,
     req: Request<Body>,
@@ -835,7 +835,7 @@ pub async fn describe(
     let service_fields = serde_json::json!({
         "meth": method.as_str(),
         "path": path,
-        "description": "Handler mockin the describe routes in ocaml to be compatible with tezoses python test framework.",
+        "description": "Handler mockin the describe routes in ocaml to be compatible with mavrykes python test framework.",
         "query": [],
         "output": {
             "json_schema": {},

@@ -11,7 +11,7 @@ use crate::{Action, ActionWithMeta, State};
 use super::PeerBinaryMessageWriteState;
 
 const MAX_UNENCRYPTED_CHUNK_SIZE: usize =
-    tezos_messages::p2p::binary_message::CONTENT_LENGTH_MAX - crypto::crypto_box::BOX_ZERO_BYTES;
+    mavryk_messages::p2p::binary_message::CONTENT_LENGTH_MAX - crypto::crypto_box::BOX_ZERO_BYTES;
 
 pub fn peer_binary_message_write_reducer(state: &mut State, action: &ActionWithMeta) {
     match &action.action {

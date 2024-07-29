@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 use serde::{Deserialize, Serialize};
-use tezos_context_api::TezosContextStorageConfiguration;
+use mavryk_context_api::MavrykContextStorageConfiguration;
 
 use crate::protocol_runner::latest_context_hashes::ProtocolRunnerLatestContextHashesState;
 use crate::protocol_runner::ProtocolRunnerState;
@@ -36,7 +36,7 @@ impl EnablingCondition<State> for ProtocolRunnerReadyAction {
             )
         ) || (matches!(
             state.config.protocol_runner.storage,
-            TezosContextStorageConfiguration::IrminOnly(..)
+            MavrykContextStorageConfiguration::IrminOnly(..)
         ) && matches!(
             &state.protocol_runner,
             ProtocolRunnerState::Init(ProtocolRunnerInitState::Success { .. })

@@ -11,8 +11,8 @@ use std::sync::Arc;
 use serde::{Deserialize, Serialize};
 
 use crypto::hash::{HashType, OperationHash};
-use tezos_messages::p2p::binary_message::MessageHash;
-use tezos_messages::p2p::encoding::operation::OperationMessage;
+use mavryk_messages::p2p::binary_message::MessageHash;
+use mavryk_messages::p2p::encoding::operation::OperationMessage;
 
 use crate::database::tezedge_database::{KVStoreKeyValueSchema, TezedgeDatabaseWithIterator};
 use crate::persistent::database::RocksDbKeyValueSchema;

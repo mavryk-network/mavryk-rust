@@ -9,8 +9,8 @@ use shell_automaton::baker::persisted::PersistedState;
 use shell_automaton::request::RequestId;
 use shell_automaton::service::baker_service::{BakerService, BakerWorkerMessage};
 use shell_automaton::service::service_channel::ResponseTryRecvError;
-use tezos_messages::base::signature_public_key::SignaturePublicKeyHash;
-use tezos_messages::p2p::encoding::block_header::BlockHeader;
+use mavryk_messages::base::signature_public_key::SignaturePublicKeyHash;
+use mavryk_messages::p2p::encoding::block_header::BlockHeader;
 
 /// Mocked BakerService.
 ///

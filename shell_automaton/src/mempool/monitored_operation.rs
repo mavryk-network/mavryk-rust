@@ -7,8 +7,8 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
 use crypto::hash::{BlockHash, OperationHash, ProtocolHash};
-use tezos_api::ffi::{Errored, Validated};
-use tezos_messages::p2p::encoding::operation::Operation;
+use mavryk_api::ffi::{Errored, Validated};
+use mavryk_messages::p2p::encoding::operation::Operation;
 
 #[derive(Serialize, Deserialize, Debug, Clone, Default)]
 pub struct MempoolOperations {
@@ -205,9 +205,9 @@ mod tests {
     use assert_json_diff::assert_json_eq;
     use serde_json::json;
 
-    use tezos_api::ffi::{Errored, Validated};
-    use tezos_messages::p2p::binary_message::BinaryRead;
-    use tezos_messages::p2p::encoding::operation::Operation;
+    use mavryk_api::ffi::{Errored, Validated};
+    use mavryk_messages::p2p::binary_message::BinaryRead;
+    use mavryk_messages::p2p::encoding::operation::Operation;
 
     use super::{convert_applied, convert_errored};
 

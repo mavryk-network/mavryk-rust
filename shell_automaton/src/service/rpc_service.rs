@@ -16,7 +16,7 @@ use storage::persistent::SchemaError;
 use storage::{
     shell_automaton_action_meta_storage::ShellAutomatonActionsStats, BlockHeaderWithHash,
 };
-use tezos_messages::{
+use mavryk_messages::{
     base::signature_public_key::SignaturePublicKeyHash,
     p2p::encoding::{
         block_header::{BlockHeader, Level},

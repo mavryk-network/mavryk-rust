@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 use crypto::crypto_box::PublicKey;
 use crypto::hash::CryptoboxPublicKeyHash;
 use storage::BlockHeaderWithHash;
-use tezos_messages::p2p::encoding::version::NetworkVersion;
+use mavryk_messages::p2p::encoding::version::NetworkVersion;
 
 use crate::Port;
 

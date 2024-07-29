@@ -8,7 +8,7 @@ use std::{
     sync::Arc,
 };
 
-use tezos_messages::p2p::{
+use mavryk_messages::p2p::{
     binary_message::MessageHash,
     encoding::{
         current_head::{CurrentHeadMessage, GetCurrentHeadMessage},

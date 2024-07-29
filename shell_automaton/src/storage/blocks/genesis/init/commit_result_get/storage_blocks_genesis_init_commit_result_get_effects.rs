@@ -1,7 +1,7 @@
 // Copyright (c) SimpleStaking, Viable Systems and Tezedge Contributors
 // SPDX-License-Identifier: MIT
 
-use tezos_protocol_ipc_messages::GenesisResultDataParams;
+use mavryk_protocol_ipc_messages::GenesisResultDataParams;
 
 use crate::protocol_runner::ProtocolRunnerState;
 use crate::service::protocol_runner_service::ProtocolRunnerResult;

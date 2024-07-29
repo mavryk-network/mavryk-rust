@@ -20,7 +20,7 @@ services:
       - RUST_BACKTRACE=1
     volumes:
       - "tezedge-shared-data:/tmp/volume/tezedge:ro"
-      - "ocaml-shared-data:/tmp/volume/tezos:ro"
+      - "ocaml-shared-data:/tmp/volume/mavryk:ro"
       - "./debugger-config.toml:/home/appuser/config.toml:ro"
       - "/sys/kernel/debug:/sys/kernel/debug:rw"
       - "/tmp/report:/tmp/report:rw"
@@ -28,15 +28,15 @@ services:
     ports:
       - "17732:17732"      # debugger RPC port
       - "10001:10001/udp"  # debugger syslog port for tezedge node
-      - "11001:11001/udp"  # debugger syslog port for tezos node
+      - "11001:11001/udp"  # debugger syslog port for mavryk node
 
   tezedge-node:
     image: tezedge/tezedge:latest-frame-pointers-enabled
     pid: host
     network_mode: host
     environment:
-      - TEZOS_CONTEXT=index-log-size=2_500_000
-    command: ["--network", "${TEZOS_NETWORK-mainnet}", "--p2p-port=9732", "--rpc-port=18732", "--websocket-address=0.0.0.0:4927", "--log", "terminal", "file", "--log-file", "/tmp/tezedge/tezedge.log", "--tezos-context-storage", "irmin", "--context-stats-db-path", "context-stats-db", "--peer-thresh-low", "60", "--peer-thresh-high", "80"]
+      - MAVRYK_CONTEXT=index-log-size=2_500_000
+    command: ["--network", "${MAVRYK_NETWORK-mainnet}", "--p2p-port=9732", "--rpc-port=18732", "--websocket-address=0.0.0.0:4927", "--log", "terminal", "file", "--log-file", "/tmp/tezedge/tezedge.log", "--mavryk-context-storage", "irmin", "--context-stats-db-path", "context-stats-db", "--peer-thresh-low", "60", "--peer-thresh-high", "80"]
     logging:
       # Produce syslogs instead of terminal logs
       driver: "syslog"
@@ -66,7 +66,7 @@ services:
     command: ["--tezedge-nodes", "tezedge:18732:/tmp/tezedge", "--debugger-path", "/tmp/debugger", "--wait-for-nodes", "--rpc-port", "38732"]
     volumes:
       - "tezedge-shared-data:/tmp/tezedge"
-      - "ocaml-shared-data:/var/run/tezos/node"
+      - "ocaml-shared-data:/var/run/mavryk/node"
       - "debugger-data:/tmp/debugger"
 
 volumes:

@@ -1,8 +1,8 @@
 // Copyright (c) SimpleStaking, Viable Systems and Tezedge Contributors
 // SPDX-License-Identifier: MIT
 
-use tezos_messages::p2p::encoding::operation::Operation;
-use tezos_messages::protocol::proto_012::operation::{
+use mavryk_messages::p2p::encoding::operation::Operation;
+use mavryk_messages::protocol::proto_012::operation::{
     InlinedEndorsementMempoolContents, InlinedEndorsementMempoolContentsEndorsementVariant,
     InlinedPreendorsementContents, InlinedPreendorsementVariant,
 };

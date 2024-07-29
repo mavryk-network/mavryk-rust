@@ -3,8 +3,8 @@
 
 use crypto::hash::{BlockPayloadHash, HashTrait, HashType, OperationListHash};
 use storage::BlockHeaderWithHash;
-use tezos_encoding::types::SizedBytes;
-use tezos_messages::p2p::encoding::block_header::BlockHeaderBuilder;
+use mavryk_encoding::types::SizedBytes;
+use mavryk_messages::p2p::encoding::block_header::BlockHeaderBuilder;
 
 use crate::baker::persisted::LastBakedBlock;
 use crate::baker::{BakerState, ElectedBlock};

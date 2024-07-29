@@ -1,7 +1,7 @@
 // Copyright (c) SimpleStaking, Viable Systems and Tezedge Contributors
 // SPDX-License-Identifier: MIT
 use std::io;
-use tezos_messages::p2p::binary_message::CONTENT_LENGTH_FIELD_BYTES;
+use mavryk_messages::p2p::binary_message::CONTENT_LENGTH_FIELD_BYTES;
 
 use crate::paused_loops::{PausedLoop, PausedLoopsAddAction};
 use crate::request::RequestId;

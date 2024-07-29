@@ -6,7 +6,7 @@ services:
     image: tezedge/tezedge:v3.1.1
     pid: host
     network_mode: host
-    command: [ "--network=mainnet", "--p2p-port=5554", "--rpc-port=5555", "--websocket-address=0.0.0.0:5556", "--peer-thresh-low", "30", "--peer-thresh-high", "45", "--tezos-context-storage=tezedge", "--context-stats-db-path", "context-stats-db", "--context-kv-store", "ondisk"]
+    command: [ "--network=mainnet", "--p2p-port=5554", "--rpc-port=5555", "--websocket-address=0.0.0.0:5556", "--peer-thresh-low", "30", "--peer-thresh-high", "45", "--mavryk-context-storage=tezedge", "--context-stats-db-path", "context-stats-db", "--context-kv-store", "ondisk"]
     hostname: tezedge-with-persistent-storage
     tty: true
     volumes:

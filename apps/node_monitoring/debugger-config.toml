@@ -10,6 +10,6 @@ log = { port = 10001, store_limit = 1_000_000 }
 [[nodes]]
 name = "9733"
 http_v3 = 17743
-db = "/tmp/debugger_database/tezos"
-p2p = { identity = "/tmp/volume/tezos/data/identity.json", port = 9733, store_limit = 1_000_000 }
+db = "/tmp/debugger_database/mavryk"
+p2p = { identity = "/tmp/volume/mavryk/data/identity.json", port = 9733, store_limit = 1_000_000 }
 log = { port = 11001, store_limit = 1_000_000 }

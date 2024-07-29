@@ -9,8 +9,8 @@ use std::{
 use serde::{Deserialize, Serialize};
 
 use crypto::hash::{BlockHash, BlockPayloadHash, CryptoboxPublicKeyHash, OperationHash};
-use tezos_api::ffi::{ErrorListJson, Errored, OperationClassification, Validated};
-use tezos_messages::{
+use mavryk_api::ffi::{ErrorListJson, Errored, OperationClassification, Validated};
+use mavryk_messages::{
     base::signature_public_key::SignaturePublicKeyHash,
     p2p::encoding::{
         block_header::{BlockHeader, Level},
@@ -27,7 +27,7 @@ use crate::{
 
 use super::{map_with_timestamps::BTreeMapWithTimestamps, validator::MempoolValidatorState};
 
-/// https://gitlab.com/tezedge/tezos/-/blob/v12.2/src/lib_shell/prevalidator.ml#L219
+/// https://gitlab.com/tezedge/mavryk/-/blob/v12.2/src/lib_shell/prevalidator.ml#L219
 ///
 /// Bound for the refused (refused, branch_refused, branch_delayed, outdated)
 /// operations stored inside mempool. They will be FIFO queues and if the

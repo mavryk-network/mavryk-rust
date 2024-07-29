@@ -5,7 +5,7 @@ use std::net::{IpAddr, SocketAddr};
 
 use serde::{Deserialize, Serialize};
 
-use tezos_messages::p2p::encoding::ack::NackMotive;
+use mavryk_messages::p2p::encoding::ack::NackMotive;
 
 use crate::peer::message::{read::PeerMessageReadError, write::PeerMessageWriteError};
 use crate::{EnablingCondition, State};

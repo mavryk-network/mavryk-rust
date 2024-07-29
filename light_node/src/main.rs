@@ -31,12 +31,12 @@ use storage::{
     initializer::{initialize_rocksdb, GlobalRocksDbCacheHolder, MainChain, RocksDbCache},
     BlockMetaStorage, Replay,
 };
-use tezos_api::environment;
-use tezos_api::ffi::TezosRuntimeConfiguration;
-use tezos_api::ffi::TezosRuntimeLogLevel;
-use tezos_identity::Identity;
-use tezos_messages::Head;
-use tezos_protocol_ipc_client::{ProtocolRunnerApi, ProtocolRunnerConfiguration};
+use mavryk_api::environment;
+use mavryk_api::ffi::MavrykRuntimeConfiguration;
+use mavryk_api::ffi::MavrykRuntimeLogLevel;
+use mavryk_identity::Identity;
+use mavryk_messages::Head;
+use mavryk_protocol_ipc_client::{ProtocolRunnerApi, ProtocolRunnerConfiguration};
 
 use crate::configuration::Environment;
 use crate::notification_integration::RpcNotificationCallbackActor;
@@ -83,11 +83,11 @@ fn create_protocol_runner_configuration(
     env: &crate::configuration::Environment,
 ) -> ProtocolRunnerConfiguration {
     ProtocolRunnerConfiguration::new(
-        TezosRuntimeConfiguration {
+        MavrykRuntimeConfiguration {
             log_enabled: env.logging.ocaml_log_enabled,
-            log_level: Some(TezosRuntimeLogLevel::Info),
+            log_level: Some(MavrykRuntimeLogLevel::Info),
         },
-        env.tezos_network_config.clone(),
+        env.mavryk_network_config.clone(),
         env.enable_testchain,
         env.storage.context_storage_configuration.clone(),
         env.ffi.protocol_runner.clone(),
@@ -104,10 +104,10 @@ fn block_on_actors(
     log: Logger,
 ) {
     // if feeding is started, than run chain manager
-    let is_sandbox = env.tezos_network == environment::TezosEnvironment::Sandbox;
+    let is_sandbox = env.mavryk_network == environment::MavrykEnvironment::Sandbox;
     // version
     let shell_compatibility_version = Arc::new(ShellCompatibilityVersion::new(
-        env.tezos_network_config.version.clone(),
+        env.mavryk_network_config.version.clone(),
         shell::SUPPORTED_DISTRIBUTED_DB_VERSION.to_vec(),
         shell::SUPPORTED_P2P_VERSION.to_vec(),
     ));
@@ -118,7 +118,7 @@ fn block_on_actors(
     let (context_init_status_sender, context_init_status_receiver) =
         tokio::sync::watch::channel(false);
     let protocol_runner_configuration = create_protocol_runner_configuration(&env);
-    let tezos_protocol_api = ProtocolRunnerApi::new(
+    let mavryk_protocol_api = ProtocolRunnerApi::new(
         protocol_runner_configuration.clone(),
         context_init_status_receiver,
         tokio_runtime.handle(),
@@ -157,7 +157,7 @@ fn block_on_actors(
 
     // initialize shell automaton manager
     let (mut shell_automaton_manager, rpc_shell_automaton_channel) = ShellAutomatonManager::new(
-        tezos_protocol_api.clone(),
+        mavryk_protocol_api.clone(),
         persistent_storage.clone(),
         network_channel.clone(),
         log.clone(),
@@ -170,12 +170,12 @@ fn block_on_actors(
         context_init_status_sender,
     );
 
-    let tezos_protocol_api = Arc::new(tezos_protocol_api);
+    let mavryk_protocol_api = Arc::new(mavryk_protocol_api);
     shell_automaton_manager.start();
 
     // start chain_feeder with controlled startup and wait for ok initialized context
     info!(log, "Initializing protocol runners and context...");
-    tezos_protocol_api.wait_for_context_init_sync().unwrap();
+    mavryk_protocol_api.wait_for_context_init_sync().unwrap();
     info!(log, "Protocol runners and context initialized");
 
     // load current_head, at least genesis should be stored, if not, just finished, something is wrong
@@ -202,8 +202,8 @@ fn block_on_actors(
         ([0, 0, 0, 0], env.rpc.listener_port).into(),
         tokio_runtime.handle().clone(),
         &persistent_storage,
-        Arc::clone(&tezos_protocol_api),
-        env.tezos_network_config,
+        Arc::clone(&mavryk_protocol_api),
+        env.mavryk_network_config,
         Arc::new(shell_compatibility_version.to_network_version()),
         &init_storage_data,
         Arc::new(hydrated_current_head_block),
@@ -324,7 +324,7 @@ async fn handle_signals(log: &Logger) {
 }
 
 fn check_deprecated_network(env: &Environment, log: &Logger) {
-    if let Some(deprecation_notice) = env.tezos_network.check_deprecated_network() {
+    if let Some(deprecation_notice) = env.mavryk_network.check_deprecated_network() {
         warn!(log, "Deprecated network: {}", deprecation_notice);
     }
 }
@@ -556,8 +556,8 @@ fn main() {
             info!(
                 log,
                 "Configured network {:?} -> {}",
-                env.tezos_network.supported_values(),
-                env.tezos_network_config.version
+                env.mavryk_network.supported_values(),
+                env.mavryk_network_config.version
             );
             check_deprecated_network(&env, &log);
 
@@ -569,7 +569,7 @@ fn main() {
                 let persistent_storage = initialize_persistent_storage(&env, &log);
 
                 match resolve_storage_init_chain_data(
-                    &env.tezos_network_config,
+                    &env.mavryk_network_config,
                     &env.storage.db_path,
                     &env.storage.context_storage_configuration,
                     &env.storage.patch_context,
@@ -609,9 +609,9 @@ fn main() {
                                     e, description);
                             }
 
-                            // Loads tezos identity based on provided identity-file argument. In case it does not exist, it will try to automatically generate it
+                            // Loads mavryk identity based on provided identity-file argument. In case it does not exist, it will try to automatically generate it
                             info!(log, "Loading identity...");
-                            let tezos_identity = match identity::ensure_identity(
+                            let mavryk_identity = match identity::ensure_identity(
                                 &env.identity,
                                 &log,
                             ) {
@@ -637,7 +637,7 @@ fn main() {
                             block_on_actors(
                                 env,
                                 init_storage_data,
-                                Arc::new(tezos_identity),
+                                Arc::new(mavryk_identity),
                                 persistent_storage,
                                 blocks_replay,
                                 log,
@@ -669,10 +669,10 @@ fn initialize_persistent_storage(env: &Environment, log: &Logger) -> PersistentS
     // IMPORTANT: Cache object must live at least as long as DB (returned by open_kv)
     let mut caches = GlobalRocksDbCacheHolder::with_capacity(1);
     let main_chain = MainChain::new(
-        env.tezos_network_config
+        env.mavryk_network_config
             .main_chain_id()
             .expect("Failed to decode chainId"),
-        env.tezos_network_config.version.clone(),
+        env.mavryk_network_config.version.clone(),
     );
 
     // initialize dbs

@@ -3,7 +3,7 @@
 
 use std::collections::btree_map::Entry as BTreeMapEntry;
 
-use tezos_messages::protocol::SupportedProtocol;
+use mavryk_messages::protocol::SupportedProtocol;
 
 use crate::block_applier::BlockApplierApplyState;
 use crate::{Action, ActionWithMeta, State};

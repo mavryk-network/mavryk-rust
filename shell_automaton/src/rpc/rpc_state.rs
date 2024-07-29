@@ -4,7 +4,7 @@
 use std::collections::{BTreeMap, BTreeSet};
 
 use crypto::hash::{BlockHash, ChainId, ContextHash, OperationListListHash, ProtocolHash};
-use tezos_messages::{
+use mavryk_messages::{
     p2p::encoding::{block_header::Level, fitness::Fitness},
     Timestamp,
 };

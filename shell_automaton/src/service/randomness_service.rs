@@ -6,7 +6,7 @@ use std::{fmt::Debug, net::SocketAddr};
 use crypto::nonce::{Nonce, NONCE_SIZE};
 use rand::seq::SliceRandom;
 use rand::Rng;
-use tezos_messages::p2p::encoding::block_header::Level;
+use mavryk_messages::p2p::encoding::block_header::Level;
 
 use crate::baker::seed_nonce::{SeedNonce, SeedNonceHash};
 use crypto::blake2b;

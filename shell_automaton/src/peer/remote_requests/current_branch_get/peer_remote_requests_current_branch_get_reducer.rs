@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 use crypto::seeded_step::{Seed, Step};
-use tezos_messages::p2p::encoding::prelude::BlockLocator;
+use mavryk_messages::p2p::encoding::prelude::BlockLocator;
 
 use crate::{Action, ActionWithMeta, State};
 

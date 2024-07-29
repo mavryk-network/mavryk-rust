@@ -11,10 +11,10 @@ use strum::IntoEnumIterator;
 use crypto::hash::{BlockHash, BlockPayloadHash, CryptoboxPublicKeyHash};
 use storage::shell_automaton_action_meta_storage::ShellAutomatonActionStatsForRanges;
 use storage::BlockHeaderWithHash;
-use tezos_api::ffi::{ApplyBlockExecutionTimestamps, ApplyBlockResponse};
-use tezos_messages::base::signature_public_key::SignaturePublicKey;
-use tezos_messages::p2p::encoding::block_header::Level;
-use tezos_messages::p2p::encoding::fitness::Fitness;
+use mavryk_api::ffi::{ApplyBlockExecutionTimestamps, ApplyBlockResponse};
+use mavryk_messages::base::signature_public_key::SignaturePublicKey;
+use mavryk_messages::p2p::encoding::block_header::Level;
+use mavryk_messages::p2p::encoding::fitness::Fitness;
 
 use crate::{ActionId, ActionKind, ActionWithMeta};
 

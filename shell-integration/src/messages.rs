@@ -21,7 +21,7 @@ pub struct Prevalidator {
     pub chain_id: String,
     pub status: WorkerStatus,
     // TODO: implement the json structure form ocaml's RPC
-    // TODO: missing Tezos fields
+    // TODO: missing Mavryk fields
     // information
     // pipelines
 }

@@ -6,7 +6,7 @@ use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
 
-use tezos_messages::p2p::encoding::peer::PeerMessageResponse;
+use mavryk_messages::p2p::encoding::peer::PeerMessageResponse;
 
 use crate::{EnablingCondition, State};
 

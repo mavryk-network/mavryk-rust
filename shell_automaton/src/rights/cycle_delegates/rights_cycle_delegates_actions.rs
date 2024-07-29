@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 use crate::{EnablingCondition, State};
-use tezos_messages::p2p::encoding::block_header::BlockHeader;
+use mavryk_messages::p2p::encoding::block_header::BlockHeader;
 
 use crate::{
     protocol_runner::ProtocolRunnerToken, rights::cycle_delegates::CycleDelegatesQueryState,

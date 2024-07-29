@@ -6,9 +6,9 @@ use std::net::SocketAddr;
 use crypto::hash::BlockHash;
 use networking::network_channel::PeerMessageReceived;
 use storage::{BlockHeaderWithHash, OperationKey};
-use tezos_messages::p2p::binary_message::{BinaryRead, MessageHash};
-use tezos_messages::p2p::encoding::peer::{PeerMessage, PeerMessageResponse};
-use tezos_messages::p2p::encoding::prelude::AdvertiseMessage;
+use mavryk_messages::p2p::binary_message::{BinaryRead, MessageHash};
+use mavryk_messages::p2p::encoding::peer::{PeerMessage, PeerMessageResponse};
+use mavryk_messages::p2p::encoding::prelude::AdvertiseMessage;
 
 use crate::bootstrap::{
     BootstrapPeerBlockHeaderGetSuccessAction, BootstrapPeerBlockOperationsReceivedAction,

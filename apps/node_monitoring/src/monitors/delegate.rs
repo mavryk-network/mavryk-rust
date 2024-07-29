@@ -16,7 +16,7 @@ use reqwest::Response;
 use serde::{de::DeserializeOwned, Deserialize};
 use serde_json::Value;
 use slog::Logger;
-use tezos_messages::p2p::encoding::block_header::BlockHeader;
+use mavryk_messages::p2p::encoding::block_header::BlockHeader;
 use tokio::{
     io::AsyncWriteExt,
     sync::mpsc::{channel, Sender},

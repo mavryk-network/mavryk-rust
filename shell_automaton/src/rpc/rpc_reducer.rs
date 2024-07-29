@@ -1,7 +1,7 @@
 // Copyright (c) SimpleStaking, Viable Systems and Tezedge Contributors
 // SPDX-License-Identifier: MIT
 
-use tezos_messages::ts_to_rfc3339;
+use mavryk_messages::ts_to_rfc3339;
 
 use crate::{block_applier::BlockApplierApplyState, Action};
 

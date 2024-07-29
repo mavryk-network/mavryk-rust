@@ -48,10 +48,10 @@ sudo ls
 Then you can run:
 
 ```
-nohup sudo TEZOS_NETWORK=mainnet \
+nohup sudo MAVRYK_NETWORK=mainnet \
 HOSTNAME=localhost \
 TEZEDGE_VOLUME_PATH="/home/tezedge_user/tezedge/volume" \
-LD_LIBRARY_PATH=./tezos/sys/lib_tezos/artifacts \
+LD_LIBRARY_PATH=./mavryk/sys/lib_tezos/artifacts \
 ./target/release/deploy-monitoring \
 --compose-file-path apps/deploy_monitoring/docker-compose.tezedge_and_explorer.yml \
 --tezedge-only \
@@ -69,7 +69,7 @@ If you wish to reciece slack notifications add the following 3 options:
 
 Every run needs a few environmental variables:
 
-- `TEZOS_NETWORK`: one of the tezedge networks, e.g.: mainnet
+- `MAVRYK_NETWORK`: one of the tezedge networks, e.g.: mainnet
 - `HOSTNAME`: the local ip address or hostname
 - `TEZEDGE_VOLUME_PATH`: **ABSOLUTE** path to the directory that stores or will store the tezedge data. This will be mounted in the docker container. *Note: do not use relative paths, it will create unexpected behaviour*
 - `LD_LIBRARY_PATH`: required because the deploy_monitoring module is dependant on the shell module (this will be reworked in the future).

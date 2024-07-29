@@ -242,7 +242,7 @@ pub mod kv_block_additional_data {
 
 pub mod kv_block_header {
     use crypto::hash::BlockHash;
-    use tezos_messages::p2p::encoding::block_header::BlockHeader;
+    use mavryk_messages::p2p::encoding::block_header::BlockHeader;
 
     kv_state_machine!(
         block_header,
@@ -359,7 +359,7 @@ pub mod kv_cycle_eras {
 
 pub mod kv_operations {
     use crypto::hash::BlockHash;
-    use tezos_messages::p2p::encoding::operation::Operation;
+    use mavryk_messages::p2p::encoding::operation::Operation;
 
     kv_state_machine!(
         operation,

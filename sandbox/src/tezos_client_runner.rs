@@ -20,7 +20,7 @@ use crate::node_runner::NodeRpcIpPort;
 use crate::rand_chars;
 
 #[derive(Debug, Error)]
-pub enum TezosClientRunnerError {
+pub enum MavrykClientRunnerError {
     /// IO Error.
     #[error("IO error during process creation, reason: {reason}")]
     IOError { reason: std::io::Error },
@@ -38,7 +38,7 @@ pub enum TezosClientRunnerError {
     SerdeError { reason: serde_json::Error },
 
     /// Call Error.
-    #[error("Tezos-client call error, message: {message}")]
+    #[error("Mavryk-client call error, message: {message}")]
     CallError { message: ErrorMessage },
 
     /// Sandbox node is not running.
@@ -49,24 +49,24 @@ pub enum TezosClientRunnerError {
     SandboxDataDirNotInitialized { node_ref: NodeRpcIpPort },
 }
 
-impl From<std::io::Error> for TezosClientRunnerError {
-    fn from(err: std::io::Error) -> TezosClientRunnerError {
-        TezosClientRunnerError::IOError { reason: err }
+impl From<std::io::Error> for MavrykClientRunnerError {
+    fn from(err: std::io::Error) -> MavrykClientRunnerError {
+        MavrykClientRunnerError::IOError { reason: err }
     }
 }
 
-impl From<serde_json::Error> for TezosClientRunnerError {
-    fn from(err: serde_json::Error) -> TezosClientRunnerError {
-        TezosClientRunnerError::SerdeError { reason: err }
+impl From<serde_json::Error> for MavrykClientRunnerError {
+    fn from(err: serde_json::Error) -> MavrykClientRunnerError {
+        MavrykClientRunnerError::SerdeError { reason: err }
     }
 }
 
-impl reject::Reject for TezosClientRunnerError {}
+impl reject::Reject for MavrykClientRunnerError {}
 
 /// Type alias for a vecotr of Wallets
 pub type SandboxWallets = Vec<Wallet>;
 
-/// Structure holding data used by tezos client
+/// Structure holding data used by mavryk client
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Wallet {
     alias: String,
@@ -83,7 +83,7 @@ pub struct BakeRequest {
 }
 
 #[derive(Serialize)]
-pub struct TezosClientErrorReply {
+pub struct MavrykClientErrorReply {
     pub message: String,
     pub field_name: String,
 }
@@ -96,11 +96,11 @@ pub struct SandboxData {
 }
 
 /// Thread-safe reference to the client runner
-pub type TezosClientRunnerRef = Arc<RwLock<TezosClientRunner>>;
+pub type MavrykClientRunnerRef = Arc<RwLock<MavrykClientRunner>>;
 
-/// Structure holding data to use a tezos-client binary
+/// Structure holding data to use a mavryk-client binary
 #[derive(Clone)]
-pub struct TezosClientRunner {
+pub struct MavrykClientRunner {
     pub name: String,
     pub executable_path: PathBuf,
 
@@ -110,31 +110,31 @@ pub struct TezosClientRunner {
 
 /// A structure holding all the required parameters to activate an economic protocol
 #[derive(Clone, Debug, Deserialize)]
-pub struct TezosProtcolActivationParameters {
+pub struct MavrykProtcolActivationParameters {
     timestamp: String,
     protocol_hash: String,
     protocol_parameters: serde_json::Value,
 }
 
 #[derive(Serialize, Clone, Debug)]
-pub struct TezosClientReply {
+pub struct MavrykClientReply {
     pub output: String,
     pub error: String,
 }
 
-impl TezosClientReply {
+impl MavrykClientReply {
     pub fn new(output: String, error: String) -> Self {
         Self { output, error }
     }
 }
 
-impl Default for TezosClientReply {
-    fn default() -> TezosClientReply {
-        TezosClientReply::new(String::new(), String::new())
+impl Default for MavrykClientReply {
+    fn default() -> MavrykClientReply {
+        MavrykClientReply::new(String::new(), String::new())
     }
 }
 
-impl TezosClientRunner {
+impl MavrykClientRunner {
     pub fn new(name: &str, executable_path: PathBuf) -> Self {
         Self {
             name: name.to_string(),
@@ -156,10 +156,10 @@ impl TezosClientRunner {
     pub fn wallets(
         &self,
         node_ref: &NodeRpcIpPort,
-    ) -> Result<&HashMap<String, Wallet>, TezosClientRunnerError> {
+    ) -> Result<&HashMap<String, Wallet>, MavrykClientRunnerError> {
         match self.sandbox_data.get(node_ref) {
             Some(data) => Ok(&data.wallets),
-            None => Err(TezosClientRunnerError::SandboxDataDirNotInitialized {
+            None => Err(MavrykClientRunnerError::SandboxDataDirNotInitialized {
                 node_ref: node_ref.clone(),
             }),
         }
@@ -169,12 +169,12 @@ impl TezosClientRunner {
         &mut self,
         node_ref: &NodeRpcIpPort,
         wallet: Wallet,
-    ) -> Result<(), TezosClientRunnerError> {
+    ) -> Result<(), MavrykClientRunnerError> {
         if let Some(data) = self.sandbox_data.get_mut(node_ref) {
             data.wallets.insert(wallet.alias.clone(), wallet);
             Ok(())
         } else {
-            Err(TezosClientRunnerError::SandboxDataDirNotInitialized {
+            Err(MavrykClientRunnerError::SandboxDataDirNotInitialized {
                 node_ref: node_ref.clone(),
             })
         }
@@ -183,14 +183,14 @@ impl TezosClientRunner {
     /// Activate a protocol with the provided parameters
     pub fn activate_protocol(
         &self,
-        mut activation_parameters: TezosProtcolActivationParameters,
+        mut activation_parameters: MavrykProtcolActivationParameters,
         node_ref: &NodeRpcIpPort,
         log: &Logger,
-    ) -> Result<TezosClientReply, TezosClientRunnerError> {
+    ) -> Result<MavrykClientReply, MavrykClientRunnerError> {
         let data_dir = match self.sandbox_data.get(node_ref) {
             Some(data) => &data.data_dir_path,
             None => {
-                return Err(TezosClientRunnerError::SandboxDataDirNotInitialized {
+                return Err(MavrykClientRunnerError::SandboxDataDirNotInitialized {
                     node_ref: node_ref.clone(),
                 })
             }
@@ -201,7 +201,7 @@ impl TezosClientRunner {
         {
             params
         } else {
-            return Err(TezosClientRunnerError::ProtocolParameterError {
+            return Err(MavrykClientRunnerError::ProtocolParameterError {
                 json: activation_parameters.protocol_parameters,
             });
         };
@@ -217,16 +217,16 @@ impl TezosClientRunner {
         let sandbox_accounts = serde_json::json!(wallet_activation);
         params.insert("bootstrap_accounts".to_string(), sandbox_accounts);
 
-        // create a temporary file, the tezos-client requires the parameters to be passed in a .json file
+        // create a temporary file, the mavryk-client requires the parameters to be passed in a .json file
         let protocol_parameters_json_file =
             data_dir.join(format!("protocol_parameters-{}.json", rand_chars(5)));
         fs::write(
             &protocol_parameters_json_file,
             activation_parameters.protocol_parameters.to_string(),
         )
-        .map_err(|err| TezosClientRunnerError::IOError { reason: err })?;
+        .map_err(|err| MavrykClientRunnerError::IOError { reason: err })?;
 
-        let mut client_output: TezosClientReply = Default::default();
+        let mut client_output: MavrykClientReply = Default::default();
         self.run_client(
             node_ref,
             [
@@ -264,14 +264,14 @@ impl TezosClientRunner {
         request: Option<BakeRequest>,
         node_ref: &NodeRpcIpPort,
         log: &Logger,
-    ) -> Result<TezosClientReply, TezosClientRunnerError> {
-        let mut client_output: TezosClientReply = Default::default();
+    ) -> Result<MavrykClientReply, MavrykClientRunnerError> {
+        let mut client_output: MavrykClientReply = Default::default();
 
         let alias = if let Some(request) = request {
             if let Some(wallet) = self.wallets(node_ref)?.get(&request.alias) {
                 &wallet.alias
             } else {
-                return Err(TezosClientRunnerError::NonexistantWallet {
+                return Err(MavrykClientRunnerError::NonexistantWallet {
                     alias: request.alias,
                 });
             }
@@ -280,7 +280,7 @@ impl TezosClientRunner {
             if let Some(wallet) = self.wallets(node_ref)?.values().next() {
                 &wallet.alias
             } else {
-                return Err(TezosClientRunnerError::NonexistantWallet {
+                return Err(MavrykClientRunnerError::NonexistantWallet {
                     alias: "-none-".to_string(),
                 });
             }
@@ -296,14 +296,14 @@ impl TezosClientRunner {
         Ok(client_output)
     }
 
-    /// Initialize the accounts in the tezos-client
+    /// Initialize the accounts in the mavryk-client
     pub fn init_client_data(
         &mut self,
         requested_wallets: SandboxWallets,
         node_ref: &NodeRpcIpPort,
         log: &Logger,
-    ) -> Result<TezosClientReply, TezosClientRunnerError> {
-        let mut client_output: TezosClientReply = Default::default();
+    ) -> Result<MavrykClientReply, MavrykClientRunnerError> {
+        let mut client_output: MavrykClientReply = Default::default();
 
         self.run_client(
             node_ref,
@@ -339,7 +339,7 @@ impl TezosClientRunner {
         Ok(client_output)
     }
 
-    /// Cleanup the tezos-client directory
+    /// Cleanup the mavryk-client directory
     pub fn cleanup(&mut self, node_ref: &NodeRpcIpPort) -> Result<(), anyhow::Error> {
         // clear node sandbox data
         if let Some(data) = self.sandbox_data.remove(node_ref) {
@@ -350,7 +350,7 @@ impl TezosClientRunner {
         Ok(())
     }
 
-    /// Private method to run the tezos-client as a subprocess and wait for its completion
+    /// Private method to run the mavryk-client as a subprocess and wait for its completion
     ///
     /// args - should contains just command args
     ///
@@ -359,13 +359,13 @@ impl TezosClientRunner {
         &self,
         node_ref: &NodeRpcIpPort,
         command_args: Vec<&str>,
-        client_output: &mut TezosClientReply,
+        client_output: &mut MavrykClientReply,
         log: &Logger,
-    ) -> Result<(), TezosClientRunnerError> {
+    ) -> Result<(), MavrykClientRunnerError> {
         let data_dir = match self.sandbox_data.get(node_ref) {
             Some(data) => data.data_dir_path.as_path().display().to_string(),
             None => {
-                return Err(TezosClientRunnerError::SandboxDataDirNotInitialized {
+                return Err(MavrykClientRunnerError::SandboxDataDirNotInitialized {
                     node_ref: node_ref.clone(),
                 })
             }
@@ -383,13 +383,13 @@ impl TezosClientRunner {
         .to_vec();
         args.extend(command_args);
 
-        info!(log, "Calling tezos-client ({})", self.executable_path.as_path().display().to_string(); "command" => args.join(" "));
+        info!(log, "Calling mavryk-client ({})", self.executable_path.as_path().display().to_string(); "command" => args.join(" "));
 
-        // call tezos-client
+        // call mavryk-client
         let output = Command::new(&self.executable_path)
             .args(args)
             .output()
-            .map_err(|err| TezosClientRunnerError::IOError { reason: err })?;
+            .map_err(|err| MavrykClientRunnerError::IOError { reason: err })?;
 
         let _ = BufReader::new(output.stdout.as_slice()).read_to_string(&mut client_output.output);
         let _ = BufReader::new(output.stderr.as_slice()).read_to_string(&mut client_output.error);
@@ -398,14 +398,14 @@ impl TezosClientRunner {
     }
 }
 
-/// Construct a reply using the output from the tezos-client
+/// Construct a reply using the output from the mavryk-client
 pub fn reply_with_client_output(
-    reply: TezosClientReply,
+    reply: MavrykClientReply,
     log: &Logger,
-) -> Result<impl warp::Reply, TezosClientRunnerError> {
+) -> Result<impl warp::Reply, MavrykClientRunnerError> {
     if reply.error.is_empty() {
         // no error, means success
-        info!(log, "Tezos-client call successfull finished"; "replay" => format!("{:?}", &reply));
+        info!(log, "Mavryk-client call successfull finished"; "replay" => format!("{:?}", &reply));
         Ok(warp::reply::with_status(
             warp::reply::json(&reply),
             StatusCode::OK,
@@ -418,8 +418,8 @@ pub fn reply_with_client_output(
 
             // parse error if contains field/message
             if let Some((field_name, message)) = extract_field_name_and_message_ocaml(&error) {
-                error!(log, "Tezos-client call finished with validation error"; "error" => error.clone(), "field_name" => field_name.clone(), "message" => message.clone());
-                Err(TezosClientRunnerError::CallError {
+                error!(log, "Mavryk-client call finished with validation error"; "error" => error.clone(), "field_name" => field_name.clone(), "message" => message.clone());
+                Err(MavrykClientRunnerError::CallError {
                     message: ErrorMessage::validation(
                         StatusCode::INTERNAL_SERVER_ERROR,
                         &message,
@@ -428,18 +428,18 @@ pub fn reply_with_client_output(
                     ),
                 })
             } else {
-                error!(log, "Tezos-client call finished with error"; "error" => error.clone());
-                Err(TezosClientRunnerError::CallError {
+                error!(log, "Mavryk-client call finished with error"; "error" => error.clone());
+                Err(MavrykClientRunnerError::CallError {
                     message: ErrorMessage::generic(
                         StatusCode::INTERNAL_SERVER_ERROR,
-                        "Tezos-client call finished with error",
+                        "Mavryk-client call finished with error",
                         error,
                     ),
                 })
             }
         } else {
             // output and error, means warning
-            warn!(log, "Tezos-client call successfull finished with warning"; "replay" => format!("{:?}", &reply));
+            warn!(log, "Mavryk-client call successfull finished with warning"; "replay" => format!("{:?}", &reply));
             Ok(warp::reply::with_status(
                 warp::reply::json(&reply),
                 StatusCode::OK,
@@ -448,7 +448,7 @@ pub fn reply_with_client_output(
     }
 }
 
-/// Parse the returned error string from the tezos client
+/// Parse the returned error string from the mavryk client
 pub fn extract_field_name_and_message_ocaml(error: &str) -> Option<(String, String)> {
     let parsed_message = error
         .replace("\\", "")

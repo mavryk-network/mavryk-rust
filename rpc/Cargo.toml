@@ -35,12 +35,12 @@ shell = { path = "../shell" }
 shell_integration = { path = "../shell-integration" }
 shell_automaton = { path = "../shell_automaton" }
 storage = { path = "../storage" }
-tezos_api = { path = "../tezos/api" }
-tezos_messages = { path = "../tezos/messages" }
-tezos_timing = { path = "../tezos/timing" }
-tezos_context_api = { path = "../tezos/context-api" }
-tezos_context_ipc_client = { path = "../tezos/context-ipc-client" }
-tezos_protocol_ipc_client = { path = "../tezos/protocol-ipc-client" }
+mavryk_api = { path = "../mavryk/api" }
+mavryk_messages = { path = "../mavryk/messages" }
+mavryk_timing = { path = "../mavryk/timing" }
+mavryk_context_api = { path = "../mavryk/context-api" }
+mavryk_context_ipc_client = { path = "../mavryk/context-ipc-client" }
+mavryk_protocol_ipc_client = { path = "../mavryk/protocol-ipc-client" }
 rmp = "0.8.10"
 rmp-serde = "0.15.5"
 

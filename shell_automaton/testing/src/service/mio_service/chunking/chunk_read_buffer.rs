@@ -5,7 +5,7 @@ use bytes::Buf;
 use serde::{Deserialize, Serialize};
 use std::io::{self, Read};
 
-use tezos_messages::p2p::binary_message::{BinaryChunk, CONTENT_LENGTH_FIELD_BYTES};
+use mavryk_messages::p2p::binary_message::{BinaryChunk, CONTENT_LENGTH_FIELD_BYTES};
 
 pub trait BinaryMessageContent {
     fn binary_message_content(&self) -> &[u8];

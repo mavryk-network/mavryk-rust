@@ -8,8 +8,8 @@ use crypto::hash::{BlockHash, HashType};
 
 use storage::persistent::{Decoder, Encoder};
 use storage::BlockHeaderWithHash;
-use tezos_messages::p2p::encoding::fitness::Fitness;
-use tezos_messages::p2p::encoding::prelude::BlockHeaderBuilder;
+use mavryk_messages::p2p::encoding::fitness::Fitness;
+use mavryk_messages::p2p::encoding::prelude::BlockHeaderBuilder;
 
 #[test]
 fn block_header_with_hash_encoded_equals_decoded() -> Result<(), Error> {

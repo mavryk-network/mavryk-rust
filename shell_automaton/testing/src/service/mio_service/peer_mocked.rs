@@ -7,9 +7,9 @@ use std::io::{self, Read, Write};
 
 use shell_automaton::peer::PeerCrypto;
 use shell_automaton::service::mio_service::MioPeer;
-use tezos_identity::Identity;
-use tezos_messages::p2p::binary_message::{BinaryChunk, BinaryRead, BinaryWrite};
-use tezos_messages::p2p::encoding::prelude::{
+use mavryk_identity::Identity;
+use mavryk_messages::p2p::binary_message::{BinaryChunk, BinaryRead, BinaryWrite};
+use mavryk_messages::p2p::encoding::prelude::{
     AckMessage, ConnectionMessage, MetadataMessage, PeerMessage, PeerMessageResponse,
 };
 
